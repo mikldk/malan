@@ -262,6 +262,35 @@ Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_
   int K = genotypes_unique.size();
   int k = 0;
   
+  k = 0;
+  arma::mat X(K, 1, arma::fill::none);
+  arma::vec y(K, arma::fill::none);
+  
+  for (it = genotypes_unique.begin(); it != genotypes_unique.end(); ++it) {
+    std::pair<int, int> geno = *it;
+    int a1 = geno.first;
+    int a2 = geno.second;
+    
+    // homozyg
+    if (a1 == a2) {
+      double p_i = allele_p.at(a1);
+      double p_ii = genotype_p.at(geno);
+      double p_i2 = p_i*p_i;
+      X(k, 0) = p_i - p_i2;
+      y(k) = p_ii - p_i2;
+    } else {
+      // heterozyg
+      double p_i = allele_p.at(a1);
+      double p_j = allele_p.at(a2);
+      double p_ij = genotype_p.at(geno);
+      double tmp = -2.0*p_i*p_j;
+      X(k, 0) = tmp;
+      y(k) = p_ij + tmp;
+    }
+    
+    ++k;
+  }
+
   if (return_estimation_info) {
     Rcpp::List est_info;
     est_info["X"] = Rcpp::wrap(X);
@@ -322,42 +351,12 @@ Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_
 
     theta["estimation_info"] = est_info;
   }
-  
-  
+
   if (K == 1) {
     theta["estimate"] = NA_REAL;
     theta["error"] = true;
     theta["details"] = "Only one genotype observed";
     return theta;
-  }
-  
-  k = 0;
-  arma::mat X(K, 1, arma::fill::none);
-  arma::vec y(K, arma::fill::none);
-  
-  for (it = genotypes_unique.begin(); it != genotypes_unique.end(); ++it) {
-    std::pair<int, int> geno = *it;
-    int a1 = geno.first;
-    int a2 = geno.second;
-    
-    // homozyg
-    if (a1 == a2) {
-      double p_i = allele_p.at(a1);
-      double p_ii = genotype_p.at(geno);
-      double p_i2 = p_i*p_i;
-      X(k, 0) = p_i - p_i2;
-      y(k) = p_ii - p_i2;
-    } else {
-      // heterozyg
-      double p_i = allele_p.at(a1);
-      double p_j = allele_p.at(a2);
-      double p_ij = genotype_p.at(geno);
-      double tmp = -2.0*p_i*p_j;
-      X(k, 0) = tmp;
-      y(k) = p_ij + tmp;
-    }
-    
-    ++k;
   }
   
   // minimisze (Xb - y)^2 for b
