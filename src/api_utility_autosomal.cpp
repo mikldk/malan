@@ -257,6 +257,11 @@ Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_
   theta["details"] = "NA";
   theta["estimation_info"] = R_NilValue;  
 
+  // Loop over unique genotypes
+  std::unordered_set<std::pair<int, int>, pairhash>::const_iterator it;
+  int K = genotypes_unique.size();
+  int k = 0;
+  
   if (return_estimation_info) {
     Rcpp::List est_info;
     est_info["X"] = Rcpp::wrap(X);
@@ -318,9 +323,6 @@ Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_
     theta["estimation_info"] = est_info;
   }
   
-  // Loop over unique genotypes
-  std::unordered_set<std::pair<int, int>, pairhash>::const_iterator it;
-  int K = genotypes_unique.size();
   
   if (K == 1) {
     theta["estimate"] = NA_REAL;
@@ -329,7 +331,7 @@ Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_
     return theta;
   }
   
-  int k = 0;
+  k = 0;
   arma::mat X(K, 1, arma::fill::none);
   arma::vec y(K, arma::fill::none);
   
