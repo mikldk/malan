@@ -20,7 +20,7 @@ remotes::install_github("mikldk/malan")
 
 ## References
 
-Andersen MM, Balding DJ (2017). *How convincing is a matching Y-chromosome profile?* 
+Andersen MM, Balding DJ (2017). *How convincing is a matching Y-chromosome profile?*. 
 PLoS Genet 13(11): e1007028. <https://doi.org/10.1371/journal.pgen.1007028>.
 
 ## Disclaimer

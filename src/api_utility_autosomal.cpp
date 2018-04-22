@@ -252,47 +252,11 @@ Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_
                                   const bool return_estimation_info = false) {
   Rcpp::List theta;
   
-  // Loop over unique genotypes
-  std::unordered_set<std::pair<int, int>, pairhash>::const_iterator it;
-  int K = genotypes_unique.size();
-  
-  if (K == 1) {
-    theta["estimate"] = NA_REAL;
-    theta["error"] = true;
-    theta["details"] = "Only one genotype observed";
-    theta["estimation_info"] = R_NilValue;
-    return theta;
-  }
-  
-  int k = 0;
-  arma::mat X(K, 1, arma::fill::none);
-  arma::vec y(K, arma::fill::none);
-  
-  for (it = genotypes_unique.begin(); it != genotypes_unique.end(); ++it) {
-    std::pair<int, int> geno = *it;
-    int a1 = geno.first;
-    int a2 = geno.second;
-    
-    // homozyg
-    if (a1 == a2) {
-      double p_i = allele_p.at(a1);
-      double p_ii = genotype_p.at(geno);
-      double p_i2 = p_i*p_i;
-      X(k, 0) = p_i - p_i2;
-      y(k) = p_ii - p_i2;
-    } else {
-      // heterozyg
-      double p_i = allele_p.at(a1);
-      double p_j = allele_p.at(a2);
-      double p_ij = genotype_p.at(geno);
-      double tmp = -2.0*p_i*p_j;
-      X(k, 0) = tmp;
-      y(k) = p_ij + tmp;
-    }
-    
-    ++k;
-  }
-  
+  theta["estimate"] = NA_REAL;
+  theta["error"] = true;
+  theta["details"] = "NA";
+  theta["estimation_info"] = R_NilValue;  
+
   if (return_estimation_info) {
     Rcpp::List est_info;
     est_info["X"] = Rcpp::wrap(X);
@@ -352,6 +316,46 @@ Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_
     est_info["alleles_probs"] = alleles_probs;
 
     theta["estimation_info"] = est_info;
+  }
+  
+  // Loop over unique genotypes
+  std::unordered_set<std::pair<int, int>, pairhash>::const_iterator it;
+  int K = genotypes_unique.size();
+  
+  if (K == 1) {
+    theta["estimate"] = NA_REAL;
+    theta["error"] = true;
+    theta["details"] = "Only one genotype observed";
+    return theta;
+  }
+  
+  int k = 0;
+  arma::mat X(K, 1, arma::fill::none);
+  arma::vec y(K, arma::fill::none);
+  
+  for (it = genotypes_unique.begin(); it != genotypes_unique.end(); ++it) {
+    std::pair<int, int> geno = *it;
+    int a1 = geno.first;
+    int a2 = geno.second;
+    
+    // homozyg
+    if (a1 == a2) {
+      double p_i = allele_p.at(a1);
+      double p_ii = genotype_p.at(geno);
+      double p_i2 = p_i*p_i;
+      X(k, 0) = p_i - p_i2;
+      y(k) = p_ii - p_i2;
+    } else {
+      // heterozyg
+      double p_i = allele_p.at(a1);
+      double p_j = allele_p.at(a2);
+      double p_ij = genotype_p.at(geno);
+      double tmp = -2.0*p_i*p_j;
+      X(k, 0) = tmp;
+      y(k) = p_ij + tmp;
+    }
+    
+    ++k;
   }
   
   // minimisze (Xb - y)^2 for b
