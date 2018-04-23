@@ -1,4 +1,4 @@
-#' MAle Lineage ANlysis
+#' MAle Lineage ANalysis
 #'
 #' Simulating genealogies backwards and imposing STR mutations forwards.
 #' 
