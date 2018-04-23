@@ -354,6 +354,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_children
+Rcpp::List get_children(Rcpp::XPtr<Individual> individual);
+RcppExport SEXP _malan_get_children(SEXP individualSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_children(individual));
+    return rcpp_result_gen;
+END_RCPP
+}
 // count_brothers
 int count_brothers(Rcpp::XPtr<Individual> individual);
 RcppExport SEXP _malan_count_brothers(SEXP individualSEXP) {
@@ -362,6 +373,17 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
     rcpp_result_gen = Rcpp::wrap(count_brothers(individual));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_brothers
+Rcpp::List get_brothers(Rcpp::XPtr<Individual> individual);
+RcppExport SEXP _malan_get_brothers(SEXP individualSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_brothers(individual));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -406,6 +428,28 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
     rcpp_result_gen = Rcpp::wrap(count_uncles(individual));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_uncles
+Rcpp::List get_uncles(Rcpp::XPtr<Individual> individual);
+RcppExport SEXP _malan_get_uncles(SEXP individualSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_uncles(individual));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_cousins
+Rcpp::List get_cousins(Rcpp::XPtr<Individual> individual);
+RcppExport SEXP _malan_get_cousins(SEXP individualSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_cousins(individual));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -655,11 +699,15 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_get_pedigree_from_individual", (DL_FUNC) &_malan_get_pedigree_from_individual, 1},
     {"_malan_get_pedigree_id_from_pid", (DL_FUNC) &_malan_get_pedigree_id_from_pid, 2},
     {"_malan_get_family_info", (DL_FUNC) &_malan_get_family_info, 1},
+    {"_malan_get_children", (DL_FUNC) &_malan_get_children, 1},
     {"_malan_count_brothers", (DL_FUNC) &_malan_count_brothers, 1},
+    {"_malan_get_brothers", (DL_FUNC) &_malan_get_brothers, 1},
     {"_malan_brothers_matching", (DL_FUNC) &_malan_brothers_matching, 1},
     {"_malan_father_matches", (DL_FUNC) &_malan_father_matches, 1},
     {"_malan_grandfather_matches", (DL_FUNC) &_malan_grandfather_matches, 1},
     {"_malan_count_uncles", (DL_FUNC) &_malan_count_uncles, 1},
+    {"_malan_get_uncles", (DL_FUNC) &_malan_get_uncles, 1},
+    {"_malan_get_cousins", (DL_FUNC) &_malan_get_cousins, 1},
     {"_malan_pop_size", (DL_FUNC) &_malan_pop_size, 1},
     {"_malan_get_individuals", (DL_FUNC) &_malan_get_individuals, 1},
     {"_malan_meioses_generation_distribution", (DL_FUNC) &_malan_meioses_generation_distribution, 2},

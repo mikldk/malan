@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{count_brothers}
 \alias{count_brothers}
-\title{Number of brothes}
+\title{Number of brothers}
 \usage{
 count_brothers(individual)
 }
@@ -13,5 +13,8 @@ count_brothers(individual)
 Number of brothers
 }
 \description{
-Get individual's number of brothes
+Get individual's number of brothers
+}
+\seealso{
+\code{\link[=get_brothers]{get_brothers()}}
 }
