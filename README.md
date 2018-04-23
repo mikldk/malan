@@ -1,6 +1,6 @@
-# malan: MAle Lineage ANlysis
+# malan: MAle Lineage ANalysis
 
-An R package (<https://www.r-project.org/>) to perform **MA**le **L**ineage **AN**lysis 
+An R package (<https://www.r-project.org/>) to perform **MA**le **L**ineage **AN**alysis 
 by simulating genealogies backwards and 
 imposing short tandem repeats (STR) mutations forwards. 
 Intended for forensic Y chromosomal STR (Y-STR) haplotype analyses. 

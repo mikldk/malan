@@ -4,7 +4,7 @@
 \name{malan-package}
 \alias{malan}
 \alias{malan-package}
-\title{MAle Lineage ANlysis}
+\title{MAle Lineage ANalysis}
 \description{
 Simulating genealogies backwards and imposing STR mutations forwards.
 }

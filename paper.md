@@ -1,5 +1,5 @@
 ---
-title: 'malan: **MA**le **L**ineage **AN**lysis'
+title: 'malan: **MA**le **L**ineage **AN**alysis'
 tags:
   - Y-chromosome
   - forensic genetics
@@ -32,7 +32,7 @@ The proposed interpretation was based on the distribution of the number of males
 Analyses in [@AndersenPLOSGEN2017] were performed by 
 a simulation model to approximate the distribution of the number of men in a population with matching Y-profiles.
 Key parameters of the model include the STR locus mutation rates, the variance in reproductive success [@AndersenPLOSGEN2017] (VRS), and the population growth rate. 
-The simulation model was implemented and made available in the easy-to-use open-source software presented in this paper: `malan` (**MA**le **L**ineage **AN**lysis). 
+The simulation model was implemented and made available in the easy-to-use open-source software presented in this paper: `malan` (**MA**le **L**ineage **AN**alysis). 
 
 The `malan` software is made available as an R [@R] package with extensive use of C++ for efficient computations via [@Rcpp]. 
 This software was used for the analyses performed in [@AndersenPLOSGEN2017].

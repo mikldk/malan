@@ -15,9 +15,9 @@
   "datePublished": "2018-04-17",
   "dateModified": "2018-04-17",
   "dateCreated": "2018-04-17",
-  "description": "An R package to perform MAle Lineage ANlysis by simulating genealogies backwards and imposing short tandem repeats (STR) mutations forwards. Intended for forensic Y chromosomal STR (Y-STR) haplotype analyses. Numerous analyses are possible, e.g. number of matches and meiotic distance to matches.",
+  "description": "An R package to perform MAle Lineage ANalysis by simulating genealogies backwards and imposing short tandem repeats (STR) mutations forwards. Intended for forensic Y chromosomal STR (Y-STR) haplotype analyses. Numerous analyses are possible, e.g. number of matches and meiotic distance to matches.",
   "keywords": "forensic genetics, STR loci, Y-chromosome, population genetics",
   "license": "GPL v2.0",
-  "title": "malan: MAle Lineage ANlysis",
+  "title": "malan: MAle Lineage ANalysis",
   "version": ""
 }
