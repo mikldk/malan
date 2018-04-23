@@ -147,14 +147,45 @@ Rcpp::List get_family_info(Rcpp::XPtr<Individual> individual) {
 
 }
 
-
-//' Number of brothes
+//' Get children
 //' 
-//' Get individual's number of brothes
+//' Get individual's children
+//'
+//' @param individual individual
+//' 
+//' @return List with children
+//' 
+//' @seealso [get_brothers()], [get_uncles()], [get_cousins()]
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::List get_children(Rcpp::XPtr<Individual> individual) {  
+  Individual* i = individual;
+  
+  std::vector<Individual*>* individuals_boys = individual->get_children();
+  
+  Rcpp::List children;
+  
+  for (auto child : *individuals_boys) {
+    Rcpp::XPtr<Individual> child_xptr(child, false); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
+    child_xptr.attr("class") = Rcpp::CharacterVector::create("malan_individual", "externalptr");
+  
+    children.push_back(child_xptr);
+  }
+  
+  return children;
+}
+
+
+//' Number of brothers
+//' 
+//' Get individual's number of brothers
 //'
 //' @param individual individual
 //' 
 //' @return Number of brothers
+//' 
+//' @seealso [get_brothers()]
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -170,9 +201,50 @@ int count_brothers(Rcpp::XPtr<Individual> individual) {
   return (fathers_boys - 1);
 }
 
-//' Number of brothes with matching haplotype
+
+//' Get brothers
 //' 
-//' Get individual's number of brothes that matches `individual`'s haplotype
+//' Get individual's brothers
+//'
+//' @param individual individual
+//' 
+//' @return List with brothers
+//' 
+//' @seealso [get_uncles()], [get_children()], [get_cousins()]
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::List get_brothers(Rcpp::XPtr<Individual> individual) {  
+  Individual* i = individual;
+  
+  if (i->get_father() == nullptr) {
+    Rcpp::stop("Individual did not have a father");
+  }
+  
+  Individual* father = i->get_father();
+  
+  std::vector<Individual*>* father_boys = father->get_children();
+  
+  Rcpp::List brothers;
+  
+  for (auto brother : *father_boys) {
+    if (brother->get_pid() == individual->get_pid()) {
+      continue; // exclude individual itself as a brother
+    }
+    
+    Rcpp::XPtr<Individual> brother_xptr(brother, false); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
+    brother_xptr.attr("class") = Rcpp::CharacterVector::create("malan_individual", "externalptr");
+  
+    brothers.push_back(brother_xptr);
+  }
+  
+  return brothers;
+}
+
+
+//' Number of brothers with matching haplotype
+//' 
+//' Get individual's number of brothers that matches `individual`'s haplotype
 //'
 //' @param individual individual
 //' 
@@ -308,6 +380,8 @@ bool grandfather_matches(Rcpp::XPtr<Individual> individual) {
 //' 
 //' @return Number of uncles
 //' 
+//' @seealso [get_uncles()]
+//' 
 //' @export
 // [[Rcpp::export]]
 int count_uncles(Rcpp::XPtr<Individual> individual) {  
@@ -328,4 +402,81 @@ int count_uncles(Rcpp::XPtr<Individual> individual) {
   // exclude father
   return (fathers_fathers_boys - 1);
 }
+
+//' Get uncles
+//' 
+//' Get individual's uncles
+//'
+//' @param individual individual
+//' 
+//' @return List with uncles
+//' 
+//' @seealso [get_brothers()], [get_children()], [get_cousins()]
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::List get_uncles(Rcpp::XPtr<Individual> individual) {  
+  Individual* i = individual;
+  
+  if (i->get_father() == nullptr) {
+    Rcpp::stop("Individual did not have a father");
+  }
+  
+  Individual* father = i->get_father();
+  
+  if (father->get_father() == nullptr) {
+    Rcpp::stop("Individual's father did not have a father");
+  }  
+
+  Individual* grandfather = father->get_father();
+
+  std::vector<Individual*>* grandfather_boys = grandfather->get_children();
+  
+  Rcpp::List uncles;
+  
+  for (auto uncle : *grandfather_boys) {
+    if (uncle->get_pid() == father->get_pid()) {
+      continue; // exclude father as uncle
+    }
+    
+    Rcpp::XPtr<Individual> uncle_xptr(uncle, false); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
+    uncle_xptr.attr("class") = Rcpp::CharacterVector::create("malan_individual", "externalptr");
+  
+    uncles.push_back(uncle_xptr);
+  }
+  
+  return uncles;
+}
+
+
+//' Get cousins
+//' 
+//' Get individual's cousins
+//'
+//' @param individual individual
+//' 
+//' @return List with cousins
+//' 
+//' @seealso [get_brothers()], [get_uncles()], [get_children()]
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::List get_cousins(Rcpp::XPtr<Individual> individual) {  
+  Rcpp::List uncles = get_uncles(individual);  
+  Rcpp::List cousins;
+  int n = uncles.size();
+  
+  for (int i = 0; i < n; ++i) {
+    Rcpp::List uncles_children = get_children(uncles[i]);
+    
+    int m = uncles_children.size();
+    
+    for (int j = 0; j < m; ++j) {
+      cousins.push_back(uncles_children[j]);
+    }
+  }
+  
+  return cousins;
+}
+
 

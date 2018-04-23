@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{brothers_matching}
 \alias{brothers_matching}
-\title{Number of brothes with matching haplotype}
+\title{Number of brothers with matching haplotype}
 \usage{
 brothers_matching(individual)
 }
@@ -13,5 +13,5 @@ brothers_matching(individual)
 Number of brothers that matches \code{individual}'s haplotype
 }
 \description{
-Get individual's number of brothes that matches \code{individual}'s haplotype
+Get individual's number of brothers that matches \code{individual}'s haplotype
 }

@@ -15,3 +15,6 @@ Number of uncles
 \description{
 Get individual's number of uncles
 }
+\seealso{
+\code{\link[=get_uncles]{get_uncles()}}
+}

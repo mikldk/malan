@@ -539,22 +539,54 @@ get_family_info <- function(individual) {
     .Call('_malan_get_family_info', PACKAGE = 'malan', individual)
 }
 
-#' Number of brothes
+#' Get children
 #' 
-#' Get individual's number of brothes
+#' Get individual's children
+#'
+#' @param individual individual
+#' 
+#' @return List with children
+#' 
+#' @seealso [get_brothers()], [get_uncles()], [get_cousins()]
+#' 
+#' @export
+get_children <- function(individual) {
+    .Call('_malan_get_children', PACKAGE = 'malan', individual)
+}
+
+#' Number of brothers
+#' 
+#' Get individual's number of brothers
 #'
 #' @param individual individual
 #' 
 #' @return Number of brothers
+#' 
+#' @seealso [get_brothers()]
 #' 
 #' @export
 count_brothers <- function(individual) {
     .Call('_malan_count_brothers', PACKAGE = 'malan', individual)
 }
 
-#' Number of brothes with matching haplotype
+#' Get brothers
 #' 
-#' Get individual's number of brothes that matches `individual`'s haplotype
+#' Get individual's brothers
+#'
+#' @param individual individual
+#' 
+#' @return List with brothers
+#' 
+#' @seealso [get_uncles()], [get_children()], [get_cousins()]
+#' 
+#' @export
+get_brothers <- function(individual) {
+    .Call('_malan_get_brothers', PACKAGE = 'malan', individual)
+}
+
+#' Number of brothers with matching haplotype
+#' 
+#' Get individual's number of brothers that matches `individual`'s haplotype
 #'
 #' @param individual individual
 #' 
@@ -599,9 +631,41 @@ grandfather_matches <- function(individual) {
 #' 
 #' @return Number of uncles
 #' 
+#' @seealso [get_uncles()]
+#' 
 #' @export
 count_uncles <- function(individual) {
     .Call('_malan_count_uncles', PACKAGE = 'malan', individual)
+}
+
+#' Get uncles
+#' 
+#' Get individual's uncles
+#'
+#' @param individual individual
+#' 
+#' @return List with uncles
+#' 
+#' @seealso [get_brothers()], [get_children()], [get_cousins()]
+#' 
+#' @export
+get_uncles <- function(individual) {
+    .Call('_malan_get_uncles', PACKAGE = 'malan', individual)
+}
+
+#' Get cousins
+#' 
+#' Get individual's cousins
+#'
+#' @param individual individual
+#' 
+#' @return List with cousins
+#' 
+#' @seealso [get_brothers()], [get_uncles()], [get_children()]
+#' 
+#' @export
+get_cousins <- function(individual) {
+    .Call('_malan_get_cousins', PACKAGE = 'malan', individual)
 }
 
 pop_size <- function(population) {
