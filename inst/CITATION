@@ -6,4 +6,10 @@ bibentry(bibtype = "article",
   author = c(person("MM", "Andersen"), person("DJ", "Balding")),          
   year = "2017")
 
+bibentry(bibtype = "manual", 
+  title = "{{malan: MAle Lineage ANalysis}}",
+  url = "https://github.com/mikldk/malan",
+  author = person("MM", "Andersen"),
+  year = "2018")
+  
 citHeader("To cite the R package 'malan' in publications use:")

@@ -112,23 +112,30 @@
     <p>Estimate theta for one subpopulation given a sample of genotypes.</p>
     
 
-    <pre class="usage"><span class='fu'>estimate_theta_1subpop_sample</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_theta_1subpop_sample</span>(<span class='no'>genotypes</span>, <span class='kw'>return_estimation_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
+      <th>genotypes</th>
       <td><p>Matrix of genotypes: two columns (allele1 and allele2) and a row per individual</p></td>
+    </tr>
+    <tr>
+      <th>return_estimation_info</th>
+      <td><p>Whether to return the quantities used to estimate <code>theta</code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>List:</p><ul>
-<li><p>estimate: Vector of length 1 containing estimate of theta or NA if it could not be estimated</p></li>
-<li><p>error: true if an error happened, false otherwise</p></li>
-<li><p>details: contains description if an error happened</p></li>
+<li><p><code>theta</code></p><ul>
+<li><p><code>estimate</code>: Vector of length 1 containing estimate of theta or NA if it could not be estimated</p></li>
+<li><p><code>error</code>: true if an error happened, false otherwise</p></li>
+<li><p><code>details</code>: contains description if an error happened</p></li>
+<li><p><code>estimation_info</code>: If <code>return_estimation_info = true</code>: a list with information used to estimate <code>theta</code>. Else <code>NULL</code>.</p></li>
+</ul></li>
 </ul>
 
     

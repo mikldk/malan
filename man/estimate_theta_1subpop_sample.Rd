@@ -4,17 +4,23 @@
 \alias{estimate_theta_1subpop_sample}
 \title{Estimate theta from genetypes}
 \usage{
-estimate_theta_1subpop_sample(x)
+estimate_theta_1subpop_sample(genotypes, return_estimation_info = FALSE)
 }
 \arguments{
-\item{x}{Matrix of genotypes: two columns (allele1 and allele2) and a row per individual}
+\item{genotypes}{Matrix of genotypes: two columns (allele1 and allele2) and a row per individual}
+
+\item{return_estimation_info}{Whether to return the quantities used to estimate \code{theta}}
 }
 \value{
 List:
 \itemize{
-\item estimate: Vector of length 1 containing estimate of theta or NA if it could not be estimated
-\item error: true if an error happened, false otherwise
-\item details: contains description if an error happened
+\item \code{theta}
+\itemize{
+\item \code{estimate}: Vector of length 1 containing estimate of theta or NA if it could not be estimated
+\item \code{error}: true if an error happened, false otherwise
+\item \code{details}: contains description if an error happened
+\item \code{estimation_info}: If \code{return_estimation_info = true}: a list with information used to estimate \code{theta}. Else \code{NULL}.
+}
 }
 }
 \description{

@@ -99,6 +99,14 @@ test_that("estimate_theta_1subpop_sample works", {
                theta_res$estimate)
 })
 
+theta_res_info <- estimate_theta_1subpop_sample(y, return_estimation_info = TRUE)
+test_that("estimate_theta_1subpop_sample return_estimation_info works", {
+  expect_true(theta_res_info$error == FALSE)
+  expect_equal(qr.solve(ols_res_sample$x, ols_res_sample$y), 
+               theta_res_info$estimate)
+  expect_equal(sort(ols_res_sample$x), sort(theta_res_info$estimation_info$X))
+})
+
 # bootstrap:
 theta_boot <- replicate(100, {
   yboot <- y[sample(nrow(y), replace = TRUE), ]

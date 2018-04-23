@@ -117,24 +117,26 @@ BEGIN_RCPP
 END_RCPP
 }
 // estimate_theta_1subpop_sample
-Rcpp::List estimate_theta_1subpop_sample(Rcpp::IntegerMatrix x);
-RcppExport SEXP _malan_estimate_theta_1subpop_sample(SEXP xSEXP) {
+Rcpp::List estimate_theta_1subpop_sample(Rcpp::IntegerMatrix genotypes, bool return_estimation_info);
+RcppExport SEXP _malan_estimate_theta_1subpop_sample(SEXP genotypesSEXP, SEXP return_estimation_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(estimate_theta_1subpop_sample(x));
+    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type genotypes(genotypesSEXP);
+    Rcpp::traits::input_parameter< bool >::type return_estimation_info(return_estimation_infoSEXP);
+    rcpp_result_gen = Rcpp::wrap(estimate_theta_1subpop_sample(genotypes, return_estimation_info));
     return rcpp_result_gen;
 END_RCPP
 }
 // estimate_theta_1subpop_individuals
-Rcpp::List estimate_theta_1subpop_individuals(Rcpp::ListOf< Rcpp::XPtr<Individual> > individuals);
-RcppExport SEXP _malan_estimate_theta_1subpop_individuals(SEXP individualsSEXP) {
+Rcpp::List estimate_theta_1subpop_individuals(Rcpp::ListOf< Rcpp::XPtr<Individual> > individuals, bool return_estimation_info);
+RcppExport SEXP _malan_estimate_theta_1subpop_individuals(SEXP individualsSEXP, SEXP return_estimation_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::ListOf< Rcpp::XPtr<Individual> > >::type individuals(individualsSEXP);
-    rcpp_result_gen = Rcpp::wrap(estimate_theta_1subpop_individuals(individuals));
+    Rcpp::traits::input_parameter< bool >::type return_estimation_info(return_estimation_infoSEXP);
+    rcpp_result_gen = Rcpp::wrap(estimate_theta_1subpop_individuals(individuals, return_estimation_info));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -677,8 +679,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_sample_autosomal_genotype", (DL_FUNC) &_malan_sample_autosomal_genotype, 2},
     {"_malan_pedigrees_all_populate_autosomal", (DL_FUNC) &_malan_pedigrees_all_populate_autosomal, 5},
     {"_malan_hash_colisions", (DL_FUNC) &_malan_hash_colisions, 1},
-    {"_malan_estimate_theta_1subpop_sample", (DL_FUNC) &_malan_estimate_theta_1subpop_sample, 1},
-    {"_malan_estimate_theta_1subpop_individuals", (DL_FUNC) &_malan_estimate_theta_1subpop_individuals, 1},
+    {"_malan_estimate_theta_1subpop_sample", (DL_FUNC) &_malan_estimate_theta_1subpop_sample, 2},
+    {"_malan_estimate_theta_1subpop_individuals", (DL_FUNC) &_malan_estimate_theta_1subpop_individuals, 2},
     {"_malan_pedigrees_all_populate_haplotypes", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes, 4},
     {"_malan_pedigrees_all_populate_haplotypes_custom_founders", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes_custom_founders, 4},
     {"_malan_pedigrees_all_populate_haplotypes_ladder_bounded", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes_ladder_bounded, 6},
