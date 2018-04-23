@@ -23,7 +23,9 @@ install:
   # R
   - sudo apt-get install r-base r-base-dev gfortran libopenblas-base
   - sudo apt-get install libudunits2-dev
-  - sudo Rscript -e 'install.packages(c("igraph", "dplyr", "knitr", "rmarkdown", "testthat", "tidygraph", "RcppProgress", "RcppArmadillo", "ggraph", "covr"), repos = "http://cran.r-project.org")'
+  - sudo Rscript -e 'install.packages(c("remotes"), repos = "http://cran.r-project.org")'
+  - sudo Rscript -e 'remotes::install_github("tidyverse/dplyr")'
+  - sudo Rscript -e 'install.packages(c("igraph", "knitr", "rmarkdown", "testthat", "tidygraph", "RcppProgress", "RcppArmadillo", "ggraph", "covr"), repos = "http://cran.r-project.org")'
 
 after_success:
   - Rscript -e 'library(covr); codecov()'
