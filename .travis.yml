@@ -2,11 +2,11 @@
 
 language: R
 sudo: true
-cache: packages
+#cache: packages
 
 r:
-#- release
-- devel
+- release
+#- devel
 
 before_install:
   # C++14
