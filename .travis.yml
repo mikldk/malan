@@ -5,8 +5,8 @@ sudo: true
 cache: packages
 
 r:
-- release
-#- devel
+#- release
+- devel
 
 before_install:
   # C++14
