@@ -248,21 +248,21 @@ std::unordered_map<int, int> hash_colisions(int p) {
 
 Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_p,
                                   const std::unordered_map<std::pair<int, int>, double, pairhash>& genotype_p,
-                                  const std::unordered_set<std::pair<int, int>, pairhash>& genotypes_unique) {
+                                  const std::unordered_set<std::pair<int, int>, pairhash>& genotypes_unique,
+                                  const bool return_estimation_info = false) {
   Rcpp::List theta;
   
+  theta["estimate"] = NA_REAL;
+  theta["error"] = true;
+  theta["details"] = "NA";
+  theta["estimation_info"] = R_NilValue;  
+
   // Loop over unique genotypes
   std::unordered_set<std::pair<int, int>, pairhash>::const_iterator it;
   int K = genotypes_unique.size();
-  
-  if (K == 1) {
-    theta["estimate"] = NA_REAL;
-    theta["error"] = true;
-    theta["details"] = "Only one genotype observed";
-    return theta;
-  }
-  
   int k = 0;
+  
+  k = 0;
   arma::mat X(K, 1, arma::fill::none);
   arma::vec y(K, arma::fill::none);
   
@@ -289,6 +289,74 @@ Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_
     }
     
     ++k;
+  }
+
+  if (return_estimation_info) {
+    Rcpp::List est_info;
+    est_info["X"] = Rcpp::wrap(X);
+    est_info["y"] = y;
+    
+    k = 0;
+    
+    Rcpp::IntegerMatrix genotypes(K, 2);
+    Rcpp::NumericVector genoptype_probs(K);
+    Rcpp::NumericMatrix geno_allele_probs(K, 2);
+    Rcpp::IntegerVector zygosity(K);
+      
+    for (it = genotypes_unique.begin(); it != genotypes_unique.end(); ++it) {
+      std::pair<int, int> geno = *it;
+      int a1 = geno.first;
+      int a2 = geno.second;
+      genotypes(k, 0) = a1;
+      genotypes(k, 1) = a2;
+      genoptype_probs[k] = genotype_p.at(geno);
+      
+      // homozyg
+      if (a1 == a2) {
+        zygosity[k] = 1;
+        
+        double p_i = allele_p.at(a1);
+        geno_allele_probs(k, 0) = p_i;
+        geno_allele_probs(k, 1) = p_i;
+      } else {
+        // heterozyg
+        zygosity[k] = 2;
+
+        double p_i = allele_p.at(a1);
+        double p_j = allele_p.at(a2);
+        
+        geno_allele_probs(k, 0) = p_i;
+        geno_allele_probs(k, 1) = p_j;
+      }
+      
+      ++k;
+    }
+
+    est_info["genotypes"] = genotypes;
+    est_info["genotypes_zygosity"] = zygosity;
+    est_info["genotypes_probs"] = genoptype_probs;
+    est_info["genotypes_allele_probs"] = geno_allele_probs;
+    
+    std::vector<int> alleles_names;
+    alleles_names.reserve(allele_p.size());
+    std::vector<double> alleles_probs;
+    alleles_probs.reserve(allele_p.size());
+    
+    for (auto it = allele_p.begin(); it != allele_p.end(); ++it) {
+      alleles_names.push_back(it->first);
+      alleles_probs.push_back(it->second);
+    }
+    est_info["alleles"] = alleles_names;
+    est_info["alleles_probs"] = alleles_probs;
+
+    theta["estimation_info"] = est_info;
+  }
+
+  if (K == 1) {
+    theta["estimate"] = NA_REAL;
+    theta["error"] = true;
+    theta["details"] = "Only one genotype observed";
+    return theta;
   }
   
   // minimisze (Xb - y)^2 for b
@@ -344,28 +412,32 @@ void estimate_theta_1subpop_fill_containers(int a1,
   }
 }
 
+
 //' Estimate theta from genetypes
 //' 
 //' Estimate theta for one subpopulation given a sample of genotypes.
 //' 
-//' @param x Matrix of genotypes: two columns (allele1 and allele2) and a row per individual
+//' @param genotypes Matrix of genotypes: two columns (allele1 and allele2) and a row per individual
+//' @param return_estimation_info Whether to return the quantities used to estimate `theta`
 //' 
 //' @return List:
-//' * estimate: Vector of length 1 containing estimate of theta or NA if it could not be estimated
-//' * error: true if an error happened, false otherwise
-//' * details: contains description if an error happened
+//' * `theta`
+//'     + `estimate`: Vector of length 1 containing estimate of theta or NA if it could not be estimated
+//'     + `error`: true if an error happened, false otherwise
+//'     + `details`: contains description if an error happened
+//'     + `estimation_info`: If `return_estimation_info = true`: a list with information used to estimate `theta`. Else `NULL`.
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List estimate_theta_1subpop_sample(Rcpp::IntegerMatrix x) {
-  int n = x.nrow();
+Rcpp::List estimate_theta_1subpop_sample(Rcpp::IntegerMatrix genotypes, bool return_estimation_info = false) {
+  int n = genotypes.nrow();
   
   if (n <= 0) {
-    Rcpp::stop("x cannot be empty");
+    Rcpp::stop("genotypes cannot be empty");
   }
   
-  if (x.ncol() != 2) {
-    Rcpp::stop("x must have exactly two columns");
+  if (genotypes.ncol() != 2) {
+    Rcpp::stop("genotypes must have exactly two columns");
   }
   
   // Build count tables
@@ -377,14 +449,16 @@ Rcpp::List estimate_theta_1subpop_sample(Rcpp::IntegerMatrix x) {
   double one_over_2n = 1.0 / (2.0 * (double)n);
   
   for (int i = 0; i < n; ++i) {
-    int a1 = x(i, 0);
-    int a2 = x(i, 1);
+    int a1 = genotypes(i, 0);
+    int a2 = genotypes(i, 1);
     
     estimate_theta_1subpop_fill_containers(a1, a2, one_over_n, one_over_2n, 
                                            allele_p, genotype_p, genotypes_unique);
   }
   
-  Rcpp::List theta = estimate_theta_1subpop(allele_p, genotype_p, genotypes_unique);
+  Rcpp::List theta = estimate_theta_1subpop(allele_p, genotype_p, genotypes_unique, 
+                                            return_estimation_info);
+    
   return theta;
 }
 
@@ -393,16 +467,16 @@ Rcpp::List estimate_theta_1subpop_sample(Rcpp::IntegerMatrix x) {
 //' 
 //' Estimate theta for one subpopulation given a sample of genotypes.
 //' 
+//' @inheritParams estimate_theta_1subpop_sample
 //' @param individuals Individuals to get haplotypes for.
 //' 
-//' @return List:
-//' * estimate: Vector of length 1 containing estimate of theta or NA if it could not be estimated
-//' * error: true if an error happened, false otherwise
-//' * details: contains description if an error happened
+//' @inherit estimate_theta_1subpop_sample return
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List estimate_theta_1subpop_individuals(Rcpp::ListOf< Rcpp::XPtr<Individual> > individuals) {
+Rcpp::List estimate_theta_1subpop_individuals(Rcpp::ListOf< Rcpp::XPtr<Individual> > individuals, 
+                                              bool return_estimation_info = false) {
+  
   int n = individuals.size();
   
   if (n <= 0) {
@@ -435,8 +509,8 @@ Rcpp::List estimate_theta_1subpop_individuals(Rcpp::ListOf< Rcpp::XPtr<Individua
                                            allele_p, genotype_p, genotypes_unique);
   }
   
-  Rcpp::List theta = estimate_theta_1subpop(allele_p, genotype_p, genotypes_unique);
-  
+  Rcpp::List theta = estimate_theta_1subpop(allele_p, genotype_p, genotypes_unique, 
+                                            return_estimation_info);
   return theta;
 }
 

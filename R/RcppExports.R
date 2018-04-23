@@ -211,32 +211,33 @@ hash_colisions <- function(p) {
 #' 
 #' Estimate theta for one subpopulation given a sample of genotypes.
 #' 
-#' @param x Matrix of genotypes: two columns (allele1 and allele2) and a row per individual
+#' @param genotypes Matrix of genotypes: two columns (allele1 and allele2) and a row per individual
+#' @param return_estimation_info Whether to return the quantities used to estimate `theta`
 #' 
 #' @return List:
-#' * estimate: Vector of length 1 containing estimate of theta or NA if it could not be estimated
-#' * error: true if an error happened, false otherwise
-#' * details: contains description if an error happened
+#' * `theta`
+#'     + `estimate`: Vector of length 1 containing estimate of theta or NA if it could not be estimated
+#'     + `error`: true if an error happened, false otherwise
+#'     + `details`: contains description if an error happened
+#'     + `estimation_info`: If `return_estimation_info = true`: a list with information used to estimate `theta`. Else `NULL`.
 #' 
 #' @export
-estimate_theta_1subpop_sample <- function(x) {
-    .Call('_malan_estimate_theta_1subpop_sample', PACKAGE = 'malan', x)
+estimate_theta_1subpop_sample <- function(genotypes, return_estimation_info = FALSE) {
+    .Call('_malan_estimate_theta_1subpop_sample', PACKAGE = 'malan', genotypes, return_estimation_info)
 }
 
 #' Estimate theta from individuals
 #' 
 #' Estimate theta for one subpopulation given a sample of genotypes.
 #' 
+#' @inheritParams estimate_theta_1subpop_sample
 #' @param individuals Individuals to get haplotypes for.
 #' 
-#' @return List:
-#' * estimate: Vector of length 1 containing estimate of theta or NA if it could not be estimated
-#' * error: true if an error happened, false otherwise
-#' * details: contains description if an error happened
+#' @inherit estimate_theta_1subpop_sample return
 #' 
 #' @export
-estimate_theta_1subpop_individuals <- function(individuals) {
-    .Call('_malan_estimate_theta_1subpop_individuals', PACKAGE = 'malan', individuals)
+estimate_theta_1subpop_individuals <- function(individuals, return_estimation_info = FALSE) {
+    .Call('_malan_estimate_theta_1subpop_individuals', PACKAGE = 'malan', individuals, return_estimation_info)
 }
 
 #' Populate haplotypes in pedigrees (0-founder/unbounded).
