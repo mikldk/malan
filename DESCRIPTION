@@ -7,7 +7,7 @@ Authors@R: c(
     person(given = "Mikkel Meyer", family = "Andersen", 
         email = "mikl@math.aau.dk", role = c("aut", "cre"))
   )
-Author: Mikkel Meyer Andersen <mikl@math.aau.dk>
+Author: Mikkel Meyer Andersen [aut, cre]
 Maintainer: Mikkel Meyer Andersen <mikl@math.aau.dk>
 Description: MAle Lineage ANalysis by simulating genealogies backwards and imposing short tandem repeats (STR) mutations forwards. Intended for forensic Y chromosomal STR (Y-STR) haplotype analyses. Numerous analyses are possible, e.g. number of matches and meiotic distance to matches.
 License: GPL (>= 2) | file LICENSE
