@@ -18,6 +18,26 @@ Then you can install `malan` from GitHub by using the `remotes` package (<https:
 remotes::install_github("mikldk/malan")
 ```
 
+## Getting started
+
+Refer to the included vignettes. You can get an overview of the included vignettes by the following `R` command:
+
+```r
+vignette(package = "malan")
+```
+
+To read a vignette, type:
+
+```r
+vignette("introduction", package = "malan")
+```
+
+## Contribute, issues, and support
+
+Please use the issue tracker at <https://github.com/mikldk/malan/issues> 
+if you want to notify us of an issue or need support.
+If you want to contribute, please either create an issue or make a pull request.
+
 ## References
 
 Andersen MM, Balding DJ (2017). *How convincing is a matching Y-chromosome profile?*. 
