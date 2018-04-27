@@ -24,9 +24,18 @@ Population::Population(std::unordered_map<int, Individual*>* population) {
 Population::~Population() {
   std::unordered_map<int, Individual*> pop = *m_population;
   
+  /* Remember that both Individual and Pedigree has 
+   * destructors of their own to clean their own members.
+   */
+  
   for (auto it = pop.begin(); it != pop.end(); ++it) {
     if (it->second == nullptr) {
       continue;
+    }
+    
+    Pedigree* ped = it->second->get_pedigree();    
+    if (ped != nullptr) {
+      delete ped;
     }
     
     delete (it->second);

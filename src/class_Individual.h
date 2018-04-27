@@ -46,6 +46,13 @@ public:
   int get_pedigree_id() const;
   
   void set_pedigree_id(int id, Pedigree* ped, int* pedigree_size);
+  
+  /*
+  Called from pedigree destructor, only removes individual's knowledge about pedigree.
+  The pedigree is responsible for removing this individuals from its list of individuals and
+  relations.
+  */
+  void unset_pedigree();
 
   int meiosis_dist_tree(Individual* dest) const;
   

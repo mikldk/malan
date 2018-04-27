@@ -65,6 +65,15 @@ Pedigree* Individual::get_pedigree() const {
   return m_pedigree;
 }
 
+void Individual::unset_pedigree() {
+  if (!this->pedigree_is_set()) {
+    return;
+  }
+  
+  m_pedigree = nullptr;
+  m_pedigree_id = 0;
+}
+
 void Individual::set_pedigree_id(int id, Pedigree* ped, int* pedigree_size) {
   if (this->pedigree_is_set()) {
     return;
