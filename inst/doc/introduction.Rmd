@@ -15,7 +15,7 @@ knitr::opts_chunk$set(fig.width = 7)
 
 
 First, the library is loaded:
-```{r}
+```{r, message=FALSE}
 library(malan)
 ```
 
@@ -34,7 +34,7 @@ sim_res <- sample_geneology(population_size = 10, generations = 10, progress = F
 
 ## Building the pedigrees
 
-Until pedigrees are build/infered, there is not much information available (e.g. about children). So let us infer the pedigrees:
+Until pedigrees are built/inferred, there is not much information available (e.g. about children). So let us infer the pedigrees:
 
 ```{r}
 pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)
@@ -107,7 +107,7 @@ plot(pedigrees[[1]], ids = FALSE, haplotypes = TRUE)
 And one or more individuals can be marked/highlighted:
 
 ```{r}
-plot(pedigrees[[1]], ids = TRUE, haplotypes = TRUE, mark_pids = c(14, 22))
+plot(pedigrees[[1]], ids = TRUE, haplotypes = TRUE, mark_pids = c(14, 16))
 ```
 
 
@@ -207,7 +207,7 @@ length(live_individuals)
 ```
 
 ```{r}
-haps <- individuals_get_haplotypes(individuals = live_individuals)
+haps <- get_haplotypes_individuals(individuals = live_individuals)
 ```
 
 ```{r}
@@ -279,8 +279,10 @@ Draw true contributors:
 ```{r}
 set.seed(100)
 U_indices <- sample.int(n = length(live_individuals), size = 2, replace = FALSE)
-H1 <- get_haplotype(live_individuals[[U_indices[1]]])
-H2 <- get_haplotype(live_individuals[[U_indices[2]]])
+U1 <- live_individuals[[U_indices[1]]]
+U2 <- live_individuals[[U_indices[2]]]
+H1 <- get_haplotype(U1)
+H2 <- get_haplotype(U2)
 ```
 
 View haplotypes:
@@ -292,35 +294,46 @@ rbind(H1, H2)
 Now, find those haplotype in live individuals (those haplotypes are in `haps` from before) that are included in (or compatible with) the mixture:
 
 ```{r}
-mixres <- indices_in_mixture_by_haplotype_matrix(haplotypes = haps, H1 = H1, H2 = H2)
-mixres
+#mixres <- indices_in_mixture_by_haplotype_matrix(haplotypes = haps, H1 = H1, H2 = H2)
+mixres <- mixture_info_by_individuals(live_individuals, U1, U2)
+str(mixres, 1)
 ```
 
 Compare with matches:
 
 ```{r}
-length(mixres$match_H1)
+length(mixres$pids_matching_donor1)
 count_haplotype_occurrences_individuals(individuals = live_individuals, haplotype = H1)
 
-length(mixres$match_H2)
+length(mixres$pids_matching_donor2)
 count_haplotype_occurrences_individuals(individuals = live_individuals, haplotype = H2)
 ```
 
 In mixture that are not H1 and not H2:
 ```{r}
-H1_or_H2_hap_indices <- c(mixres$match_H1, mixres$match_H2)
-others_indices <- setdiff(mixres$in_mixture, H1_or_H2_hap_indices)
-length(others_indices)
+length(mixres$pids_others_included)
 ```
 
-Inspect these these (only unique ones):
+Inspect these (only unique ones):
 
 ```{r}
-others_haps <- haps[others_indices, ]
-others_haps[!duplicated(others_haps), ]
+others_haps <- get_haplotypes_pids(sim_res$population, mixres$pids_others_included)
+others_haps <- others_haps[!duplicated(others_haps), ]
+others_haps
 ```
 
-Compared with true contributors:
+And get their population counts:
+
+```{r}
+others_haps_counts <- unlist(lapply(seq_len(nrow(others_haps)), function(hap_i) {
+            count_haplotype_occurrences_individuals(individuals = live_individuals, 
+                                                    haplotype = others_haps[hap_i, ])
+          }))
+sum(others_haps_counts)
+length(mixres$pids_others_included)
+```
+
+Compare with profiles of true contributors:
 
 ```{r}
 rbind(H1, H2)
@@ -398,7 +411,7 @@ get_number_children <- function(N) {
 }
 
 library(parallel)
-options(mc.cores = 3)
+options(mc.cores = 2)
 RNGkind("L'Ecuyer-CMRG") # for mclapply
 set.seed(1)
 x <- mclapply(1:100, function(i) get_number_children(100))

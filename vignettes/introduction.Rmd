@@ -34,7 +34,7 @@ sim_res <- sample_geneology(population_size = 10, generations = 10, progress = F
 
 ## Building the pedigrees
 
-Until pedigrees are build/infered, there is not much information available (e.g. about children). So let us infer the pedigrees:
+Until pedigrees are built/inferred, there is not much information available (e.g. about children). So let us infer the pedigrees:
 
 ```{r}
 pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)

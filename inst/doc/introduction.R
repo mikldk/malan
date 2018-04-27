@@ -1,7 +1,7 @@
 ## ---- include = FALSE----------------------------------------------------
 knitr::opts_chunk$set(fig.width = 7)
 
-## ------------------------------------------------------------------------
+## ---- message=FALSE------------------------------------------------------
 library(malan)
 
 ## ------------------------------------------------------------------------
@@ -54,7 +54,7 @@ plot(pedigrees[[1]], haplotypes = TRUE)
 plot(pedigrees[[1]], ids = FALSE, haplotypes = TRUE)
 
 ## ------------------------------------------------------------------------
-plot(pedigrees[[1]], ids = TRUE, haplotypes = TRUE, mark_pids = c(14, 22))
+plot(pedigrees[[1]], ids = TRUE, haplotypes = TRUE, mark_pids = c(14, 16))
 
 ## ------------------------------------------------------------------------
 set.seed(1)
@@ -116,7 +116,7 @@ live_individuals <- sim_res$individuals_generations
 length(live_individuals)
 
 ## ------------------------------------------------------------------------
-haps <- individuals_get_haplotypes(individuals = live_individuals)
+haps <- get_haplotypes_individuals(individuals = live_individuals)
 
 ## ------------------------------------------------------------------------
 head(haps)
@@ -162,31 +162,41 @@ mean(L1_max == 0)
 ## ------------------------------------------------------------------------
 set.seed(100)
 U_indices <- sample.int(n = length(live_individuals), size = 2, replace = FALSE)
-H1 <- get_haplotype(live_individuals[[U_indices[1]]])
-H2 <- get_haplotype(live_individuals[[U_indices[2]]])
+U1 <- live_individuals[[U_indices[1]]]
+U2 <- live_individuals[[U_indices[2]]]
+H1 <- get_haplotype(U1)
+H2 <- get_haplotype(U2)
 
 ## ------------------------------------------------------------------------
 rbind(H1, H2)
 
 ## ------------------------------------------------------------------------
-mixres <- indices_in_mixture_by_haplotype_matrix(haplotypes = haps, H1 = H1, H2 = H2)
-mixres
+#mixres <- indices_in_mixture_by_haplotype_matrix(haplotypes = haps, H1 = H1, H2 = H2)
+mixres <- mixture_info_by_individuals(live_individuals, U1, U2)
+str(mixres, 1)
 
 ## ------------------------------------------------------------------------
-length(mixres$match_H1)
+length(mixres$pids_matching_donor1)
 count_haplotype_occurrences_individuals(individuals = live_individuals, haplotype = H1)
 
-length(mixres$match_H2)
+length(mixres$pids_matching_donor2)
 count_haplotype_occurrences_individuals(individuals = live_individuals, haplotype = H2)
 
 ## ------------------------------------------------------------------------
-H1_or_H2_hap_indices <- c(mixres$match_H1, mixres$match_H2)
-others_indices <- setdiff(mixres$in_mixture, H1_or_H2_hap_indices)
-length(others_indices)
+length(mixres$pids_others_included)
 
 ## ------------------------------------------------------------------------
-others_haps <- haps[others_indices, ]
-others_haps[!duplicated(others_haps), ]
+others_haps <- get_haplotypes_pids(sim_res$population, mixres$pids_others_included)
+others_haps <- others_haps[!duplicated(others_haps), ]
+others_haps
+
+## ------------------------------------------------------------------------
+others_haps_counts <- unlist(lapply(seq_len(nrow(others_haps)), function(hap_i) {
+            count_haplotype_occurrences_individuals(individuals = live_individuals, 
+                                                    haplotype = others_haps[hap_i, ])
+          }))
+sum(others_haps_counts)
+length(mixres$pids_others_included)
 
 ## ------------------------------------------------------------------------
 rbind(H1, H2)
@@ -247,7 +257,7 @@ get_number_children <- function(N) {
 }
 
 library(parallel)
-options(mc.cores = 3)
+options(mc.cores = 2)
 RNGkind("L'Ecuyer-CMRG") # for mclapply
 set.seed(1)
 x <- mclapply(1:100, function(i) get_number_children(100))
