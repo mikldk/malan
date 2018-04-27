@@ -25,5 +25,5 @@ List:
 }
 }
 \description{
-Estimate theta for one subpopulation given a sample of genotypes.
+Estimate theta for one subpopulation given a list of individuals.
 }

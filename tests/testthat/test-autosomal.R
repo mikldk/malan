@@ -91,31 +91,31 @@ get_ols_quantities <- function(y) {
 }
 
 y <- t(x)
-ols_res_sample <- get_ols_quantities(y)
-theta_res <- estimate_theta_1subpop_sample(y)
-test_that("estimate_theta_1subpop_sample works", {
+ols_res_genotypes <- get_ols_quantities(y)
+theta_res <- estimate_theta_1subpop_genotypes(y)
+test_that("estimate_theta_1subpop_genotypes works", {
   expect_true(theta_res$error == FALSE)
-  expect_equal(qr.solve(ols_res_sample$x, ols_res_sample$y), 
+  expect_equal(qr.solve(ols_res_genotypes$x, ols_res_genotypes$y), 
                theta_res$estimate)
 })
 
-theta_res_info <- estimate_theta_1subpop_sample(y, return_estimation_info = TRUE)
-test_that("estimate_theta_1subpop_sample return_estimation_info works", {
+theta_res_info <- estimate_theta_1subpop_genotypes(y, return_estimation_info = TRUE)
+test_that("estimate_theta_1subpop_genotypes return_estimation_info works", {
   expect_true(theta_res_info$error == FALSE)
-  expect_equal(qr.solve(ols_res_sample$x, ols_res_sample$y), 
+  expect_equal(qr.solve(ols_res_genotypes$x, ols_res_genotypes$y), 
                theta_res_info$estimate)
-  expect_equal(sort(ols_res_sample$x), sort(theta_res_info$estimation_info$X))
+  expect_equal(sort(ols_res_genotypes$x), sort(theta_res_info$estimation_info$X))
 })
 
 # bootstrap:
 theta_boot <- replicate(100, {
   yboot <- y[sample(nrow(y), replace = TRUE), ]
-  estimate_theta_1subpop_sample(yboot)$estimate
+  estimate_theta_1subpop_genotypes(yboot)$estimate
 })
 # Expanding a bit...
 theta_boot_rng <- c(0.9, 1.1) * range(theta_boot)
 #theta_boot_rng
-test_that("estimate_theta_1subpop_sample boot contains true", {
+test_that("estimate_theta_1subpop_genotypes boot contains true", {
   expect_true(all(theta_boot >= 0 & theta_boot <= 1))
   expect_true(theta >= theta_boot_rng[1L] & theta <= theta_boot_rng[2L])
 })
@@ -143,21 +143,21 @@ test_that("estimate_theta_1subpop_individuals works", {
   expect_equal(qr.solve(ols_res_livepop$x, ols_res_livepop$y),
                estimate_theta_1subpop_individuals(livepop)$estimate, 
                tol = 10*ESTIMATION_TOL_DUE_TO_SAMPLING
-               )
+  )
 })
 
 test_that("livepop: haplotypes/individual same theta", {
-  expect_equal(estimate_theta_1subpop_sample(y_livepop)$estimate,
+  expect_equal(estimate_theta_1subpop_genotypes(y_livepop)$estimate,
                estimate_theta_1subpop_individuals(livepop)$estimate)
 })
 
 
 test_that("geneaology independent sample and population same theta", {
-  expect_equal(estimate_theta_1subpop_sample(y)$estimate,
-               estimate_theta_1subpop_sample(y_livepop)$estimate,
+  expect_equal(estimate_theta_1subpop_genotypes(y)$estimate,
+               estimate_theta_1subpop_genotypes(y_livepop)$estimate,
                tol = ESTIMATION_TOL_DUE_TO_SAMPLING)
   
-  expect_equal(estimate_theta_1subpop_sample(y)$estimate,
+  expect_equal(estimate_theta_1subpop_genotypes(y)$estimate,
                estimate_theta_1subpop_individuals(livepop)$estimate, 
                tol = ESTIMATION_TOL_DUE_TO_SAMPLING)
 })
@@ -170,11 +170,89 @@ if (FALSE) {
   prop.table(table(apply(x, 2, paste0, collapse = ";")))
   prop.table(table(apply(y_livepop, 1, paste0, collapse = ";")))
   
-  estimate_theta_1subpop_sample(y)
-  qr.solve(ols_res_sample$x, ols_res_sample$y)
+  estimate_theta_1subpop_genotypes(y)
+  qr.solve(ols_res_genotypes$x, ols_res_genotypes$y)
   
-  estimate_theta_1subpop_sample(y_livepop)
+  estimate_theta_1subpop_genotypes(y_livepop)
   estimate_theta_1subpop_individuals(livepop)
   qr.solve(ols_res_livepop$x, ols_res_livepop$y)
 }
+
+
+#######################################################################
+
+
+
+##########################################
+# estimate_theta_subpops_individuals
+##########################################
+l_nonindv <- list(1:10, 1:20)
+l_nonindv_sizes <- sapply(l_nonindv, length)
+test_that("estimate_theta_subpops_individuals not list of list of individuals", {
+  expect_error(estimate_theta_subpops_individuals(l_nonindv, l_nonindv_sizes))
+})
+
+
+set.seed(2)
+grps <- sample(c(1, 2), length(livepop), replace = TRUE)
+
+subpops <- split(livepop, grps)
+subpops_sizes <- sapply(subpops, length)
+res_indv <- estimate_theta_subpops_individuals(subpops, subpops_sizes)
+
+subpops_haps <- lapply(split(seq_len(nrow(y_livepop)), grps), function(is) y_livepop[is, ])
+subpops_haps_sizes <- sapply(subpops_haps, nrow)
+res_geno <- estimate_theta_subpops_genotypes(subpops_haps, subpops_haps_sizes)
+
+test_that("estimate_theta_subpops_individuals = estimate_theta_subpops_genotypes", {
+  expect_equal(res_indv, res_geno)
+})
+
+
+############
+# Known answers, GDA2
+two2cols <- function(x) {
+  do.call(rbind, lapply(x, function(as) as.integer(strsplit(as.character(as), "")[[1]])))
+}
+
+# GDA2, Exercise 5.4, p. 200:
+loc4_g <- c(rep(11, 24), rep(12, 16))
+loc4_n <- c(rep(11, 44), rep(12, 5), rep(22, 1))
+loc4 <- list(two2cols(loc4_g), two2cols(loc4_n))
+loc4_ni <- sapply(loc4, nrow)
+
+# GDA2, Exercise 5.4 solution, p. 401
+loc4_sol_F <- -0.0082
+loc4_sol_theta <- 0.0633
+loc4_sol_f <- -0.0764
+res_loc4 <- estimate_theta_subpops_genotypes(loc4, loc4_ni)
+
+test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 4", {
+  expect_equal(res_loc4$F, loc4_sol_F, tol = 1e-4) # results with 4 digits
+  expect_equal(res_loc4$theta, loc4_sol_theta, tol = 1e-4) # results with 4 digits
+  expect_equal(res_loc4$f, loc4_sol_f, tol = 1e-4) # results with 4 digits
+})
+
+# Same as above, now locus 6
+loc6_g <- c(rep(11, 9), rep(12, 1), rep(22, 5), rep(23, 7), rep(24, 8), rep(34, 10))
+loc6_n <- c(rep(11, 22), rep(12, 14), rep(13, 2), rep(14, 6), rep(23, 1), rep(24, 3), rep(33, 1), rep(34, 1))
+
+test_that("loc4/loc6 length", {
+  expect_equal(length(loc4_g), length(loc6_g))
+  expect_equal(length(loc4_n), length(loc6_n))
+})
+
+loc6 <- list(two2cols(loc6_g), two2cols(loc6_n))
+loc6_ni <- sapply(loc6, nrow)
+res_loc6 <- estimate_theta_subpops_genotypes(loc6, loc6_ni)
+
+loc6_sol_F <- 0.2009
+loc6_sol_theta <- 0.1517
+loc6_sol_f <- 0.0581
+
+test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 6", {
+  expect_equal(res_loc6$F, loc6_sol_F, tol = 1e-4) # results with 4 digits
+  expect_equal(res_loc6$theta, loc6_sol_theta, tol = 1e-4) # results with 4 digits
+  expect_equal(res_loc6$f, loc6_sol_f, tol = 1e-4) # results with 4 digits
+})
 

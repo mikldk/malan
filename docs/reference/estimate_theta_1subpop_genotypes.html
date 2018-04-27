@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Estimate theta from individuals — estimate_theta_1subpop_individuals • malan</title>
+<title>Estimate theta from genotypes — estimate_theta_1subpop_genotypes • malan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,9 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Estimate theta from individuals — estimate_theta_1subpop_individuals" />
+<meta property="og:title" content="Estimate theta from genotypes — estimate_theta_1subpop_genotypes" />
 
-<meta property="og:description" content="Estimate theta for one subpopulation given a list of individuals." />
+<meta property="og:description" content="Estimate theta for one subpopulation given a sample of genotypes." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -103,24 +103,23 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Estimate theta from individuals</h1>
+    <h1>Estimate theta from genotypes</h1>
     
-    <div class="hidden name"><code>estimate_theta_1subpop_individuals.Rd</code></div>
+    <div class="hidden name"><code>estimate_theta_1subpop_genotypes.Rd</code></div>
     </div>
 
     
-    <p>Estimate theta for one subpopulation given a list of individuals.</p>
+    <p>Estimate theta for one subpopulation given a sample of genotypes.</p>
     
 
-    <pre class="usage"><span class='fu'>estimate_theta_1subpop_individuals</span>(<span class='no'>individuals</span>,
-  <span class='kw'>return_estimation_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_theta_1subpop_genotypes</span>(<span class='no'>genotypes</span>, <span class='kw'>return_estimation_info</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>individuals</th>
-      <td><p>Individuals to get haplotypes for.</p></td>
+      <th>genotypes</th>
+      <td><p>Matrix of genotypes: two columns (allele1 and allele2) and a row per individual</p></td>
     </tr>
     <tr>
       <th>return_estimation_info</th>

@@ -116,15 +116,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// estimate_theta_1subpop_sample
-Rcpp::List estimate_theta_1subpop_sample(Rcpp::IntegerMatrix genotypes, bool return_estimation_info);
-RcppExport SEXP _malan_estimate_theta_1subpop_sample(SEXP genotypesSEXP, SEXP return_estimation_infoSEXP) {
+// estimate_theta_1subpop_genotypes
+Rcpp::List estimate_theta_1subpop_genotypes(Rcpp::IntegerMatrix genotypes, bool return_estimation_info);
+RcppExport SEXP _malan_estimate_theta_1subpop_genotypes(SEXP genotypesSEXP, SEXP return_estimation_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type genotypes(genotypesSEXP);
     Rcpp::traits::input_parameter< bool >::type return_estimation_info(return_estimation_infoSEXP);
-    rcpp_result_gen = Rcpp::wrap(estimate_theta_1subpop_sample(genotypes, return_estimation_info));
+    rcpp_result_gen = Rcpp::wrap(estimate_theta_1subpop_genotypes(genotypes, return_estimation_info));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -137,6 +137,30 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::ListOf< Rcpp::XPtr<Individual> > >::type individuals(individualsSEXP);
     Rcpp::traits::input_parameter< bool >::type return_estimation_info(return_estimation_infoSEXP);
     rcpp_result_gen = Rcpp::wrap(estimate_theta_1subpop_individuals(individuals, return_estimation_info));
+    return rcpp_result_gen;
+END_RCPP
+}
+// estimate_theta_subpops_individuals
+Rcpp::List estimate_theta_subpops_individuals(Rcpp::List subpops, Rcpp::IntegerVector subpops_sizes);
+RcppExport SEXP _malan_estimate_theta_subpops_individuals(SEXP subpopsSEXP, SEXP subpops_sizesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type subpops(subpopsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type subpops_sizes(subpops_sizesSEXP);
+    rcpp_result_gen = Rcpp::wrap(estimate_theta_subpops_individuals(subpops, subpops_sizes));
+    return rcpp_result_gen;
+END_RCPP
+}
+// estimate_theta_subpops_genotypes
+Rcpp::List estimate_theta_subpops_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> subpops, Rcpp::IntegerVector subpops_sizes);
+RcppExport SEXP _malan_estimate_theta_subpops_genotypes(SEXP subpopsSEXP, SEXP subpops_sizesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::IntegerMatrix> >::type subpops(subpopsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type subpops_sizes(subpops_sizesSEXP);
+    rcpp_result_gen = Rcpp::wrap(estimate_theta_subpops_genotypes(subpops, subpops_sizes));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -679,8 +703,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_sample_autosomal_genotype", (DL_FUNC) &_malan_sample_autosomal_genotype, 2},
     {"_malan_pedigrees_all_populate_autosomal", (DL_FUNC) &_malan_pedigrees_all_populate_autosomal, 5},
     {"_malan_hash_colisions", (DL_FUNC) &_malan_hash_colisions, 1},
-    {"_malan_estimate_theta_1subpop_sample", (DL_FUNC) &_malan_estimate_theta_1subpop_sample, 2},
+    {"_malan_estimate_theta_1subpop_genotypes", (DL_FUNC) &_malan_estimate_theta_1subpop_genotypes, 2},
     {"_malan_estimate_theta_1subpop_individuals", (DL_FUNC) &_malan_estimate_theta_1subpop_individuals, 2},
+    {"_malan_estimate_theta_subpops_individuals", (DL_FUNC) &_malan_estimate_theta_subpops_individuals, 2},
+    {"_malan_estimate_theta_subpops_genotypes", (DL_FUNC) &_malan_estimate_theta_subpops_genotypes, 2},
     {"_malan_pedigrees_all_populate_haplotypes", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes, 4},
     {"_malan_pedigrees_all_populate_haplotypes_custom_founders", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes_custom_founders, 4},
     {"_malan_pedigrees_all_populate_haplotypes_ladder_bounded", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes_ladder_bounded, 6},
