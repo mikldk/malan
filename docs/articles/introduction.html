@@ -161,20 +161,20 @@ mutrts &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">
 <div id="more-than-1-full-generation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#more-than-1-full-generation" class="anchor"></a>More than 1 full generation</h2>
-<p>By standard, only the last generation contains <span class="math inline">\(N\)</span> individuals. If the last 3 generations should be full, this can be done by specifying <code>extra_generations_full = 2</code> as follows (2 extra as the last generation always has <span class="math inline">\(N\)</span> individuals):</p>
+<p>By standard, only the last generation contains <span class="math inline">\(N\)</span> individuals. If the 3 last generations should be full, this can be done by specifying <code>extra_generations_full = 2</code> as follows (2 extra as the last generation always has <span class="math inline">\(N\)</span> individuals, hence the last plus 2 extra are now full):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
 sim_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="dt">population_size =</span> <span class="dv">10</span>, 
                             <span class="dt">generations =</span> <span class="dv">5</span>, 
-                            <span class="dt">extra_generations_full =</span> <span class="dv">2</span>,
+                            <span class="dt">extra_generations_full =</span> <span class="dv">2</span>, <span class="co"># last gen. + 2 extra, 3 in total</span>
                             <span class="dt">progress =</span> <span class="ot">FALSE</span>)
 pedigrees &lt;-<span class="st"> </span><span class="kw"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(sim_res$population, <span class="dt">progress =</span> <span class="ot">FALSE</span>)
 <span class="kw">plot</span>(pedigrees)</code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
-<p>And to obtain the complete history, <code>extra_generations_full</code> is set to <code>generations</code>:</p>
+<p>And to obtain the complete history, <code>extra_generations_full</code> is set to <code>generations-1</code> (as the last is always full):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
 sim_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="dt">population_size =</span> <span class="dv">10</span>, 
                             <span class="dt">generations =</span> <span class="dv">5</span>, 
-                            <span class="dt">extra_generations_full =</span> <span class="dv">10</span>,
+                            <span class="dt">extra_generations_full =</span> <span class="dv">4</span>,
                             <span class="dt">progress =</span> <span class="ot">FALSE</span>)
 pedigrees &lt;-<span class="st"> </span><span class="kw"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(sim_res$population, <span class="dt">progress =</span> <span class="ot">FALSE</span>)
 <span class="kw">plot</span>(pedigrees)</code></pre></div>

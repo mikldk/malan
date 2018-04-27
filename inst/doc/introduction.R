@@ -60,7 +60,7 @@ plot(pedigrees[[1]], ids = TRUE, haplotypes = TRUE, mark_pids = c(14, 16))
 set.seed(1)
 sim_res <- sample_geneology(population_size = 10, 
                             generations = 5, 
-                            extra_generations_full = 2,
+                            extra_generations_full = 2, # last gen. + 2 extra, 3 in total
                             progress = FALSE)
 pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)
 plot(pedigrees)
@@ -69,7 +69,7 @@ plot(pedigrees)
 set.seed(1)
 sim_res <- sample_geneology(population_size = 10, 
                             generations = 5, 
-                            extra_generations_full = 10,
+                            extra_generations_full = 4,
                             progress = FALSE)
 pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)
 plot(pedigrees)

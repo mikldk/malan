@@ -113,25 +113,25 @@ plot(pedigrees[[1]], ids = TRUE, haplotypes = TRUE, mark_pids = c(14, 16))
 
 ## More than 1 full generation
 
-By standard, only the last generation contains $N$ individuals. If the last 3 generations should be full, this can be done by specifying `extra_generations_full = 2` as follows (2 extra as the last generation always has $N$ individuals):
+By standard, only the last generation contains $N$ individuals. If the 3 last generations should be full, this can be done by specifying `extra_generations_full = 2` as follows (2 extra as the last generation always has $N$ individuals, hence the last plus 2 extra are now full):
 
 ```{r}
 set.seed(1)
 sim_res <- sample_geneology(population_size = 10, 
                             generations = 5, 
-                            extra_generations_full = 2,
+                            extra_generations_full = 2, # last gen. + 2 extra, 3 in total
                             progress = FALSE)
 pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)
 plot(pedigrees)
 ```
 
-And to obtain the complete history, `extra_generations_full` is set to `generations`:
+And to obtain the complete history, `extra_generations_full` is set to `generations-1` (as the last is always full):
 
 ```{r}
 set.seed(1)
 sim_res <- sample_geneology(population_size = 10, 
                             generations = 5, 
-                            extra_generations_full = 10,
+                            extra_generations_full = 4,
                             progress = FALSE)
 pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)
 plot(pedigrees)
