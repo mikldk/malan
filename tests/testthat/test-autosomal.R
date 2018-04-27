@@ -178,3 +178,39 @@ if (FALSE) {
   qr.solve(ols_res_livepop$x, ols_res_livepop$y)
 }
 
+
+#######################################################################
+
+
+
+##########################################
+# estimate_theta_subpops_individuals
+##########################################
+if (FALSE) {
+  l_nonindv <- list(1:10, 1:20)
+  l_nonindv_sizes <- sapply(l_nonindv, length)
+  test_that("estimate_theta_subpops_individuals not list of list of individuals", {
+    expect_error(estimate_theta_subpops_individuals(l_nonindv, l_nonindv_sizes))
+  })
+  
+  ###########
+  grps <- sample(c(1, 2), length(livepop), replace = TRUE)
+  subpops <- split(livepop, grps)
+  subpops_sizes <- sapply(subpops, length)
+  
+  estimate_theta_subpops_individuals(subpops, subpops_sizes)
+  subpop_haps <- lapply(subpops, get_haplotypes_individuals)
+  hom0 <- lapply(subpop_haps, function(x) mean(apply(x, 1, function(h) all(h == 0L))))
+  hom0
+  het0 <- lapply(subpop_haps, function(x) mean(apply(x, 1, function(h) any(h == 0) && !all(h == 0L))))
+  het0
+  #lapply(subpop_haps, function(x) mean(apply(x, 1, function(h) all(h == 1L))))
+  #lapply(subpop_haps, function(x) mean(apply(x, 1, function(h) all(h == 2L))))
+  ###########
+  
+  grp1 <- lapply(get_pids_in_pedigree(peds[[1]]), function(pid) get_individual(sim_res_fixed$population, pid))
+  grp2 <- lapply(get_pids_in_pedigree(peds[[2]]), function(pid) get_individual(sim_res_fixed$population, pid))
+  subpops <- list(grp1, grp2)
+  subpops_sizes <- sapply(subpops, length)
+  estimate_theta_subpops_individuals(subpops, subpops_sizes)
+}

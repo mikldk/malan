@@ -228,7 +228,7 @@ estimate_theta_1subpop_sample <- function(genotypes, return_estimation_info = FA
 
 #' Estimate theta from individuals
 #' 
-#' Estimate theta for one subpopulation given a sample of genotypes.
+#' Estimate theta for one subpopulation given a list of individuals.
 #' 
 #' @inheritParams estimate_theta_1subpop_sample
 #' @param individuals Individuals to get haplotypes for.
@@ -238,6 +238,22 @@ estimate_theta_1subpop_sample <- function(genotypes, return_estimation_info = FA
 #' @export
 estimate_theta_1subpop_individuals <- function(individuals, return_estimation_info = FALSE) {
     .Call('_malan_estimate_theta_1subpop_individuals', PACKAGE = 'malan', individuals, return_estimation_info)
+}
+
+#' Estimate F, theta, and f from subpopulations
+#' 
+#' Estimates F, theta, and f for a number of subpopulations given a list of individuals.
+#' 
+#' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
+#' 
+#' @param subpops List of subpopulations, each a list of individuals
+#' @param subpops_sizes Size of each subpopulation
+#' 
+#' @return  Estimates of F, theta, and f
+#' 
+#' @export
+estimate_theta_subpops_individuals <- function(subpops, subpops_sizes) {
+    .Call('_malan_estimate_theta_subpops_individuals', PACKAGE = 'malan', subpops, subpops_sizes)
 }
 
 #' Populate haplotypes in pedigrees (0-founder/unbounded).

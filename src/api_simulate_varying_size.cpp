@@ -96,6 +96,8 @@ List sample_geneology_varying_size(
     Rcpp::stop("Please specify at least 1 generation (the vector population_sizes must have length >= 1)");
   }
 
+  // FIXME: malan_individual on Xptr indvs???
+  
   if (enable_gamma_variance_extension) {
     if (gamma_parameter_shape <= 0.0) {
       Rcpp::stop("gamma_parameter_shape must be > 0.0");
