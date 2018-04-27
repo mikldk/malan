@@ -38,15 +38,8 @@ int Individual::get_generation() const {
 
 void Individual::add_child(Individual* child) {
   m_children->push_back(child);
-  child->m_father = this; // child->set_father(this);
+  child->m_father = this;
 }
-
-/*
-void Individual::set_father(Individual* i) {
-  // FIXME: Check sex of i?
-  m_father = i;
-}
-*/
 
 Individual* Individual::get_father() const {
   return m_father;
