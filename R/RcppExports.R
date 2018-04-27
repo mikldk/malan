@@ -272,6 +272,23 @@ estimate_theta_subpops_genotypes <- function(subpops, subpops_sizes) {
     .Call('_malan_estimate_theta_subpops_genotypes', PACKAGE = 'malan', subpops, subpops_sizes)
 }
 
+#' Estimate F, theta, and f from subpopulations of individual ids
+#' 
+#' Estimates F, theta, and f for a number of subpopulations given a list of pids (individual ids).
+#' 
+#' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
+#' 
+#' @param population Population obtain from simulation
+#' @param subpops List of individual pids
+#' @param subpops_sizes Size of each subpopulation
+#' 
+#' @return  Estimates of F, theta, and f
+#' 
+#' @export
+estimate_theta_subpops_pids <- function(population, subpops, subpops_sizes) {
+    .Call('_malan_estimate_theta_subpops_pids', PACKAGE = 'malan', population, subpops, subpops_sizes)
+}
+
 #' Populate haplotypes in pedigrees (0-founder/unbounded).
 #' 
 #' Populate haplotypes from founder and down in all pedigrees.

@@ -829,7 +829,7 @@ Rcpp::List estimate_theta_subpops_individuals(Rcpp::List subpops,
 
     n[i] = subpops_sizes[i];
     
-    double sample_size_i = subpop.size();
+    double sample_size_i = (double)subpop.size();
     double frac1 = 1.0 / (2.0 * sample_size_i);
     double frac2 = 1.0 / sample_size_i;
     
@@ -926,7 +926,7 @@ Rcpp::List estimate_theta_subpops_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> su
     
     n[i] = subpops_sizes[i];
     
-    double sample_size_i = subpop.nrow();
+    double sample_size_i = (double)subpop.nrow();
     double frac1 = 1.0 / (2.0 * sample_size_i);
     double frac2 = 1.0 / sample_size_i;
     
@@ -949,3 +949,97 @@ Rcpp::List estimate_theta_subpops_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> su
 }
 
 
+//' Estimate F, theta, and f from subpopulations of individual ids
+//' 
+//' Estimates F, theta, and f for a number of subpopulations given a list of pids (individual ids).
+//' 
+//' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
+//' 
+//' @param population Population obtain from simulation
+//' @param subpops List of individual pids
+//' @param subpops_sizes Size of each subpopulation
+//' 
+//' @return  Estimates of F, theta, and f
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::List estimate_theta_subpops_pids(Rcpp::XPtr<Population> population,
+                                       Rcpp::ListOf<Rcpp::IntegerVector> subpops, 
+                                       Rcpp::IntegerVector subpops_sizes) {
+  
+  int r = subpops.size();
+
+  if (r <= 0) {
+    Rcpp::stop("No subpopulations given");
+  }
+  
+  if (subpops_sizes.size() != r) {
+    Rcpp::stop("length(subpops) != length(subpops_sizes)");
+  }
+  
+  if (any(subpops_sizes <= 0).is_true()) {
+    Rcpp::stop("All subpops_sizes must be positive");
+  }
+  
+  // H_A: Heterozygous probabilities:
+  // H_A[i][l]: Heterozygous probability of allele l in subpopulation i.
+  std::vector< std::unordered_map<int, double> > H_A(r);
+  
+  // P_AA: Homozygous probabilities:
+  // P_AA[i][l]: Homozygous probability of allele l in subpopulation i.
+  std::vector< std::unordered_map<int, double> > P_AA(r);
+  
+  // p_A: Allele probability:
+  // p_A[i][l]: Allele probability of allele l in subpopulation i.
+  std::vector< std::unordered_map<int, double> > p_A(r);
+  
+  std::vector<double> n(r);
+  
+  ////////////////////////////////////////////////////
+  // Filling containers with probabilities  
+  ////////////////////////////////////////////////////
+  for (int i = 0; i < r; ++i) {
+    Rcpp::IntegerVector subpop_pids = subpops[i];
+
+    if (subpop_pids.size() <= 0) {
+      Rcpp::stop("Subpop sample of size <= 0");
+    }
+    
+    if (subpops_sizes[i] <= 0) {
+      Rcpp::stop("Subpop size <= 0");
+    }
+    
+    n[i] = subpops_sizes[i];
+    
+    double sample_size_i = (double)subpop_pids.size();
+    double frac1 = 1.0 / (2.0 * sample_size_i);
+    double frac2 = 1.0 / sample_size_i;
+    
+    for (int j = 0; j < sample_size_i; ++j) {
+      int pid = subpop_pids[j];
+      Individual* individual = population->get_individual(pid);
+      
+      if (!(individual->is_haplotype_set())) {
+        Rcpp::stop("Haplotypes not yet set");
+      }      
+      
+      std::vector<int> hap = individual->get_haplotype();
+      if (hap.size() != 2) {
+        Rcpp::stop("Expected exactly 2 autosomal loci");
+      }
+      
+      fill_H_A_P_AA_p_A(hap[0], hap[1], i, frac1, frac2, H_A, P_AA, p_A);    
+    }
+  }
+  
+  /*  
+   print_container("Heterozygous", H_A);
+   print_container("Homozygous", P_AA);
+   print_container("Allele", p_A);  
+   Rcpp::Rcout << "n_mean = " << n_mean << std::endl;
+   */
+  
+  Rcpp::List res = estimate_theta_subpops_weighted_engine(H_A, P_AA, p_A, n);
+  
+  return res;
+}

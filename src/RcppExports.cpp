@@ -164,6 +164,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// estimate_theta_subpops_pids
+Rcpp::List estimate_theta_subpops_pids(Rcpp::XPtr<Population> population, Rcpp::ListOf<Rcpp::IntegerVector> subpops, Rcpp::IntegerVector subpops_sizes);
+RcppExport SEXP _malan_estimate_theta_subpops_pids(SEXP populationSEXP, SEXP subpopsSEXP, SEXP subpops_sizesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Population> >::type population(populationSEXP);
+    Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::IntegerVector> >::type subpops(subpopsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type subpops_sizes(subpops_sizesSEXP);
+    rcpp_result_gen = Rcpp::wrap(estimate_theta_subpops_pids(population, subpops, subpops_sizes));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pedigrees_all_populate_haplotypes
 void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, int loci, Rcpp::NumericVector mutation_rates, bool progress);
 RcppExport SEXP _malan_pedigrees_all_populate_haplotypes(SEXP pedigreesSEXP, SEXP lociSEXP, SEXP mutation_ratesSEXP, SEXP progressSEXP) {
@@ -707,6 +720,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_estimate_theta_1subpop_individuals", (DL_FUNC) &_malan_estimate_theta_1subpop_individuals, 2},
     {"_malan_estimate_theta_subpops_individuals", (DL_FUNC) &_malan_estimate_theta_subpops_individuals, 2},
     {"_malan_estimate_theta_subpops_genotypes", (DL_FUNC) &_malan_estimate_theta_subpops_genotypes, 2},
+    {"_malan_estimate_theta_subpops_pids", (DL_FUNC) &_malan_estimate_theta_subpops_pids, 3},
     {"_malan_pedigrees_all_populate_haplotypes", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes, 4},
     {"_malan_pedigrees_all_populate_haplotypes_custom_founders", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes_custom_founders, 4},
     {"_malan_pedigrees_all_populate_haplotypes_ladder_bounded", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes_ladder_bounded, 6},

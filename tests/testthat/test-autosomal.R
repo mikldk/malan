@@ -209,6 +209,17 @@ test_that("estimate_theta_subpops_individuals = estimate_theta_subpops_genotypes
 })
 
 
+# By pid:
+pids_livepop <- sapply(livepop, get_pid)
+subpops_pids <- split(pids_livepop, grps)
+subpops_pids_sizes <- sapply(subpops_pids, length)
+res_pids <- estimate_theta_subpops_pids(sim_res_fixed$population, subpops_pids, subpops_pids_sizes)
+
+test_that("estimate_theta_subpops_pids", {
+  expect_equal(res_indv, res_pids)
+  expect_equal(res_geno, res_pids)
+})
+
 ############
 # Known answers, GDA2
 two2cols <- function(x) {
