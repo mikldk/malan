@@ -256,7 +256,6 @@ List sample_geneology(size_t population_size,
       }      
             
       fathers_generation[father_i]->add_child(children_generation[i]);
-      //children_generation[i]->set_father(fathers_generation[father_i]);
     }
     
     // create additional fathers (without children) if needed:

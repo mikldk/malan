@@ -1,13 +1,8 @@
 ## ---- include = FALSE----------------------------------------------------
 knitr::opts_chunk$set(fig.width = 7)
 
-## ------------------------------------------------------------------------
-#devtools::install_github('mikldk/malan', ref = 'ext-applied')
-
-## ------------------------------------------------------------------------
-library(tidyverse)
+## ---- message=FALSE------------------------------------------------------
 library(malan)
-library(ggraph)
 
 ## ------------------------------------------------------------------------
 set.seed(1)
@@ -48,25 +43,34 @@ g <- as_tbl_graph(pedigrees)
 g
 
 ## ------------------------------------------------------------------------
-p <- ggraph(g, layout = 'tree') +
-  geom_edge_link() +
-  geom_node_point(size = 8) +
-  geom_node_text(aes(label = name), color = "white") +
-  facet_nodes(~ ped_id) +
-  theme_graph() 
-print(p)
-
-## ------------------------------------------------------------------------
-g_ped2 <- g %>% 
-  activate(nodes) %>% 
-  filter(ped_id == 2)
-
-p <- ggraph(g_ped2, layout = 'tree') +
+if (requireNamespace("ggraph", quietly = TRUE)) {
+  library(ggraph)
+  p <- ggraph(g, layout = 'tree') +
     geom_edge_link() +
     geom_node_point(size = 8) +
     geom_node_text(aes(label = name), color = "white") +
+    facet_nodes(~ ped_id) +
     theme_graph() 
-print(p)
+  
+  print(p)
+}
+
+## ------------------------------------------------------------------------
+PED_ID <- 1
+
+g_ped2 <- g %>% 
+  activate(nodes) %>% 
+  filter(ped_id == PED_ID)
+
+if (requireNamespace("ggraph", quietly = TRUE)) {
+  library(ggraph)
+  p <- ggraph(g_ped2, layout = 'tree') +
+      geom_edge_link() +
+      geom_node_point(size = 8) +
+      geom_node_text(aes(label = name), color = "white") +
+      theme_graph() 
+  print(p)
+}
 
 ## ------------------------------------------------------------------------
 ystr_markers
@@ -114,17 +118,20 @@ pedigrees_all_populate_haplotypes_custom_founders(
 ## ------------------------------------------------------------------------
 g_ped2 <- as_tbl_graph(pedigrees) %>% 
   activate(nodes) %>% 
-  filter(ped_id == 2) %>%
+  filter(ped_id == PED_ID) %>%
   group_by(name) %>% 
   mutate(haplotype_str = paste0(haplotype[[1]], collapse = ";"))
   #mutate(haplotype_str = map(haplotype, paste0, collapse = ";")[[1]])
 
-p <- ggraph(g_ped2, layout = 'tree') +
-    geom_edge_link() +
-    geom_node_point(aes(color = haplotype_str), size = 8) +
-    geom_node_text(aes(label = name), color = "white") +
-    theme_graph() 
-print(p)
+if (requireNamespace("ggraph", quietly = TRUE)) {
+  library(ggraph)
+  p <- ggraph(g_ped2, layout = 'tree') +
+      geom_edge_link() +
+      geom_node_point(aes(color = haplotype_str), size = 8) +
+      geom_node_text(aes(label = name), color = "white") +
+      theme_graph() 
+  print(p)
+}
 
 ## ------------------------------------------------------------------------
 set.seed(5)
