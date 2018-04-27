@@ -209,79 +209,50 @@ test_that("estimate_theta_subpops_individuals = estimate_theta_subpops_genotypes
 })
 
 
-if (FALSE) {
-  library(hierfstat)
-  library(adegenet)
-  data(nancycats, package = "adegenet")
-  fstat(nancycats)
-  
-  library(pegas)
-  as.loci(nancycats)
-  fsttab <- Fst(as.loci(nancycats))
-  fsttab
-  
-  x <- as.loci(nancycats)
-  str(x)
-  
-  
-  grp <- as.integer(x$population)
-  y <- do.call(rbind, strsplit(as.character(x$fca8), "/"))
-  is <- apply(y, 1, function(as) any(is.na(as)))
-  grp <- grp[!is]
-  y <- y[!is, ]
-  str(y)
-  dim(y)
-  lvls <- unique(c(y))
-  #z <- as.data.frame(apply(y, 2, function(as) factor(as, levels = lvls)))
-  z <- apply(y, 2, function(as) match(as, lvls))
-  
-  z_lst <- lapply(split(seq_len(nrow(z)), grp), function(is) z[is, ])
-  z_len <- sapply(z_lst, nrow)
-  estimate_theta_subpops_genotypes(z_lst, z_len)
-  Fst(x)[1, ]
-  
-  fstat(nancycats, fstonly = TRUE)
-  
-  x_nona <- na.omit(x[, c(1, 2, 2)])
-  colnames(x_nona)[3] <- "duploc"
-  x_small <- df2genind(x_nona[, 2:3, F], pop = x_nona[, 1], sep = "/", type = "codom")
-  fstat(x_small, fstonly = TRUE)
-  
-  #https://www2.unil.ch/popgen/softwares/fstat.htm
+############
+# Known answers, GDA2
+two2cols <- function(x) {
+  do.call(rbind, lapply(x, function(as) as.integer(strsplit(as.character(as), "")[[1]])))
 }
-if (FALSE) {
-  ###########
-  res_indv$theta
-  #estimate_theta_subpops_individuals(subpops, c(1, 1))
-  estimate_theta_subpops_individuals(subpops, c(100, 100))$theta
-  estimate_theta_subpops_individuals(subpops, c(1000, 1000))$theta
-  estimate_theta_subpops_individuals(subpops, c(10000, 10000))$theta
-  
-  subpop_haps <- lapply(subpops, get_haplotypes_individuals)
-  hom0 <- lapply(subpop_haps, function(x) mean(apply(x, 1, function(h) all(h == 0L))))
-  hom0
-  het0 <- lapply(subpop_haps, function(x) mean(apply(x, 1, function(h) any(h == 0) && !all(h == 0L))))
-  het0
-  #lapply(subpop_haps, function(x) mean(apply(x, 1, function(h) all(h == 1L))))
-  #lapply(subpop_haps, function(x) mean(apply(x, 1, function(h) all(h == 2L))))
-  
-  subpops_haps <- lapply(split(seq_len(nrow(y_livepop)), grps), function(is) y_livepop[is, ])
-  subpops_haps_sizes <- sapply(subpops_haps, nrow)
-  
-  estimate_theta_subpops_genotypes(subpops_haps, subpops_haps_sizes)
-  ###########
-  
-  grp1 <- lapply(get_pids_in_pedigree(peds[[1]]), function(pid) get_individual(sim_res_fixed$population, pid))
-  grp2 <- lapply(get_pids_in_pedigree(peds[[2]]), function(pid) get_individual(sim_res_fixed$population, pid))
-  subpops <- list(grp1, grp2)
-  subpops_sizes <- sapply(subpops, length)
-  estimate_theta_subpops_individuals(subpops, subpops_sizes)
-  
-  #########
-  
-  library(dirmult)
-  data(us)
-  str(us)
-  d <- us[[1]]
-  d
-}
+
+# GDA2, Exercise 5.4, p. 200:
+loc4_g <- c(rep(11, 24), rep(12, 16))
+loc4_n <- c(rep(11, 44), rep(12, 5), rep(22, 1))
+loc4 <- list(two2cols(loc4_g), two2cols(loc4_n))
+loc4_ni <- sapply(loc4, nrow)
+
+# GDA2, Exercise 5.4 solution, p. 401
+loc4_sol_F <- -0.0082
+loc4_sol_theta <- 0.0633
+loc4_sol_f <- -0.0764
+res_loc4 <- estimate_theta_subpops_genotypes(loc4, loc4_ni)
+
+test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 4", {
+  expect_equal(res_loc4$F, loc4_sol_F, tol = 1e-4) # results with 4 digits
+  expect_equal(res_loc4$theta, loc4_sol_theta, tol = 1e-4) # results with 4 digits
+  expect_equal(res_loc4$f, loc4_sol_f, tol = 1e-4) # results with 4 digits
+})
+
+# Same as above, now locus 6
+loc6_g <- c(rep(11, 9), rep(12, 1), rep(22, 5), rep(23, 7), rep(24, 8), rep(34, 10))
+loc6_n <- c(rep(11, 22), rep(12, 14), rep(13, 2), rep(14, 6), rep(23, 1), rep(24, 3), rep(33, 1), rep(34, 1))
+
+test_that("loc4/loc6 length", {
+  expect_equal(length(loc4_g), length(loc6_g))
+  expect_equal(length(loc4_n), length(loc6_n))
+})
+
+loc6 <- list(two2cols(loc6_g), two2cols(loc6_n))
+loc6_ni <- sapply(loc6, nrow)
+res_loc6 <- estimate_theta_subpops_genotypes(loc6, loc6_ni)
+
+loc6_sol_F <- 0.2009
+loc6_sol_theta <- 0.1517
+loc6_sol_f <- 0.0581
+
+test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 6", {
+  expect_equal(res_loc6$F, loc6_sol_F, tol = 1e-4) # results with 4 digits
+  expect_equal(res_loc6$theta, loc6_sol_theta, tol = 1e-4) # results with 4 digits
+  expect_equal(res_loc6$f, loc6_sol_f, tol = 1e-4) # results with 4 digits
+})
+
