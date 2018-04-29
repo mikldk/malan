@@ -113,25 +113,25 @@ plot(pedigrees[[1]], ids = TRUE, haplotypes = TRUE, mark_pids = c(14, 16))
 
 ## More than 1 full generation
 
-By standard, only the last generation contains $N$ individuals. If the 3 last generations should be full, this can be done by specifying `extra_generations_full = 2` as follows (2 extra as the last generation always has $N$ individuals, hence the last plus 2 extra are now full):
+By standard, only the last generation contains $N$ individuals. If the 3 last generations should be full, this can be done by specifying `generations_full = 3` as follows:
 
 ```{r}
 set.seed(1)
 sim_res <- sample_geneology(population_size = 10, 
                             generations = 5, 
-                            extra_generations_full = 2, # last gen. + 2 extra, 3 in total
+                            generations_full = 3,
                             progress = FALSE)
 pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)
 plot(pedigrees)
 ```
 
-And to obtain the complete history, `extra_generations_full` is set to `generations-1` (as the last is always full):
+And to obtain the complete history, `generations_full` is set to `generations`:
 
 ```{r}
 set.seed(1)
 sim_res <- sample_geneology(population_size = 10, 
                             generations = 5, 
-                            extra_generations_full = 4,
+                            generations_full = 5,
                             progress = FALSE)
 pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)
 plot(pedigrees)
@@ -168,7 +168,7 @@ Let's try to simulate a larger population with 3 full generations (the additiona
 set.seed(1)
 sim_res <- sample_geneology(population_size = 1e3, 
                             generations = 200, 
-                            extra_generations_full = 2,
+                            generations_full = 3,
                             individuals_generations_return = 2, # default value
                             progress = FALSE)
 ```
@@ -367,12 +367,11 @@ plot(pedigrees)
 Let us verify the claim that the standard deviation in the number of male offspring per man is 1.10. The easiest way is to get information about father id's, which is done by asking for a `verbose_result`:
 
 ```{r}
-N <- 10000
+N <- 1000
 
 set.seed(1)
 sim_res <- sample_geneology(population_size = N, 
                             generations = 2, 
-                            extra_generations_full = 2,
                             enable_gamma_variance_extension = TRUE,
                             gamma_parameter_shape = dirichlet_alpha,
                             gamma_parameter_scale = 1/dirichlet_alpha,
@@ -395,7 +394,6 @@ Let os get estimates in parallel:
 get_number_children <- function(N) {
   sim_res <- sample_geneology(population_size = N, 
                               generations = 2, 
-                              extra_generations_full = 2,
                               enable_gamma_variance_extension = TRUE,
                               gamma_parameter_shape = dirichlet_alpha,
                               gamma_parameter_scale = 1 / dirichlet_alpha,
@@ -427,10 +425,12 @@ Population growth can be simulated by specifying the population size at each gen
 
 ```{r}
 set.seed(1)
-sim_res_growth <- sample_geneology_varying_size(population_sizes = c(10, 20, 10), extra_generations_full = 3, progress = FALSE)
+sim_res_growth <- sample_geneology_varying_size(population_sizes = c(10, 20, 10), 
+                                                generations_full = 3, 
+                                                progress = FALSE)
 ```
 
-Note how `extra_generations_full` was used to obtain all individuals in the generations (and not just those with descendants in the last two):
+Note how `generations_full` was used to obtain all individuals in the generations (and not just those with descendants in the last two):
 
 ```{r}
 pedigrees_growth <- build_pedigrees(sim_res_growth$population, progress = FALSE)

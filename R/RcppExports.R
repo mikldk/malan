@@ -27,7 +27,7 @@ build_pedigrees <- function(population, progress = TRUE) {
 #' By the backwards simulating process of the Wright-Fisher model, 
 #' individuals with no descendants in the end population are not simulated. 
 #' If for some reason additional full generations should be simulated, 
-#' the number can be specified via the `extra_generations_full` parameter.
+#' the number can be specified via the `generations_full` parameter.
 #' This can for example be useful if one wants to simulate the 
 #' final 3 generations although some of these may not get (male) children.
 #' 
@@ -54,7 +54,7 @@ build_pedigrees <- function(population, progress = TRUE) {
 #'           \item -1 for simulate to 1 founder
 #'           \item else simulate this number of generations.
 #'        }
-#' @param extra_generations_full Additional full generations to be simulated.
+#' @param generations_full Number of full generations to be simulated.
 #' @param gamma_parameter_shape Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
 #' @param gamma_parameter_scale Parameter realted to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
 #' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
@@ -85,8 +85,8 @@ build_pedigrees <- function(population, progress = TRUE) {
 #' @import RcppProgress
 #' @import RcppArmadillo
 #' @export
-sample_geneology <- function(population_size, generations, extra_generations_full = 0L, gamma_parameter_shape = 5.0, gamma_parameter_scale = 1.0/5.0, enable_gamma_variance_extension = FALSE, progress = TRUE, individuals_generations_return = 2L, verbose_result = FALSE) {
-    .Call('_malan_sample_geneology', PACKAGE = 'malan', population_size, generations, extra_generations_full, gamma_parameter_shape, gamma_parameter_scale, enable_gamma_variance_extension, progress, individuals_generations_return, verbose_result)
+sample_geneology <- function(population_size, generations, generations_full = 1L, gamma_parameter_shape = 5.0, gamma_parameter_scale = 1.0/5.0, enable_gamma_variance_extension = FALSE, progress = TRUE, individuals_generations_return = 2L, verbose_result = FALSE) {
+    .Call('_malan_sample_geneology', PACKAGE = 'malan', population_size, generations, generations_full, gamma_parameter_shape, gamma_parameter_scale, enable_gamma_variance_extension, progress, individuals_generations_return, verbose_result)
 }
 
 #' Simulate a geneology with varying population size.
@@ -97,7 +97,7 @@ sample_geneology <- function(population_size, generations, extra_generations_ful
 #' By the backwards simulating process of the Wright-Fisher model, 
 #' individuals with no descendants in the end population are not simulated 
 #' If for some reason additional full generations should be simulated, 
-#' the number can be specified via the \code{extra_generations_full} parameter.
+#' the number can be specified via the \code{generations_full} parameter.
 #' This can for example be useful if one wants to simulate the 
 #' final 3 generations although some of these may not get (male) children.
 #' 
@@ -121,7 +121,7 @@ sample_geneology <- function(population_size, generations, extra_generations_ful
 #' @param population_sizes The size of the population at each generation, `g`. 
 #'        `population_sizes[g]` is the population size at generation `g`.
 #'        The length of population_sizes is the number of generations being simulated.
-#' @param extra_generations_full Additional full generations to be simulated.
+#' @param generations_full Number of full generations to be simulated.
 #' @param gamma_parameter_shape Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
 #' @param gamma_parameter_scale Parameter realted to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
 #' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
@@ -145,8 +145,8 @@ sample_geneology <- function(population_size, generations, extra_generations_ful
 #' @import RcppProgress
 #' @import RcppArmadillo
 #' @export
-sample_geneology_varying_size <- function(population_sizes, extra_generations_full = 0L, gamma_parameter_shape = 5.0, gamma_parameter_scale = 1.0/5.0, enable_gamma_variance_extension = FALSE, progress = TRUE, individuals_generations_return = 2L) {
-    .Call('_malan_sample_geneology_varying_size', PACKAGE = 'malan', population_sizes, extra_generations_full, gamma_parameter_shape, gamma_parameter_scale, enable_gamma_variance_extension, progress, individuals_generations_return)
+sample_geneology_varying_size <- function(population_sizes, generations_full = 1L, gamma_parameter_shape = 5.0, gamma_parameter_scale = 1.0/5.0, enable_gamma_variance_extension = FALSE, progress = TRUE, individuals_generations_return = 2L) {
+    .Call('_malan_sample_geneology_varying_size', PACKAGE = 'malan', population_sizes, generations_full, gamma_parameter_shape, gamma_parameter_scale, enable_gamma_variance_extension, progress, individuals_generations_return)
 }
 
 #' Calculate genotype probabilities with theta

@@ -5,7 +5,7 @@ sim_res_growth <- sample_geneology_varying_size(population_sizes = rep(1e3, 200)
                                                 enable_gamma_variance_extension = TRUE,
                                                 gamma_parameter_shape = 5,
                                                 gamma_parameter_scale = 1/5,
-                                                extra_generations_full = 2,
+                                                generations_full = 3,
                                                 individuals_generations_return = 2, # default value
                                                 progress = FALSE)
 

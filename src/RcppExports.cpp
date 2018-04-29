@@ -20,38 +20,38 @@ BEGIN_RCPP
 END_RCPP
 }
 // sample_geneology
-List sample_geneology(size_t population_size, int generations, int extra_generations_full, double gamma_parameter_shape, double gamma_parameter_scale, bool enable_gamma_variance_extension, bool progress, int individuals_generations_return, bool verbose_result);
-RcppExport SEXP _malan_sample_geneology(SEXP population_sizeSEXP, SEXP generationsSEXP, SEXP extra_generations_fullSEXP, SEXP gamma_parameter_shapeSEXP, SEXP gamma_parameter_scaleSEXP, SEXP enable_gamma_variance_extensionSEXP, SEXP progressSEXP, SEXP individuals_generations_returnSEXP, SEXP verbose_resultSEXP) {
+List sample_geneology(size_t population_size, int generations, int generations_full, double gamma_parameter_shape, double gamma_parameter_scale, bool enable_gamma_variance_extension, bool progress, int individuals_generations_return, bool verbose_result);
+RcppExport SEXP _malan_sample_geneology(SEXP population_sizeSEXP, SEXP generationsSEXP, SEXP generations_fullSEXP, SEXP gamma_parameter_shapeSEXP, SEXP gamma_parameter_scaleSEXP, SEXP enable_gamma_variance_extensionSEXP, SEXP progressSEXP, SEXP individuals_generations_returnSEXP, SEXP verbose_resultSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< size_t >::type population_size(population_sizeSEXP);
     Rcpp::traits::input_parameter< int >::type generations(generationsSEXP);
-    Rcpp::traits::input_parameter< int >::type extra_generations_full(extra_generations_fullSEXP);
+    Rcpp::traits::input_parameter< int >::type generations_full(generations_fullSEXP);
     Rcpp::traits::input_parameter< double >::type gamma_parameter_shape(gamma_parameter_shapeSEXP);
     Rcpp::traits::input_parameter< double >::type gamma_parameter_scale(gamma_parameter_scaleSEXP);
     Rcpp::traits::input_parameter< bool >::type enable_gamma_variance_extension(enable_gamma_variance_extensionSEXP);
     Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
     Rcpp::traits::input_parameter< int >::type individuals_generations_return(individuals_generations_returnSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose_result(verbose_resultSEXP);
-    rcpp_result_gen = Rcpp::wrap(sample_geneology(population_size, generations, extra_generations_full, gamma_parameter_shape, gamma_parameter_scale, enable_gamma_variance_extension, progress, individuals_generations_return, verbose_result));
+    rcpp_result_gen = Rcpp::wrap(sample_geneology(population_size, generations, generations_full, gamma_parameter_shape, gamma_parameter_scale, enable_gamma_variance_extension, progress, individuals_generations_return, verbose_result));
     return rcpp_result_gen;
 END_RCPP
 }
 // sample_geneology_varying_size
-List sample_geneology_varying_size(IntegerVector population_sizes, int extra_generations_full, double gamma_parameter_shape, double gamma_parameter_scale, bool enable_gamma_variance_extension, bool progress, int individuals_generations_return);
-RcppExport SEXP _malan_sample_geneology_varying_size(SEXP population_sizesSEXP, SEXP extra_generations_fullSEXP, SEXP gamma_parameter_shapeSEXP, SEXP gamma_parameter_scaleSEXP, SEXP enable_gamma_variance_extensionSEXP, SEXP progressSEXP, SEXP individuals_generations_returnSEXP) {
+List sample_geneology_varying_size(IntegerVector population_sizes, int generations_full, double gamma_parameter_shape, double gamma_parameter_scale, bool enable_gamma_variance_extension, bool progress, int individuals_generations_return);
+RcppExport SEXP _malan_sample_geneology_varying_size(SEXP population_sizesSEXP, SEXP generations_fullSEXP, SEXP gamma_parameter_shapeSEXP, SEXP gamma_parameter_scaleSEXP, SEXP enable_gamma_variance_extensionSEXP, SEXP progressSEXP, SEXP individuals_generations_returnSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type population_sizes(population_sizesSEXP);
-    Rcpp::traits::input_parameter< int >::type extra_generations_full(extra_generations_fullSEXP);
+    Rcpp::traits::input_parameter< int >::type generations_full(generations_fullSEXP);
     Rcpp::traits::input_parameter< double >::type gamma_parameter_shape(gamma_parameter_shapeSEXP);
     Rcpp::traits::input_parameter< double >::type gamma_parameter_scale(gamma_parameter_scaleSEXP);
     Rcpp::traits::input_parameter< bool >::type enable_gamma_variance_extension(enable_gamma_variance_extensionSEXP);
     Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
     Rcpp::traits::input_parameter< int >::type individuals_generations_return(individuals_generations_returnSEXP);
-    rcpp_result_gen = Rcpp::wrap(sample_geneology_varying_size(population_sizes, extra_generations_full, gamma_parameter_shape, gamma_parameter_scale, enable_gamma_variance_extension, progress, individuals_generations_return));
+    rcpp_result_gen = Rcpp::wrap(sample_geneology_varying_size(population_sizes, generations_full, gamma_parameter_shape, gamma_parameter_scale, enable_gamma_variance_extension, progress, individuals_generations_return));
     return rcpp_result_gen;
 END_RCPP
 }

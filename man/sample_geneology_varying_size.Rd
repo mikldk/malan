@@ -4,7 +4,7 @@
 \alias{sample_geneology_varying_size}
 \title{Simulate a geneology with varying population size.}
 \usage{
-sample_geneology_varying_size(population_sizes, extra_generations_full = 0L,
+sample_geneology_varying_size(population_sizes, generations_full = 1L,
   gamma_parameter_shape = 5, gamma_parameter_scale = 1/5,
   enable_gamma_variance_extension = FALSE, progress = TRUE,
   individuals_generations_return = 2L)
@@ -14,7 +14,7 @@ sample_geneology_varying_size(population_sizes, extra_generations_full = 0L,
 \code{population_sizes[g]} is the population size at generation \code{g}.
 The length of population_sizes is the number of generations being simulated.}
 
-\item{extra_generations_full}{Additional full generations to be simulated.}
+\item{generations_full}{Number of full generations to be simulated.}
 
 \item{gamma_parameter_shape}{Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.}
 
@@ -46,7 +46,7 @@ by a vector of population sizes, one for each generation.
 By the backwards simulating process of the Wright-Fisher model,
 individuals with no descendants in the end population are not simulated
 If for some reason additional full generations should be simulated,
-the number can be specified via the \code{extra_generations_full} parameter.
+the number can be specified via the \code{generations_full} parameter.
 This can for example be useful if one wants to simulate the
 final 3 generations although some of these may not get (male) children.
 

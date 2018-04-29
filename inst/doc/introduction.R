@@ -60,7 +60,7 @@ plot(pedigrees[[1]], ids = TRUE, haplotypes = TRUE, mark_pids = c(14, 16))
 set.seed(1)
 sim_res <- sample_geneology(population_size = 10, 
                             generations = 5, 
-                            extra_generations_full = 2, # last gen. + 2 extra, 3 in total
+                            generations_full = 3,
                             progress = FALSE)
 pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)
 plot(pedigrees)
@@ -69,7 +69,7 @@ plot(pedigrees)
 set.seed(1)
 sim_res <- sample_geneology(population_size = 10, 
                             generations = 5, 
-                            extra_generations_full = 4,
+                            generations_full = 5,
                             progress = FALSE)
 pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)
 plot(pedigrees)
@@ -89,7 +89,7 @@ sim_res$generations
 set.seed(1)
 sim_res <- sample_geneology(population_size = 1e3, 
                             generations = 200, 
-                            extra_generations_full = 2,
+                            generations_full = 3,
                             individuals_generations_return = 2, # default value
                             progress = FALSE)
 
@@ -217,12 +217,11 @@ pedigrees <- build_pedigrees(sim_res$population, progress = FALSE)
 plot(pedigrees)
 
 ## ------------------------------------------------------------------------
-N <- 10000
+N <- 1000
 
 set.seed(1)
 sim_res <- sample_geneology(population_size = N, 
                             generations = 2, 
-                            extra_generations_full = 2,
                             enable_gamma_variance_extension = TRUE,
                             gamma_parameter_shape = dirichlet_alpha,
                             gamma_parameter_scale = 1/dirichlet_alpha,
@@ -241,7 +240,6 @@ sd(number_of_children)
 get_number_children <- function(N) {
   sim_res <- sample_geneology(population_size = N, 
                               generations = 2, 
-                              extra_generations_full = 2,
                               enable_gamma_variance_extension = TRUE,
                               gamma_parameter_shape = dirichlet_alpha,
                               gamma_parameter_scale = 1 / dirichlet_alpha,
@@ -266,7 +264,9 @@ mean(sds)
 
 ## ------------------------------------------------------------------------
 set.seed(1)
-sim_res_growth <- sample_geneology_varying_size(population_sizes = c(10, 20, 10), extra_generations_full = 3, progress = FALSE)
+sim_res_growth <- sample_geneology_varying_size(population_sizes = c(10, 20, 10), 
+                                                generations_full = 3, 
+                                                progress = FALSE)
 
 ## ------------------------------------------------------------------------
 pedigrees_growth <- build_pedigrees(sim_res_growth$population, progress = FALSE)

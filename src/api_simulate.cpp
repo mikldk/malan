@@ -25,7 +25,7 @@ using namespace Rcpp;
 //' By the backwards simulating process of the Wright-Fisher model, 
 //' individuals with no descendants in the end population are not simulated. 
 //' If for some reason additional full generations should be simulated, 
-//' the number can be specified via the `extra_generations_full` parameter.
+//' the number can be specified via the `generations_full` parameter.
 //' This can for example be useful if one wants to simulate the 
 //' final 3 generations although some of these may not get (male) children.
 //' 
@@ -52,7 +52,7 @@ using namespace Rcpp;
 //'           \item -1 for simulate to 1 founder
 //'           \item else simulate this number of generations.
 //'        }
-//' @param extra_generations_full Additional full generations to be simulated.
+//' @param generations_full Number of full generations to be simulated.
 //' @param gamma_parameter_shape Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
 //' @param gamma_parameter_scale Parameter realted to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
 //' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
@@ -86,12 +86,19 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List sample_geneology(size_t population_size, 
   int generations,
-  int extra_generations_full = 0,  
-  double gamma_parameter_shape = 5.0, double gamma_parameter_scale = 1.0/5.0, 
+  int generations_full = 1,  
+  int individuals_generations_return = 2,
   bool enable_gamma_variance_extension = false,
+  double gamma_parameter_shape = 5.0, double gamma_parameter_scale = 1.0/5.0, 
   bool progress = true, 
-  int individuals_generations_return = 2,   
   bool verbose_result = false) {
+  
+  if (generations_full <= 0) {
+    Rcpp::stop("generations_full must be at least 1");
+  }
+  // Always include full last generation, but how many additional?
+  int extra_generations_full = generations_full - 1;
+  
   
   if (population_size < 1) {
     Rcpp::stop("Please specify population_size >= 1");

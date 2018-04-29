@@ -5,7 +5,7 @@ ESTIMATION_TOL_DUE_TO_SAMPLING <- 0.01
 set.seed(1)
 sim_res_fixed <- sample_geneology(population_size = 1e3, 
                                   generations = 100, 
-                                  extra_generations_full = 2,
+                                  generations_full = 3,
                                   individuals_generations_return = 2, # default value
                                   progress = FALSE)
 

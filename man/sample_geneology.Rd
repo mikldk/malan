@@ -4,7 +4,7 @@
 \alias{sample_geneology}
 \title{Simulate a geneology with constant population size.}
 \usage{
-sample_geneology(population_size, generations, extra_generations_full = 0L,
+sample_geneology(population_size, generations, generations_full = 1L,
   gamma_parameter_shape = 5, gamma_parameter_scale = 1/5,
   enable_gamma_variance_extension = FALSE, progress = TRUE,
   individuals_generations_return = 2L, verbose_result = FALSE)
@@ -18,7 +18,7 @@ sample_geneology(population_size, generations, extra_generations_full = 0L,
 \item else simulate this number of generations.
 }}
 
-\item{extra_generations_full}{Additional full generations to be simulated.}
+\item{generations_full}{Number of full generations to be simulated.}
 
 \item{gamma_parameter_shape}{Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.}
 
@@ -57,7 +57,7 @@ This function simulates a geneology where the last generation has \code{populati
 By the backwards simulating process of the Wright-Fisher model,
 individuals with no descendants in the end population are not simulated.
 If for some reason additional full generations should be simulated,
-the number can be specified via the \code{extra_generations_full} parameter.
+the number can be specified via the \code{generations_full} parameter.
 This can for example be useful if one wants to simulate the
 final 3 generations although some of these may not get (male) children.
 
