@@ -202,6 +202,10 @@ test_that("hashes works", {
 pids_split_hap <- lapply(split_by_haplotypes(test_pop, pids), sort)
 x <- lapply(split(pids, hap_fac), sort)
 names(x) <- NULL
+
+# Order list in some way that make them comparable:
+#  Here, first by size and then by their max element; ensures unique ordering 
+#  because all elements are pids and are hence unique integers.
 ord_1 <- order(sapply(pids_split_hap, length), sapply(pids_split_hap, max))
 ord_2 <- order(sapply(x, length), sapply(x, max))
 pids_split_hap <- pids_split_hap[ord_1]
