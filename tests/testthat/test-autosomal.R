@@ -6,7 +6,7 @@ set.seed(1)
 sim_res_fixed <- sample_geneology(population_size = 1e3, 
                                   generations = 100, 
                                   generations_full = 3,
-                                  individuals_generations_return = 2, # default value
+                                  generations_return = 3, # default value
                                   progress = FALSE)
 
 peds <- build_pedigrees(sim_res_fixed$population, progress = FALSE)

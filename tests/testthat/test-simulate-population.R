@@ -4,7 +4,7 @@ set.seed(1)
 sim_res_fixed <- sample_geneology(population_size = 1e3, 
                                   generations = 20, 
                                   generations_full = 3,
-                                  individuals_generations_return = 2, # default value
+                                  generations_return = 3,
                                   progress = FALSE)
 
 test_that("sample_geneology works", {
@@ -21,7 +21,7 @@ sim_res_growth <- sample_geneology_varying_size(population_sizes = rep(1e3, 20),
                                                 gamma_parameter_shape = 5,
                                                 gamma_parameter_scale = 1/5,
                                                 generations_full = 3,
-                                                individuals_generations_return = 2, # default value
+                                                generations_return = 3, # default value
                                                 progress = FALSE)
 
 test_that("sample_geneology works", {

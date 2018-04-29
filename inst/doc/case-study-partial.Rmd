@@ -47,7 +47,7 @@ sim_res_growth <- sample_geneology_varying_size(
   # Live population: 
   # 3 generations
   generations_full = 3, 
-  individuals_generations_return = 2,
+  generations_return = 3,
   
   progress = FALSE)
 ```

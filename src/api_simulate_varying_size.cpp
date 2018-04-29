@@ -52,11 +52,11 @@ using namespace Rcpp;
 //'        `population_sizes[g]` is the population size at generation `g`.
 //'        The length of population_sizes is the number of generations being simulated.
 //' @param generations_full Number of full generations to be simulated.
+//' @param generations_return How many generations to return (pointers to) individuals for.
+//' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
 //' @param gamma_parameter_shape Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
 //' @param gamma_parameter_scale Parameter realted to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
-//' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
 //' @param progress Show progress.
-//' @param individuals_generations_return How many generations back to return (pointers to) individuals for.
 //' 
 //' @return A malan_simulation / list with the following entries:
 //' \itemize{
@@ -79,7 +79,7 @@ using namespace Rcpp;
 List sample_geneology_varying_size(
   IntegerVector population_sizes,
   int generations_full = 1, 
-  int individuals_generations_return = 2,
+  int generations_return = 3,
   bool enable_gamma_variance_extension = false,
   double gamma_parameter_shape = 5.0, double gamma_parameter_scale = 1.0/5.0, 
   bool progress = true
@@ -90,6 +90,14 @@ List sample_geneology_varying_size(
   }
   // Always include full last generation, but how many additional?
   int extra_generations_full = generations_full - 1;
+  
+  if (generations_return <= 0) {
+    Rcpp::stop("generations_return must be at least 1");
+  }  
+  // Always include full last generation, but how many additional?
+  int individuals_generations_return = generations_return - 1;
+    
+  
   
   // boolean chosen like this to obey NA's
   bool all_gt_1 = is_true(all(population_sizes >= 1));

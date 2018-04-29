@@ -5,9 +5,9 @@
 \title{Simulate a geneology with constant population size.}
 \usage{
 sample_geneology(population_size, generations, generations_full = 1L,
-  gamma_parameter_shape = 5, gamma_parameter_scale = 1/5,
-  enable_gamma_variance_extension = FALSE, progress = TRUE,
-  individuals_generations_return = 2L, verbose_result = FALSE)
+  generations_return = 3L, enable_gamma_variance_extension = FALSE,
+  gamma_parameter_shape = 5, gamma_parameter_scale = 1/5, progress = TRUE,
+  verbose_result = FALSE)
 }
 \arguments{
 \item{population_size}{The size of the population.}
@@ -20,15 +20,15 @@ sample_geneology(population_size, generations, generations_full = 1L,
 
 \item{generations_full}{Number of full generations to be simulated.}
 
+\item{generations_return}{How many generations to return (pointers to) individuals for.}
+
+\item{enable_gamma_variance_extension}{Enable symmetric Dirichlet (and disable standard Wright-Fisher).}
+
 \item{gamma_parameter_shape}{Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.}
 
 \item{gamma_parameter_scale}{Parameter realted to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.}
 
-\item{enable_gamma_variance_extension}{Enable symmetric Dirichlet (and disable standard Wright-Fisher).}
-
 \item{progress}{Show progress.}
-
-\item{individuals_generations_return}{How many generations back to return (pointers to) individuals for.}
 
 \item{verbose_result}{Verbose result.}
 }

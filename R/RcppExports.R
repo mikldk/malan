@@ -55,11 +55,11 @@ build_pedigrees <- function(population, progress = TRUE) {
 #'           \item else simulate this number of generations.
 #'        }
 #' @param generations_full Number of full generations to be simulated.
+#' @param generations_return How many generations to return (pointers to) individuals for.
+#' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
 #' @param gamma_parameter_shape Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
 #' @param gamma_parameter_scale Parameter realted to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
-#' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
 #' @param progress Show progress.
-#' @param individuals_generations_return How many generations back to return (pointers to) individuals for.
 #' @param verbose_result Verbose result.
 #' 
 #' @return A list with the following entries:
@@ -85,8 +85,8 @@ build_pedigrees <- function(population, progress = TRUE) {
 #' @import RcppProgress
 #' @import RcppArmadillo
 #' @export
-sample_geneology <- function(population_size, generations, generations_full = 1L, gamma_parameter_shape = 5.0, gamma_parameter_scale = 1.0/5.0, enable_gamma_variance_extension = FALSE, progress = TRUE, individuals_generations_return = 2L, verbose_result = FALSE) {
-    .Call('_malan_sample_geneology', PACKAGE = 'malan', population_size, generations, generations_full, gamma_parameter_shape, gamma_parameter_scale, enable_gamma_variance_extension, progress, individuals_generations_return, verbose_result)
+sample_geneology <- function(population_size, generations, generations_full = 1L, generations_return = 3L, enable_gamma_variance_extension = FALSE, gamma_parameter_shape = 5.0, gamma_parameter_scale = 1.0/5.0, progress = TRUE, verbose_result = FALSE) {
+    .Call('_malan_sample_geneology', PACKAGE = 'malan', population_size, generations, generations_full, generations_return, enable_gamma_variance_extension, gamma_parameter_shape, gamma_parameter_scale, progress, verbose_result)
 }
 
 #' Simulate a geneology with varying population size.
@@ -122,11 +122,11 @@ sample_geneology <- function(population_size, generations, generations_full = 1L
 #'        `population_sizes[g]` is the population size at generation `g`.
 #'        The length of population_sizes is the number of generations being simulated.
 #' @param generations_full Number of full generations to be simulated.
+#' @param generations_return How many generations to return (pointers to) individuals for.
+#' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
 #' @param gamma_parameter_shape Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
 #' @param gamma_parameter_scale Parameter realted to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
-#' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
 #' @param progress Show progress.
-#' @param individuals_generations_return How many generations back to return (pointers to) individuals for.
 #' 
 #' @return A malan_simulation / list with the following entries:
 #' \itemize{
@@ -145,8 +145,8 @@ sample_geneology <- function(population_size, generations, generations_full = 1L
 #' @import RcppProgress
 #' @import RcppArmadillo
 #' @export
-sample_geneology_varying_size <- function(population_sizes, generations_full = 1L, gamma_parameter_shape = 5.0, gamma_parameter_scale = 1.0/5.0, enable_gamma_variance_extension = FALSE, progress = TRUE, individuals_generations_return = 2L) {
-    .Call('_malan_sample_geneology_varying_size', PACKAGE = 'malan', population_sizes, generations_full, gamma_parameter_shape, gamma_parameter_scale, enable_gamma_variance_extension, progress, individuals_generations_return)
+sample_geneology_varying_size <- function(population_sizes, generations_full = 1L, generations_return = 3L, enable_gamma_variance_extension = FALSE, gamma_parameter_shape = 5.0, gamma_parameter_scale = 1.0/5.0, progress = TRUE) {
+    .Call('_malan_sample_geneology_varying_size', PACKAGE = 'malan', population_sizes, generations_full, generations_return, enable_gamma_variance_extension, gamma_parameter_shape, gamma_parameter_scale, progress)
 }
 
 #' Calculate genotype probabilities with theta

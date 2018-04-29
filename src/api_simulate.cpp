@@ -53,11 +53,11 @@ using namespace Rcpp;
 //'           \item else simulate this number of generations.
 //'        }
 //' @param generations_full Number of full generations to be simulated.
+//' @param generations_return How many generations to return (pointers to) individuals for.
+//' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
 //' @param gamma_parameter_shape Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
 //' @param gamma_parameter_scale Parameter realted to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.
-//' @param enable_gamma_variance_extension Enable symmetric Dirichlet (and disable standard Wright-Fisher).
 //' @param progress Show progress.
-//' @param individuals_generations_return How many generations back to return (pointers to) individuals for.
 //' @param verbose_result Verbose result.
 //' 
 //' @return A list with the following entries:
@@ -87,7 +87,7 @@ using namespace Rcpp;
 List sample_geneology(size_t population_size, 
   int generations,
   int generations_full = 1,  
-  int individuals_generations_return = 2,
+  int generations_return = 3,
   bool enable_gamma_variance_extension = false,
   double gamma_parameter_shape = 5.0, double gamma_parameter_scale = 1.0/5.0, 
   bool progress = true, 
@@ -98,6 +98,13 @@ List sample_geneology(size_t population_size,
   }
   // Always include full last generation, but how many additional?
   int extra_generations_full = generations_full - 1;
+  
+  if (generations_return <= 0) {
+    Rcpp::stop("generations_return must be at least 1");
+  }  
+  // Always include full last generation, but how many additional?
+  int individuals_generations_return = generations_return - 1;
+  
   
   
   if (population_size < 1) {

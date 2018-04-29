@@ -114,10 +114,9 @@ by a vector of population sizes, one for each generation." />
 by a vector of population sizes, one for each generation.</p>
     
 
-    <pre class="usage"><span class='fu'>sample_geneology_varying_size</span>(<span class='no'>population_sizes</span>, <span class='kw'>extra_generations_full</span> <span class='kw'>=</span> <span class='fl'>0L</span>,
-  <span class='kw'>gamma_parameter_shape</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>gamma_parameter_scale</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>5</span>,
-  <span class='kw'>enable_gamma_variance_extension</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>individuals_generations_return</span> <span class='kw'>=</span> <span class='fl'>2L</span>)</pre>
+    <pre class="usage"><span class='fu'>sample_geneology_varying_size</span>(<span class='no'>population_sizes</span>, <span class='kw'>generations_full</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>generations_return</span> <span class='kw'>=</span> <span class='fl'>3L</span>, <span class='kw'>enable_gamma_variance_extension</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>gamma_parameter_shape</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>gamma_parameter_scale</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>5</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -129,8 +128,16 @@ by a vector of population sizes, one for each generation.</p>
 The length of population_sizes is the number of generations being simulated.</p></td>
     </tr>
     <tr>
-      <th>extra_generations_full</th>
-      <td><p>Additional full generations to be simulated.</p></td>
+      <th>generations_full</th>
+      <td><p>Number of full generations to be simulated.</p></td>
+    </tr>
+    <tr>
+      <th>generations_return</th>
+      <td><p>How many generations to return (pointers to) individuals for.</p></td>
+    </tr>
+    <tr>
+      <th>enable_gamma_variance_extension</th>
+      <td><p>Enable symmetric Dirichlet (and disable standard Wright-Fisher).</p></td>
     </tr>
     <tr>
       <th>gamma_parameter_shape</th>
@@ -141,16 +148,8 @@ The length of population_sizes is the number of generations being simulated.</p>
       <td><p>Parameter realted to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.</p></td>
     </tr>
     <tr>
-      <th>enable_gamma_variance_extension</th>
-      <td><p>Enable symmetric Dirichlet (and disable standard Wright-Fisher).</p></td>
-    </tr>
-    <tr>
       <th>progress</th>
       <td><p>Show progress.</p></td>
-    </tr>
-    <tr>
-      <th>individuals_generations_return</th>
-      <td><p>How many generations back to return (pointers to) individuals for.</p></td>
     </tr>
     </table>
     
@@ -172,7 +171,7 @@ The length of population_sizes is the number of generations being simulated.</p>
     <p>By the backwards simulating process of the Wright-Fisher model,
 individuals with no descendants in the end population are not simulated
 If for some reason additional full generations should be simulated,
-the number can be specified via the <code>extra_generations_full</code> parameter.
+the number can be specified via the <code>generations_full</code> parameter.
 This can for example be useful if one wants to simulate the
 final 3 generations although some of these may not get (male) children.</p>
 <p>Let \(\alpha\) be the parameter of a symmetric Dirichlet distribution

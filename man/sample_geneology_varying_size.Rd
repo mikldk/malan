@@ -5,9 +5,8 @@
 \title{Simulate a geneology with varying population size.}
 \usage{
 sample_geneology_varying_size(population_sizes, generations_full = 1L,
-  gamma_parameter_shape = 5, gamma_parameter_scale = 1/5,
-  enable_gamma_variance_extension = FALSE, progress = TRUE,
-  individuals_generations_return = 2L)
+  generations_return = 3L, enable_gamma_variance_extension = FALSE,
+  gamma_parameter_shape = 5, gamma_parameter_scale = 1/5, progress = TRUE)
 }
 \arguments{
 \item{population_sizes}{The size of the population at each generation, \code{g}.
@@ -16,15 +15,15 @@ The length of population_sizes is the number of generations being simulated.}
 
 \item{generations_full}{Number of full generations to be simulated.}
 
+\item{generations_return}{How many generations to return (pointers to) individuals for.}
+
+\item{enable_gamma_variance_extension}{Enable symmetric Dirichlet (and disable standard Wright-Fisher).}
+
 \item{gamma_parameter_shape}{Parameter related to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.}
 
 \item{gamma_parameter_scale}{Parameter realted to symmetric Dirichlet distribution for each man's probability to be father. Refer to details.}
 
-\item{enable_gamma_variance_extension}{Enable symmetric Dirichlet (and disable standard Wright-Fisher).}
-
 \item{progress}{Show progress.}
-
-\item{individuals_generations_return}{How many generations back to return (pointers to) individuals for.}
 }
 \value{
 A malan_simulation / list with the following entries:

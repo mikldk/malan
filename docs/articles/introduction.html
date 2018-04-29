@@ -75,7 +75,7 @@
       <h1>Introduction</h1>
                         <h4 class="author">Mikkel Meyer Andersen</h4>
             
-            <h4 class="date">29 April, 2018</h4>
+            <h4 class="date">30 April, 2018</h4>
       
       
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -161,20 +161,20 @@ mutrts &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">
 <div id="more-than-1-full-generation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#more-than-1-full-generation" class="anchor"></a>More than 1 full generation</h2>
-<p>By standard, only the last generation contains <span class="math inline">\(N\)</span> individuals. If the 3 last generations should be full, this can be done by specifying <code>extra_generations_full = 2</code> as follows (2 extra as the last generation always has <span class="math inline">\(N\)</span> individuals, hence the last plus 2 extra are now full):</p>
+<p>By standard, only the last generation contains <span class="math inline">\(N\)</span> individuals. If the 3 last generations should be full, this can be done by specifying <code>generations_full = 3</code> as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
 sim_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="dt">population_size =</span> <span class="dv">10</span>, 
                             <span class="dt">generations =</span> <span class="dv">5</span>, 
-                            <span class="dt">extra_generations_full =</span> <span class="dv">2</span>, <span class="co"># last gen. + 2 extra, 3 in total</span>
+                            <span class="dt">generations_full =</span> <span class="dv">3</span>,
                             <span class="dt">progress =</span> <span class="ot">FALSE</span>)
 pedigrees &lt;-<span class="st"> </span><span class="kw"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(sim_res$population, <span class="dt">progress =</span> <span class="ot">FALSE</span>)
 <span class="kw">plot</span>(pedigrees)</code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
-<p>And to obtain the complete history, <code>extra_generations_full</code> is set to <code>generations-1</code> (as the last is always full):</p>
+<p>And to obtain the complete history, <code>generations_full</code> is set to <code>generations</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
 sim_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="dt">population_size =</span> <span class="dv">10</span>, 
                             <span class="dt">generations =</span> <span class="dv">5</span>, 
-                            <span class="dt">extra_generations_full =</span> <span class="dv">4</span>,
+                            <span class="dt">generations_full =</span> <span class="dv">5</span>,
                             <span class="dt">progress =</span> <span class="ot">FALSE</span>)
 pedigrees &lt;-<span class="st"> </span><span class="kw"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(sim_res$population, <span class="dt">progress =</span> <span class="ot">FALSE</span>)
 <span class="kw">plot</span>(pedigrees)</code></pre></div>
@@ -203,12 +203,12 @@ pedigrees &lt;-<span class="st"> </span><span class="kw"><a href="../reference/b
 <div id="simulating-the-population" class="section level2">
 <h2 class="hasAnchor">
 <a href="#simulating-the-population" class="anchor"></a>Simulating the population</h2>
-<p>Let’s try to simulate a larger population with 3 full generations (the additional <code>individuals_generations_return</code> is to get all individuals in the last 3 generations returned in the <code>individuals_generations</code> slot, cf. below, and the default value is 2 but is included here for demonstration purposes):</p>
+<p>Let’s try to simulate a larger population with 3 full generations (the additional <code>generations_return</code> is to get all individuals in the last 3 generations returned in the <code>individuals_generations</code> slot, cf. below):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
 sim_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="dt">population_size =</span> <span class="fl">1e3</span>, 
                             <span class="dt">generations =</span> <span class="dv">200</span>, 
-                            <span class="dt">extra_generations_full =</span> <span class="dv">2</span>,
-                            <span class="dt">individuals_generations_return =</span> <span class="dv">2</span>, <span class="co"># default value</span>
+                            <span class="dt">generations_full =</span> <span class="dv">3</span>,
+                            <span class="dt">generations_return =</span> <span class="dv">3</span>, <span class="co"># default value</span>
                             <span class="dt">progress =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p>And build the pedigrees:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pedigrees &lt;-<span class="st"> </span><span class="kw"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(sim_res$population, <span class="dt">progress =</span> <span class="ot">FALSE</span>)
@@ -429,12 +429,11 @@ pedigrees &lt;-<span class="st"> </span><span class="kw"><a href="../reference/b
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pedigrees)</code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-44-1.png" width="672"></p>
 <p>Let us verify the claim that the standard deviation in the number of male offspring per man is 1.10. The easiest way is to get information about father id’s, which is done by asking for a <code>verbose_result</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">N &lt;-<span class="st"> </span><span class="dv">10000</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">N &lt;-<span class="st"> </span><span class="dv">1000</span>
 
 <span class="kw">set.seed</span>(<span class="dv">1</span>)
 sim_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="dt">population_size =</span> N, 
                             <span class="dt">generations =</span> <span class="dv">2</span>, 
-                            <span class="dt">extra_generations_full =</span> <span class="dv">2</span>,
                             <span class="dt">enable_gamma_variance_extension =</span> <span class="ot">TRUE</span>,
                             <span class="dt">gamma_parameter_shape =</span> dirichlet_alpha,
                             <span class="dt">gamma_parameter_scale =</span> <span class="dv">1</span>/dirichlet_alpha,
@@ -449,12 +448,11 @@ number_of_children &lt;-<span class="st"> </span><span class="kw">as.numeric</sp
 <span class="kw">mean</span>(number_of_children)</code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(number_of_children)</code></pre></div>
-<pre><code>## [1] 1.08854</code></pre>
+<pre><code>## [1] 1.11411</code></pre>
 <p>Let os get estimates in parallel:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">get_number_children &lt;-<span class="st"> </span>function(N) {
   sim_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="dt">population_size =</span> N, 
                               <span class="dt">generations =</span> <span class="dv">2</span>, 
-                              <span class="dt">extra_generations_full =</span> <span class="dv">2</span>,
                               <span class="dt">enable_gamma_variance_extension =</span> <span class="ot">TRUE</span>,
                               <span class="dt">gamma_parameter_shape =</span> dirichlet_alpha,
                               <span class="dt">gamma_parameter_scale =</span> <span class="dv">1</span> /<span class="st"> </span>dirichlet_alpha,
@@ -483,8 +481,10 @@ sds &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw
 <a href="#population-growth" class="anchor"></a>Population growth</h2>
 <p>Population growth can be simulated by specifying the population size at each generation by the <code>population_sizes</code> vector, where the length thus specifies the number of generations:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
-sim_res_growth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_geneology_varying_size.html">sample_geneology_varying_size</a></span>(<span class="dt">population_sizes =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">10</span>), <span class="dt">extra_generations_full =</span> <span class="dv">3</span>, <span class="dt">progress =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<p>Note how <code>extra_generations_full</code> was used to obtain all individuals in the generations (and not just those with descendants in the last two):</p>
+sim_res_growth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/sample_geneology_varying_size.html">sample_geneology_varying_size</a></span>(<span class="dt">population_sizes =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">10</span>), 
+                                                <span class="dt">generations_full =</span> <span class="dv">3</span>, 
+                                                <span class="dt">progress =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>Note how <code>generations_full</code> was used to obtain all individuals in the generations (and not just those with descendants in the last two):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pedigrees_growth &lt;-<span class="st"> </span><span class="kw"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(sim_res_growth$population, <span class="dt">progress =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pedigrees_growth)</code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-49-1.png" width="672"></p>

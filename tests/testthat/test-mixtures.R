@@ -2,11 +2,11 @@ context("Mixtures")
 
 set.seed(1)
 sim_res_growth <- sample_geneology_varying_size(population_sizes = rep(1e3, 200),
+                                                generations_full = 3,
+                                                generations_return = 3,
                                                 enable_gamma_variance_extension = TRUE,
                                                 gamma_parameter_shape = 5,
                                                 gamma_parameter_scale = 1/5,
-                                                generations_full = 3,
-                                                individuals_generations_return = 2, # default value
                                                 progress = FALSE)
 
 pedigrees <- build_pedigrees(sim_res_growth$population, progress = FALSE)
