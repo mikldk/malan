@@ -67,8 +67,7 @@ Rcpp::XPtr<Pedigree> get_pedigree(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees
   std::vector<Pedigree*>* peds = pedigrees;
   Pedigree* p = peds->at(index);
   
-  //Rcpp::XPtr<Pedigree> res(p, true);
-  Rcpp::XPtr<Pedigree> res(p, false); // do NOT delete pedigree when not used any more, it still exists in list of pedigrees etc.!
+  Rcpp::XPtr<Pedigree> res(p, RCPP_XPTR_2ND_ARG); // do NOT delete pedigree when not used any more, it still exists in list of pedigrees etc.!
   res.attr("class") = Rcpp::CharacterVector::create("malan_pedigree", "externalptr");
   
   return res;

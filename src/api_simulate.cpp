@@ -147,7 +147,7 @@ List sample_geneology(size_t population_size,
   
   std::unordered_map<int, Individual*>* population_map = new std::unordered_map<int, Individual*>(); // pid's are garanteed to be unique
   Population* population = new Population(population_map);
-  Rcpp::XPtr<Population> population_xptr(population, RCPP_XPTR_2ND_ARG);
+  Rcpp::XPtr<Population> population_xptr(population, RCPP_XPTR_2ND_ARG_CLEANER);
   population_xptr.attr("class") = CharacterVector::create("malan_population", "externalptr");
   
   

@@ -22,8 +22,7 @@ Rcpp::XPtr<Individual> get_individual(Rcpp::XPtr<Population> population, int pid
   Population* pop = population;
   
   Individual* ind = population->get_individual(pid);
-  //Rcpp::XPtr<Individual> res(ind, true);
-  Rcpp::XPtr<Individual> res(ind, false); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
+  Rcpp::XPtr<Individual> res(ind, RCPP_XPTR_2ND_ARG); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
   res.attr("class") = Rcpp::CharacterVector::create("malan_individual", "externalptr");
   
   return res;
@@ -94,7 +93,7 @@ int get_generation(Rcpp::XPtr<Individual> individual) {
 //[[Rcpp::export]]
 Rcpp::XPtr<Pedigree> get_pedigree_from_individual(Rcpp::XPtr<Individual> individual) {  
   Individual* i = individual;  
-  Rcpp::XPtr<Pedigree> res(i->get_pedigree(), false); // do NOT delete pedigree when not used any more, it still exists in list of pedigrees etc.!
+  Rcpp::XPtr<Pedigree> res(i->get_pedigree(), RCPP_XPTR_2ND_ARG); // do NOT delete pedigree when not used any more, it still exists in list of pedigrees etc.!
   res.attr("class") = Rcpp::CharacterVector::create("malan_pedigree", "externalptr");
   
   return res;
@@ -167,7 +166,7 @@ Rcpp::List get_children(Rcpp::XPtr<Individual> individual) {
   Rcpp::List children;
   
   for (auto child : *individuals_boys) {
-    Rcpp::XPtr<Individual> child_xptr(child, false); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
+    Rcpp::XPtr<Individual> child_xptr(child, RCPP_XPTR_2ND_ARG); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
     child_xptr.attr("class") = Rcpp::CharacterVector::create("malan_individual", "externalptr");
   
     children.push_back(child_xptr);
@@ -232,7 +231,7 @@ Rcpp::List get_brothers(Rcpp::XPtr<Individual> individual) {
       continue; // exclude individual itself as a brother
     }
     
-    Rcpp::XPtr<Individual> brother_xptr(brother, false); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
+    Rcpp::XPtr<Individual> brother_xptr(brother, RCPP_XPTR_2ND_ARG); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
     brother_xptr.attr("class") = Rcpp::CharacterVector::create("malan_individual", "externalptr");
   
     brothers.push_back(brother_xptr);
@@ -439,7 +438,7 @@ Rcpp::List get_uncles(Rcpp::XPtr<Individual> individual) {
       continue; // exclude father as uncle
     }
     
-    Rcpp::XPtr<Individual> uncle_xptr(uncle, false); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
+    Rcpp::XPtr<Individual> uncle_xptr(uncle, RCPP_XPTR_2ND_ARG); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
     uncle_xptr.attr("class") = Rcpp::CharacterVector::create("malan_individual", "externalptr");
   
     uncles.push_back(uncle_xptr);

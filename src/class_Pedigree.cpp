@@ -26,6 +26,16 @@ Pedigree::Pedigree(int id) {
 }
 
 Pedigree::~Pedigree() {
+  //Rcpp::Rcout << "   CLEANUP PEDIGREE!\n";
+  
+  for (auto it = m_all_individuals->begin(); it != m_all_individuals->end(); ++it) {
+    /*
+    Only unsets individual's knowledge about pedigree.
+    This pedigree is responsible for removing this individuals from its list of individuals and
+    relations.
+    */
+    (*it)->unset_pedigree();
+  }  
   delete m_all_individuals;
   
   for (auto it = m_relations->begin(); it != m_relations->end(); ++it) {
