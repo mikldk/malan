@@ -37,4 +37,63 @@ class Population;
 #include "class_Population.h"
 #include "class_SimulateChooseFather.h"
 
+
+
+
+namespace{
+// a little helper that should IMHO be standardized
+template<typename T>
+std::size_t make_hash(const T& v){
+  return std::hash<T>()(v);
+}
+
+// adapted from boost::hash_combine
+void hash_combine(std::size_t& h, const std::size_t& v){
+  h ^= v + 0x9e3779b9 + (h << 6) + (h >> 2);
+}
+
+// hash any container
+template<typename T>
+struct hash_container{
+  size_t operator()(const T& v) const{
+    size_t h = 0;
+    for( const auto& e : v ) {
+      hash_combine(h, make_hash(e));
+    }
+    return h;
+  }
+};
+}
+
+namespace std{
+// support for vector<T> if T is hashable
+// (the T... is a required trick if the vector has a non-standard allocator)
+template<>
+struct hash< std::vector<int> > : hash_container< std::vector<int> > {};
+
+struct equal_to_intvec : binary_function< std::vector<int> , std::vector<int> , bool> {
+  bool operator() (const std::vector<int>& x, const std::vector<int>& y) const{
+    if (x.size() != y.size()){
+      return false;
+    }
+    
+    int n = x.size();
+    
+    for (int i = 0; i < n; ++i) {
+      if (x[i] != y[i]) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+};
+
+// the same for map<T,U> if T and U are hashable
+template<typename... T>
+struct hash<map<T...>> : hash_container<map<T...>> {};
+
+// simply add more containers as needed
+}
+
 #endif

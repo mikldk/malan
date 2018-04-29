@@ -313,6 +313,30 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// haplotypes_to_hashes
+Rcpp::IntegerVector haplotypes_to_hashes(Rcpp::XPtr<Population> population, Rcpp::IntegerVector pids);
+RcppExport SEXP _malan_haplotypes_to_hashes(SEXP populationSEXP, SEXP pidsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Population> >::type population(populationSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type pids(pidsSEXP);
+    rcpp_result_gen = Rcpp::wrap(haplotypes_to_hashes(population, pids));
+    return rcpp_result_gen;
+END_RCPP
+}
+// split_by_haplotypes
+Rcpp::List split_by_haplotypes(Rcpp::XPtr<Population> population, Rcpp::IntegerVector pids);
+RcppExport SEXP _malan_split_by_haplotypes(SEXP populationSEXP, SEXP pidsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Population> >::type population(populationSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type pids(pidsSEXP);
+    rcpp_result_gen = Rcpp::wrap(split_by_haplotypes(population, pids));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_individual
 Rcpp::XPtr<Individual> get_individual(Rcpp::XPtr<Population> population, int pid);
 RcppExport SEXP _malan_get_individual(SEXP populationSEXP, SEXP pidSEXP) {
@@ -732,6 +756,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_count_haplotype_occurrences_pedigree", (DL_FUNC) &_malan_count_haplotype_occurrences_pedigree, 3},
     {"_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists", (DL_FUNC) &_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists, 2},
     {"_malan_meiotic_dist", (DL_FUNC) &_malan_meiotic_dist, 2},
+    {"_malan_haplotypes_to_hashes", (DL_FUNC) &_malan_haplotypes_to_hashes, 2},
+    {"_malan_split_by_haplotypes", (DL_FUNC) &_malan_split_by_haplotypes, 2},
     {"_malan_get_individual", (DL_FUNC) &_malan_get_individual, 2},
     {"_malan_get_pid", (DL_FUNC) &_malan_get_pid, 1},
     {"_malan_print_individual", (DL_FUNC) &_malan_print_individual, 1},

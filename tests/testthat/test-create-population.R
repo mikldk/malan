@@ -172,3 +172,41 @@ test_that("pedigrees_all_populate_haplotypes_ladder_bounded haplotypes works", {
 })
 
 
+
+#####################################
+
+set.seed(1)
+pedigrees_all_populate_haplotypes_ladder_bounded(peds, 
+                                                 mutation_rates = rep(1, LOCI), 
+                                                 ladder_min = rep(10L, LOCI), 
+                                                 ladder_max = rep(20L, LOCI), 
+                                                 get_founder_haplotype = function() rep(10L, LOCI),
+                                                 progress = FALSE)
+
+haps_from_pids <- get_haplotypes_pids(test_pop, pids)
+hap_fac <- factor(apply(haps_from_pids, 1, paste0, collapse = ";"))
+hap_hash <- as.integer(hap_fac)
+hashes <- haplotypes_to_hashes(test_pop, pids)
+
+test_that("hashes works", {
+  expect_equal(length(hap_fac), length(hashes))
+  for (j in seq_along(hap_hash)) {
+    #j <- 1
+    #j <- 2
+    is <- which(hap_hash == hap_hash[j])
+    ks <- which(hashes == hashes[j])
+    expect_equal(is, ks)
+  }
+})
+
+pids_split_hap <- lapply(split_by_haplotypes(test_pop, pids), sort)
+x <- lapply(split(pids, hap_fac), sort)
+names(x) <- NULL
+ord_1 <- order(sapply(pids_split_hap, length), sapply(pids_split_hap, max))
+ord_2 <- order(sapply(x, length), sapply(x, max))
+pids_split_hap <- pids_split_hap[ord_1]
+x <- x[ord_2]
+
+test_that("split pid by haplotype works", {
+  expect_equal(length(hap_fac), length(hashes))
+})

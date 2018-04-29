@@ -509,6 +509,40 @@ meiotic_dist <- function(ind1, ind2) {
     .Call('_malan_meiotic_dist', PACKAGE = 'malan', ind1, ind2)
 }
 
+#' Convert haplotypes to hashes (integers)
+#' 
+#' Individuals with the same haplotype will have the same hash (integer)
+#' and individuals with different haplotypes will have different hashes (integers).
+#' 
+#' This can be useful if for example using haplotypes to define groups 
+#' and the haplotype itself is not of interest.
+#' 
+#' @param population Population obtained from simulation
+#' @param pids Vector of individual pids
+#' 
+#' @return Integer vector with haplotype hashes
+#' 
+#' @export
+haplotypes_to_hashes <- function(population, pids) {
+    .Call('_malan_haplotypes_to_hashes', PACKAGE = 'malan', population, pids)
+}
+
+#' Split pids by haplotype
+#' 
+#' Individuals with the same haplotype will be in the same group 
+#' and individuals with different haplotypes will be in different groups.
+#' 
+#' @param population Population obtained from simulation
+#' @param pids Vector of individual pids
+#' 
+#' @return List of integer vector, element i is an IntegerVector 
+#' with all pids from `pids` with the same haplotype
+#' 
+#' @export
+split_by_haplotypes <- function(population, pids) {
+    .Call('_malan_split_by_haplotypes', PACKAGE = 'malan', population, pids)
+}
+
 #' Get individual by pid
 #' 
 #' @param population Population

@@ -12,10 +12,10 @@
 #include <progress.hpp>
 
 #include <string>
+#include <unordered_map>
 
 #include "malan_types.h"
 #include "api_utility_individual.h"
-
 
 //' Populate haplotypes in pedigrees (0-founder/unbounded).
 //' 
@@ -593,5 +593,86 @@ Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(cons
 // [[Rcpp::export]]
 int meiotic_dist(Rcpp::XPtr<Individual> ind1, Rcpp::XPtr<Individual> ind2) {
   return ind1->meiosis_dist_tree(ind2);
+}
+
+
+//' Convert haplotypes to hashes (integers)
+//' 
+//' Individuals with the same haplotype will have the same hash (integer)
+//' and individuals with different haplotypes will have different hashes (integers).
+//' 
+//' This can be useful if for example using haplotypes to define groups 
+//' and the haplotype itself is not of interest.
+//' 
+//' @param population Population obtained from simulation
+//' @param pids Vector of individual pids
+//' 
+//' @return Integer vector with haplotype hashes
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::IntegerVector haplotypes_to_hashes(Rcpp::XPtr<Population> population,
+                                         Rcpp::IntegerVector pids) {   
+  int n = pids.size();
+  std::unordered_map< std::vector<int>, std::vector<int> > hashtable;
+  
+  for (size_t i = 0; i < n; ++i) {
+    int pid = pids[i];
+    Individual* individual = population->get_individual(pid);
+    std::vector<int> h = individual->get_haplotype();
+    hashtable[h].push_back(i);
+  }
+  
+  Rcpp::IntegerVector hap_ids(n);
+  int id = 1;
+  
+  for (auto it : hashtable) {
+    std::vector<int> indices = it.second;
+    
+    for (int j = 0; j < indices.size(); ++j) {
+      hap_ids[ indices[j] ] = id;
+    }
+    
+    ++id;
+  }
+  
+  return hap_ids;
+}
+
+//' Split pids by haplotype
+//' 
+//' Individuals with the same haplotype will be in the same group 
+//' and individuals with different haplotypes will be in different groups.
+//' 
+//' @param population Population obtained from simulation
+//' @param pids Vector of individual pids
+//' 
+//' @return List of integer vector, element i is an IntegerVector 
+//' with all pids from `pids` with the same haplotype
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::List split_by_haplotypes(Rcpp::XPtr<Population> population,
+                                         Rcpp::IntegerVector pids) {   
+  int n = pids.size();
+  std::unordered_map< std::vector<int>, std::vector<int> > hashtable;
+  
+  for (size_t i = 0; i < n; ++i) {
+    int pid = pids[i];
+    Individual* individual = population->get_individual(pid);
+    std::vector<int> h = individual->get_haplotype();
+    hashtable[h].push_back(pid);
+  }
+  
+  Rcpp::List res(hashtable.size());
+  
+  int id = 0;
+  
+  for (auto it : hashtable) {
+    res[id] = it.second;
+    ++id;
+  }
+  
+  return res;
 }
 
