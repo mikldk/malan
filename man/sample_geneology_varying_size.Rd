@@ -34,7 +34,7 @@ A malan_simulation / list with the following entries:
 \item \code{growth_type}. Growth type model.
 \item \code{sdo_type}. Standard deviation in a man's number of male offspring. StandardWF or GammaVariation depending on \code{enable_gamma_variance_extension}.
 \item \code{end_generation_individuals}. Pointers to individuals in end generation.
-\item \code{individuals_generations}. Pointers to individuals in end generation in addition to the previous \code{individuals_generations_return}.
+\item \code{individuals_generations}. Pointers to individuals in last \code{generations_return} generation (if \code{generations_return = 3}, then individuals in the last three generations are returned).
 }
 }
 \description{

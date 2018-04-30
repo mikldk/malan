@@ -60,7 +60,7 @@ using namespace Rcpp;
 //' @param progress Show progress.
 //' @param verbose_result Verbose result.
 //' 
-//' @return A list with the following entries:
+//' @return A malan_simulation / list with the following entries:
 //' \itemize{
 //'   \item `population`. An external pointer to the population.
 //'   \item `generations`. Generations actually simulated, mostly useful when parameter `generations = -1`.
@@ -68,7 +68,7 @@ using namespace Rcpp;
 //'   \item `growth_type`. Growth type model.
 //'   \item `sdo_type`. Standard deviation in a man's number of male offspring. StandardWF or GammaVariation depending on `enable_gamma_variance_extension`.
 //'   \item `end_generation_individuals`. Pointers to individuals in end generation.
-//'   \item `individuals_generations`. Pointers to individuals in end generation in addition to the previous `individuals_generations_return`.
+//'   \item `individuals_generations`. Pointers to individuals in last `generations_return` generation (if `generations_return = 3`, then individuals in the last three generations are returned).
 //' }
 //' If `verbose_result` is true, then these additional components are also returned:
 //' \itemize{
@@ -359,6 +359,8 @@ List sample_geneology(size_t population_size,
     res["father_pids"] = father_pids;
     res["father_indices"] = father_indices;
   }
+  
+  res.attr("class") = CharacterVector::create("malan_simulation", "list");
   
   return res;
 }

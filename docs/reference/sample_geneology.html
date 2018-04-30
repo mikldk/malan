@@ -163,14 +163,14 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with the following entries:</p><ul>
+    <p>A malan_simulation / list with the following entries:</p><ul>
 <li><p><code>population</code>. An external pointer to the population.</p></li>
 <li><p><code>generations</code>. Generations actually simulated, mostly useful when parameter <code>generations = -1</code>.</p></li>
 <li><p><code>founders</code>. Number of founders after the simulated <code>generations</code>.</p></li>
 <li><p><code>growth_type</code>. Growth type model.</p></li>
 <li><p><code>sdo_type</code>. Standard deviation in a man's number of male offspring. StandardWF or GammaVariation depending on <code>enable_gamma_variance_extension</code>.</p></li>
 <li><p><code>end_generation_individuals</code>. Pointers to individuals in end generation.</p></li>
-<li><p><code>individuals_generations</code>. Pointers to individuals in end generation in addition to the previous <code>individuals_generations_return</code>.</p></li>
+<li><p><code>individuals_generations</code>. Pointers to individuals in last <code>generations_return</code> generation (if <code>generations_return = 3</code>, then individuals in the last three generations are returned).</p></li>
 </ul><p>If <code>verbose_result</code> is true, then these additional components are also returned:</p><ul>
 <li><p><code>individual_pids</code>. A matrix with pid (person id) for each individual.</p></li>
 <li><p><code>father_pids</code>. A matrix with pid (person id) for each individual's father.</p></li>

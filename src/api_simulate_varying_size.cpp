@@ -27,7 +27,7 @@ using namespace Rcpp;
 //' By the backwards simulating process of the Wright-Fisher model, 
 //' individuals with no descendants in the end population are not simulated 
 //' If for some reason additional full generations should be simulated, 
-//' the number can be specified via the \code{generations_full} parameter.
+//' the number can be specified via the `generations_full` parameter.
 //' This can for example be useful if one wants to simulate the 
 //' final 3 generations although some of these may not get (male) children.
 //' 
@@ -60,13 +60,13 @@ using namespace Rcpp;
 //' 
 //' @return A malan_simulation / list with the following entries:
 //' \itemize{
-//'   \item \code{population}. An external pointer to the population.
-//'   \item \code{generations}. Generations actually simulated, mostly useful when parameter \code{generations = -1}.
-//'   \item \code{founders}. Number of founders after the simulated \code{generations}.
-//'   \item \code{growth_type}. Growth type model.
-//'   \item \code{sdo_type}. Standard deviation in a man's number of male offspring. StandardWF or GammaVariation depending on \code{enable_gamma_variance_extension}.
-//'   \item \code{end_generation_individuals}. Pointers to individuals in end generation.
-//'   \item \code{individuals_generations}. Pointers to individuals in end generation in addition to the previous \code{individuals_generations_return}.
+//'   \item `population`. An external pointer to the population.
+//'   \item `generations`. Generations actually simulated, mostly useful when parameter `generations = -1`.
+//'   \item `founders`. Number of founders after the simulated `generations`.
+//'   \item `growth_type`. Growth type model.
+//'   \item `sdo_type`. Standard deviation in a man's number of male offspring. StandardWF or GammaVariation depending on `enable_gamma_variance_extension`.
+//'   \item `end_generation_individuals`. Pointers to individuals in end generation.
+//'   \item `individuals_generations`. Pointers to individuals in last `generations_return` generation (if `generations_return = 3`, then individuals in the last three generations are returned).
 //' }
 //'
 //' @seealso [sample_geneology()].

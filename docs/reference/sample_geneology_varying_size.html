@@ -162,7 +162,7 @@ The length of population_sizes is the number of generations being simulated.</p>
 <li><p><code>growth_type</code>. Growth type model.</p></li>
 <li><p><code>sdo_type</code>. Standard deviation in a man's number of male offspring. StandardWF or GammaVariation depending on <code>enable_gamma_variance_extension</code>.</p></li>
 <li><p><code>end_generation_individuals</code>. Pointers to individuals in end generation.</p></li>
-<li><p><code>individuals_generations</code>. Pointers to individuals in end generation in addition to the previous <code>individuals_generations_return</code>.</p></li>
+<li><p><code>individuals_generations</code>. Pointers to individuals in last <code>generations_return</code> generation (if <code>generations_return = 3</code>, then individuals in the last three generations are returned).</p></li>
 </ul>
 
     

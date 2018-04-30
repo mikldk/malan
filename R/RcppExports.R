@@ -62,7 +62,7 @@ build_pedigrees <- function(population, progress = TRUE) {
 #' @param progress Show progress.
 #' @param verbose_result Verbose result.
 #' 
-#' @return A list with the following entries:
+#' @return A malan_simulation / list with the following entries:
 #' \itemize{
 #'   \item `population`. An external pointer to the population.
 #'   \item `generations`. Generations actually simulated, mostly useful when parameter `generations = -1`.
@@ -70,7 +70,7 @@ build_pedigrees <- function(population, progress = TRUE) {
 #'   \item `growth_type`. Growth type model.
 #'   \item `sdo_type`. Standard deviation in a man's number of male offspring. StandardWF or GammaVariation depending on `enable_gamma_variance_extension`.
 #'   \item `end_generation_individuals`. Pointers to individuals in end generation.
-#'   \item `individuals_generations`. Pointers to individuals in end generation in addition to the previous `individuals_generations_return`.
+#'   \item `individuals_generations`. Pointers to individuals in last `generations_return` generation (if `generations_return = 3`, then individuals in the last three generations are returned).
 #' }
 #' If `verbose_result` is true, then these additional components are also returned:
 #' \itemize{
@@ -97,7 +97,7 @@ sample_geneology <- function(population_size, generations, generations_full = 1L
 #' By the backwards simulating process of the Wright-Fisher model, 
 #' individuals with no descendants in the end population are not simulated 
 #' If for some reason additional full generations should be simulated, 
-#' the number can be specified via the \code{generations_full} parameter.
+#' the number can be specified via the `generations_full` parameter.
 #' This can for example be useful if one wants to simulate the 
 #' final 3 generations although some of these may not get (male) children.
 #' 
@@ -130,13 +130,13 @@ sample_geneology <- function(population_size, generations, generations_full = 1L
 #' 
 #' @return A malan_simulation / list with the following entries:
 #' \itemize{
-#'   \item \code{population}. An external pointer to the population.
-#'   \item \code{generations}. Generations actually simulated, mostly useful when parameter \code{generations = -1}.
-#'   \item \code{founders}. Number of founders after the simulated \code{generations}.
-#'   \item \code{growth_type}. Growth type model.
-#'   \item \code{sdo_type}. Standard deviation in a man's number of male offspring. StandardWF or GammaVariation depending on \code{enable_gamma_variance_extension}.
-#'   \item \code{end_generation_individuals}. Pointers to individuals in end generation.
-#'   \item \code{individuals_generations}. Pointers to individuals in end generation in addition to the previous \code{individuals_generations_return}.
+#'   \item `population`. An external pointer to the population.
+#'   \item `generations`. Generations actually simulated, mostly useful when parameter `generations = -1`.
+#'   \item `founders`. Number of founders after the simulated `generations`.
+#'   \item `growth_type`. Growth type model.
+#'   \item `sdo_type`. Standard deviation in a man's number of male offspring. StandardWF or GammaVariation depending on `enable_gamma_variance_extension`.
+#'   \item `end_generation_individuals`. Pointers to individuals in end generation.
+#'   \item `individuals_generations`. Pointers to individuals in last `generations_return` generation (if `generations_return = 3`, then individuals in the last three generations are returned).
 #' }
 #'
 #' @seealso [sample_geneology()].
