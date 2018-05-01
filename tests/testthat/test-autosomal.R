@@ -220,7 +220,10 @@ test_that("estimate_theta_subpops_pids", {
   expect_equal(res_geno, res_pids)
 })
 
-############
+#####################################################################################
+# theta
+#####################################################################################
+
 # Known answers, GDA2
 two2cols <- function(x) {
   do.call(rbind, lapply(x, function(as) as.integer(strsplit(as.character(as), "")[[1]])))
@@ -240,44 +243,34 @@ loc4_ni <- sapply(loc4, nrow)
 loc4_sol_F <- -0.008234
 loc4_sol_theta <- 0.063292
 loc4_sol_f <- -0.076359
-res_loc4 <- estimate_theta_subpops_genotypes(loc4, loc4_ni)
-#str(res_loc4, 1)
 
-if (FALSE) {
-  #       Locus      Allele     Sigma-G     Sigma-I     Sigma-P
-  #   ----------  ----------  ----------  ----------  ----------
-  #      locus-4         All    0.233333   -0.016553    0.014647
-  #                        2    0.116667   -0.008277    0.007324
-  #                        1    0.116667   -0.008277    0.007324
-  #                                                                                                                        
-  #   ----------  ----------  ----------  ----------  ----------
-  #      Overall         ---    0.822222    0.019770    0.126411
-  # 
-  #        Locus      Allele         MSG         MSI         MSP
-  #   ----------  ----------  ----------  ----------  ----------
-  #      locus-4         All    0.116667    0.116667    0.751111
-  #                        2    0.116667    0.100114    0.751111
-  #                        1    0.116667    0.100114    0.751111
-  #                                                             
-  #   ----------  ----------  ----------  ----------  ----------
-  #      Overall         ---    0.411111    0.411111    6.049167
-  # 
-  #        Locus      Allele          S3          S2          S1
-  #   ----------  ----------  ----------  ----------  ----------
-  #      locus-4         All   90.000000   79.500000   70.690000
-  #                        2   23.000000   12.500000    3.690000
-  #                        1  157.000000  146.500000  137.690000
-  
-  str(estimate_theta_subpops_genotypes(loc4, loc4_ni)$extra$allele_values[["1"]], 1)
-}
+loc4_allele1_sigmasqP <- 0.007324
+loc4_allele1_sigmasqI <- -0.008277
+loc4_allele1_sigmasqG <- 0.116667
+loc4_allele2_sigmasqP <- loc4_allele1_sigmasqP
+loc4_allele2_sigmasqI <- loc4_allele1_sigmasqI
+loc4_allele2_sigmasqG <- loc4_allele1_sigmasqG
+
+res_loc4 <- estimate_theta_subpops_genotypes(loc4, loc4_ni)
+
 test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 4", {
-  expect_equal(res_loc4$F, loc4_sol_F, tol = 1e-5) # results with 4 digits
-  expect_equal(res_loc4$theta, loc4_sol_theta, tol = 1e-6) # results with 4 digits
-  expect_equal(res_loc4$f, loc4_sol_f, tol = 1e-5) # results with 4 digits
+  expect_equal(res_loc4$F, loc4_sol_F, tol = 1e-5)
+  expect_equal(res_loc4$theta, loc4_sol_theta, tol = 1e-6)
+  expect_equal(res_loc4$f, loc4_sol_f, tol = 1e-5)
   
-  # GDA1.1
-  expect_equal(res_loc4$extra$n_mean, 45)
-  expect_equal(res_loc4$extra$allele_values[["1"]]$HA, 2, tol = 1e-5) # results with 4 digits
+  expect_equal(res_loc4$extra$allele_values[["1"]]$sigmasq_P, 
+               res_loc4$extra$allele_values[["2"]]$sigmasq_P)
+  expect_equal(res_loc4$extra$allele_values[["1"]]$sigmasq_I, 
+               res_loc4$extra$allele_values[["2"]]$sigmasq_I)
+  expect_equal(res_loc4$extra$allele_values[["1"]]$sigmasq_G, 
+               res_loc4$extra$allele_values[["2"]]$sigmasq_G)
+  
+  expect_equal(loc4_allele1_sigmasqP, 
+               res_loc4$extra$allele_values[["1"]]$sigmasq_P, tol = 1e-6)
+  expect_equal(loc4_allele1_sigmasqI, 
+               res_loc4$extra$allele_values[["1"]]$sigmasq_I, tol = 1e-6)
+  expect_equal(loc4_allele1_sigmasqG, 
+               res_loc4$extra$allele_values[["1"]]$sigmasq_G, tol = 1e-6)
 })
 
 # Same as above, now locus 6
@@ -293,26 +286,308 @@ loc6 <- list(two2cols(loc6_g), two2cols(loc6_n))
 loc6_ni <- sapply(loc6, nrow)
 res_loc6 <- estimate_theta_subpops_genotypes(loc6, loc6_ni)
 
-loc6_sol_F <- 0.2009
-loc6_sol_theta <- 0.1517
-loc6_sol_f <- 0.0581
+# loc6_sol_F <- 0.2009
+# loc6_sol_theta <- 0.1517
+# loc6_sol_f <- 0.0581
+# From GDA1.1 program, too
+loc6_sol_F <- 0.200938
+loc6_sol_theta <- 0.151652
+loc6_sol_f <- 0.058097
+
+loc6_allele1_sigmasqP <- 0.086002
+loc6_allele1_sigmasqI <- 0.080586
+loc6_allele1_sigmasqG <- 0.127778
+
+loc6_allele2_sigmasqP <- 0.008555
+loc6_allele2_sigmasqI <- -0.007456
+loc6_allele2_sigmasqG <- 0.188889
+
+loc6_allele3_sigmasqP <- 0.010538
+loc6_allele3_sigmasqI <- -0.009882
+loc6_allele3_sigmasqG <- 0.116667
+
+loc6_allele4_sigmasqP <- 0.006668
+loc6_allele4_sigmasqI <- -0.026926
+loc6_allele4_sigmasqG <- 0.155556
+
 
 test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 6", {
-  expect_equal(res_loc6$F, loc6_sol_F, tol = 1e-4) # results with 4 digits
-  expect_equal(res_loc6$theta, loc6_sol_theta, tol = 1e-4) # results with 4 digits
-  expect_equal(res_loc6$f, loc6_sol_f, tol = 1e-4) # results with 4 digits
+  expect_equal(res_loc6$F, loc6_sol_F, tol = 1e-5) 
+  expect_equal(res_loc6$theta, loc6_sol_theta, tol = 1e-6) 
+  expect_equal(res_loc6$f, loc6_sol_f, tol = 1e-5) 
+  
+  # Allele 1
+  expect_equal(loc6_allele1_sigmasqP, 
+               res_loc6$extra$allele_values[["1"]]$sigmasq_P, tol = 1e-6)
+  expect_equal(loc6_allele1_sigmasqI, 
+               res_loc6$extra$allele_values[["1"]]$sigmasq_I, tol = 1e-6)
+  expect_equal(loc6_allele1_sigmasqG, 
+               res_loc6$extra$allele_values[["1"]]$sigmasq_G, tol = 1e-6)
+  
+  # Allele 2
+  expect_equal(loc6_allele2_sigmasqP, 
+               res_loc6$extra$allele_values[["2"]]$sigmasq_P, tol = 1e-6)
+  expect_equal(loc6_allele2_sigmasqI, 
+               res_loc6$extra$allele_values[["2"]]$sigmasq_I, tol = 1e-6)
+  expect_equal(loc6_allele2_sigmasqG, 
+               res_loc6$extra$allele_values[["2"]]$sigmasq_G, tol = 1e-6)
+  
+  # Allele 3
+  expect_equal(loc6_allele3_sigmasqP, 
+               res_loc6$extra$allele_values[["3"]]$sigmasq_P, tol = 1e-6)
+  expect_equal(loc6_allele3_sigmasqI, 
+               res_loc6$extra$allele_values[["3"]]$sigmasq_I, tol = 1e-6)
+  expect_equal(loc6_allele3_sigmasqG, 
+               res_loc6$extra$allele_values[["3"]]$sigmasq_G, tol = 1e-6)
+  
+  # Allele 4
+  expect_equal(loc6_allele4_sigmasqP, 
+               res_loc6$extra$allele_values[["4"]]$sigmasq_P, tol = 1e-6)
+  expect_equal(loc6_allele4_sigmasqI, 
+               res_loc6$extra$allele_values[["4"]]$sigmasq_I, tol = 1e-6)
+  expect_equal(loc6_allele4_sigmasqG, 
+               res_loc6$extra$allele_values[["4"]]$sigmasq_G, tol = 1e-6)
 })
 
-if (FALSE) {
-  d4 <- lapply(loc4, function(x) apply(x, 1, paste0, collapse = "/"))
-  d6 <- lapply(loc6, function(x) apply(x, 1, paste0, collapse = "/"))
 
-  p1 <- paste0(apply(cbind(d4[[1]], d6[[1]]), 1, paste0, collapse = " "), "\n")
-  p1 <- paste0("\t\t_", seq_along(p1), "_ ", p1, collapse = " ")
-  cat(p1)
+#########################################################################
+
+
+
+
+#####################################################################################
+# GDA program
+# https://phylogeny.uconn.edu/software/
+# v. 1.1
+# diploid.nex output
+#####################################################################################
+
+if (FALSE) {
+  diploid_nex_str <- "Pop_1:
+  _1_ 4/4 4/3 4/3 3/3 4/4
+  _2_ 4/4 4/4 4/3 3/3 4/4
+  _3_ 4/4 4/4 4/3 4/3 4/4
+  _4_ 4/4 4/4 ?/? 3/3 4/4
+  _5_ 4/4 4/4 2/4 3/4 4/4
+  _6_ 4/4 4/4 ?/? 4/3 4/4 
+  _7_ 4/4 4/4 4/3 4/3 4/4 
+  _8_ 4/4 4/4 ?/? 4/3 4/4,
+  Pop_2:
+  _1_ 4/4 4/4 3/3 3/2 4/4 
+  _2_ 4/4 3/3 4/4 4/3 4/4 
+  _3_ 4/4 4/3 4/4 4/3 4/4
+  _4_ 4/4 4/4 3/3 3/3 4/4 
+  _5_ 4/4 4/3 4/4 4/4 4/4 
+  _6_ 4/4 4/4 4/4 2/2 4/4 
+  _7_ 4/4 4/4 4/3 4/3 4/4 
+  _8_ 4/4 4/4 4/4 4/4 4/4,
+  Pop_3:
+  _1_ 4/4 4/4 4/4 4/3 4/4 
+  _2_ 4/4 4/4 4/4 4/4 4/4 
+  _3_ 4/4 4/4 4/3 2/1 4/4 
+  _4_ 4/4 4/4 3/3 4/3 4/4 
+  _5_ 4/4 4/4 4/3 2/1 4/4,
+  Pop_4:
+  _1_ 4/4 4/4 4/3 4/4 4/4 
+  _2_ 4/4 4/4 4/3 4/3 4/4
+  _3_ 4/4 4/4 4/3 4/3 4/4 
+  _4_ 4/4 4/4 4/3 4/4 4/4 
+  _5_ 4/4 4/4 4/3 4/4 4/4 
+  _6_ 4/4 4/4 4/4 3/3 4/4 
+  _7_ 4/4 4/4 4/4 4/4 4/4,
+  Pop_5:
+  _1_ 4/4 4/4 4/4 2/1 4/4 
+  _2_ 4/4 4/4 4/4 3/3 4/4 
+  _3_ 4/4 4/4 4/3 4/3 4/4 
+  _4_ 4/4 4/4 4/3 4/3 4/4
+  _5_ 4/4 4/4 4/4 4/4 4/4 
+  _6_ 4/4 4/4 4/4 4/3 4/4 
+  _7_ 4/4 4/4 4/3 4/3 4/4 
+  _8_ 4/4 4/4 4/4 ?/? 4/4 
+  _9_ 4/4 4/3 4/4 4/3 4/4,
+  Pop_6:
+  _1_ 4/4 4/4 4/4 4/3 4/4 
+  _2_ 4/4 4/4 4/3 3/3 4/4 
+  _3_ 4/4 4/4 4/4 3/2 4/4 
+  _4_ 4/4 4/4 4/3 4/1 4/4 
+  _5_ 4/4 4/4 4/4 4/4 4/4
+  _6_ 4/4 4/4 4/4 4/2 4/4
+  _7_ 4/4 4/4 4/4 4/3 4/4"
   
-  p2 <- paste0(apply(cbind(d4[[2]], d6[[2]]), 1, paste0, collapse = " "), "\n")
-  p2 <- paste0("\t\t_", seq_along(p2), "_ ", p2, collapse = " ")
-  cat(p2)
+  diploid_nex_con <- textConnection(diploid_nex_str)
+  lns <- readLines(diploid_nex_con)
+  is <- c(which(grepl("Pop", lns)), length(lns)+1)
+  grp <- unlist(lapply(1L:(length(is)-1), function(i) rep(i, is[i+1]-is[i])))
+  length(lns)
+  length(grp)
+  
+  pops <- split(lns, grp)
+  prof <- lapply(pops, function(x) {
+    x <- x[-1]
+    x <- gsub("^[ ]*_[1-9]+_[ ]*(.*)$", "\\1", x)
+    x <- gsub(",", "", x, fixed = TRUE)
+    x <- strsplit(x, " ")
+    #x <- lapply(x, function(y) do.call(rbind, strsplit(y, "/")))
+    x <- lapply(x, function(y) strsplit(y, "/"))
+    #x <- do.call(rbind, lapply(x, function(y) strsplit(y, "/")))
+    x
+  })
+  prof
+  loci <- 2:4
+  prof_loc <- lapply(loci, function(i) {
+    lapply(prof, function(x) {
+      d <- do.call(rbind, lapply(x, function(y) y[[i]]))
+      d[d == "?"] <- NA
+      d <- na.omit(d)
+      d <- apply(d, 2, as.integer)
+      d
+    })
+  })
+  names(prof_loc) <- loci
+  prof_loc
+  diploid_nex_data <- prof_loc
+  dput(prof_loc)
+  
 }
+diploid_nex_data <- structure(list(`2` = structure(list(`1` = structure(c(4L, 4L, 
+                                                                          4L, 4L, 4L, 4L, 4L, 4L, 3L, 4L, 4L, 4L, 4L, 4L, 4L, 4L), .Dim = c(8L, 
+                                                                                                                                            2L)), 
+                                                        `2` = structure(c(4L, 3L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 3L, 
+                                                                          3L, 4L, 3L, 4L, 4L, 4L), .Dim = c(8L, 2L)), 
+                                                        `3` = structure(c(4L, 
+                                                                          4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L), .Dim = c(5L, 2L)), 
+                                                        `4` = structure(c(4L, 
+                                                                          4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L), .Dim = c(7L, 
+                                                                                                                                        2L)), 
+                                                        `5` = structure(c(4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 
+                                                                          4L, 4L, 4L, 4L, 4L, 4L, 4L, 3L), .Dim = c(9L, 2L)), 
+                                                        `6` = structure(c(4L, 
+                                                                          4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L), .Dim = c(7L, 
+                                                                                                                                        2L))), .Names = c("1", "2", "3", "4", "5", "6")), 
+                                   `3` = structure(list(
+                                     `1` = structure(c(4L, 4L, 4L, 2L, 4L, 3L, 3L, 3L, 4L, 3L), .Dim = c(5L, 
+                                                                                                         2L)), 
+                                     `2` = structure(c(3L, 4L, 4L, 3L, 4L, 4L, 4L, 4L, 3L, 
+                                                       4L, 4L, 3L, 4L, 4L, 3L, 4L), .Dim = c(8L, 2L)), 
+                                     `3` = structure(c(4L, 
+                                                       4L, 4L, 3L, 4L, 4L, 4L, 3L, 3L, 3L), .Dim = c(5L, 2L)), 
+                                     `4` = structure(c(4L, 
+                                                       4L, 4L, 4L, 4L, 4L, 4L, 3L, 3L, 3L, 3L, 3L, 4L, 4L), .Dim = c(7L, 
+                                                                                                                     2L)), 
+                                     `5` = structure(c(4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 4L, 
+                                                       4L, 4L, 3L, 3L, 4L, 4L, 3L, 4L, 4L), .Dim = c(9L, 2L)), 
+                                     `6` = structure(c(4L, 
+                                                       4L, 4L, 4L, 4L, 4L, 4L, 4L, 3L, 4L, 3L, 4L, 4L, 4L), .Dim = c(7L, 
+                                                                                                                     2L))), .Names = c("1", "2", "3", "4", "5", "6")), 
+                                   `4` = structure(list(
+                                     `1` = structure(c(3L, 3L, 4L, 3L, 3L, 4L, 4L, 4L, 3L, 3L, 
+                                                       3L, 3L, 4L, 3L, 3L, 3L), .Dim = c(8L, 2L)), 
+                                     `2` = structure(c(3L, 
+                                                       4L, 4L, 3L, 4L, 2L, 4L, 4L, 2L, 3L, 3L, 3L, 4L, 2L, 3L, 4L
+                                     ), .Dim = c(8L, 2L)), 
+                                     `3` = structure(c(4L, 4L, 2L, 4L, 2L, 
+                                                       3L, 4L, 1L, 3L, 1L), .Dim = c(5L, 2L)), 
+                                     `4` = structure(c(4L, 
+                                                       4L, 4L, 4L, 4L, 3L, 4L, 4L, 3L, 3L, 4L, 4L, 3L, 4L), .Dim = c(7L, 
+                                                                                                                     2L)), 
+                                     `5` = structure(c(2L, 3L, 4L, 4L, 4L, 4L, 4L, 4L, 1L, 
+                                                       3L, 3L, 3L, 4L, 3L, 3L, 3L), .Dim = c(8L, 2L)), 
+                                     `6` = structure(c(4L, 
+                                                       3L, 3L, 4L, 4L, 4L, 4L, 3L, 3L, 2L, 1L, 4L, 2L, 3L), .Dim = c(7L, 
+                                                                                                                     2L))), .Names = c("1", "2", "3", "4", "5", "6"))), .Names = c("2", 
+                                                                                                                                                                                   "3", "4"))
+
+
+# Excerpt:
+#        Locus      Allele           f           F     Theta-P
+#   ----------  ----------  ----------  ----------  ----------
+#      locus-2         All    0.250514    0.302529    0.069401
+#      locus-3         All   -0.034807   -0.030052    0.004595
+#      locus-4         All    0.012751    0.036738    0.024297
+
+#       Locus      Allele     Sigma-G     Sigma-I     Sigma-P
+#   ----------  ----------  ----------  ----------  ----------
+#      locus-2         All    0.090909    0.030386    0.009046
+#                        3    0.045455    0.015193    0.004523
+#                        4    0.045455    0.015193    0.004523
+#                                                             
+#      locus-3         All    0.439024   -0.014767    0.001958
+#                        2    0.012195   -0.000383    0.000453
+#                        3    0.207317   -0.001286   -0.002083
+#                        4    0.219512   -0.013098    0.003588
+#                                                             
+#      locus-4         All    0.604651    0.007810    0.015252
+#                        1    0.046512   -0.003444    0.002099
+#                        2    0.069767    0.014971    0.000953
+#                        4    0.244186    0.006261    0.000451
+#                        3    0.244186   -0.009979    0.011749
+
+gda_sigma_lns <- readLines(textConnection("Locus      Allele     Sigma-G     Sigma-I     Sigma-P
+     locus-2         All    0.090909    0.030386    0.009046
+                       3    0.045455    0.015193    0.004523
+                       4    0.045455    0.015193    0.004523
+                                                            
+     locus-3         All    0.439024   -0.014767    0.001958
+                       2    0.012195   -0.000383    0.000453
+                       3    0.207317   -0.001286   -0.002083
+                       4    0.219512   -0.013098    0.003588
+                                                            
+     locus-4         All    0.604651    0.007810    0.015252
+                       1    0.046512   -0.003444    0.002099
+                       2    0.069767    0.014971    0.000953
+                       4    0.244186    0.006261    0.000451
+                       3    0.244186   -0.009979    0.011749"))
+gda_sigma_lns <- gda_sigma_lns[!grepl("locus", gda_sigma_lns)]
+gda_sigma_lns <- gsub("[ ]+", " ", gda_sigma_lns)
+gda_sigma_lns <- gsub("^ ", "", gda_sigma_lns)
+gda_sigma_lns <- gda_sigma_lns[gda_sigma_lns != " "]
+gda_sigma_lns <- gda_sigma_lns[gda_sigma_lns != ""]
+gda_sigma_lns <- gda_sigma_lns[-1]
+gda_sigma_d <- read.table(text = gda_sigma_lns, stringsAsFactors = FALSE, 
+                             sep = " ", row.names = NULL,
+                             col.names = c("Allele", "sigmasq_G", "sigmasq_I", "sigmasq_P"))
+gda_sigma <- list(
+  "2" = gda_sigma_d[1:2, ],
+  "3" = gda_sigma_d[3:5, ],
+  "4" = gda_sigma_d[6:9, ]
+)
+
+gda_thetaFf <- list(
+  "2" = list(f =  0.250514, F =  0.302529, theta = 0.069401),
+  "3" = list(f = -0.034807, F = -0.030052, theta = 0.004595),
+  "4" = list(f =  0.012751, F =  0.036738, theta = 0.024297)
+)
+
+test_that("GDA 1.1 diploid.nex ", {
+  for (loc in seq_along(diploid_nex_data)) {
+    #loc <- 1
+    expect_equal(names(gda_thetaFf)[loc], names(diploid_nex_data)[loc])
+    
+    gda_loc <- gda_thetaFf[[loc]]
+    
+    loc_subpops <- diploid_nex_data[[loc]]
+    loc_subpops_ni <- sapply(loc_subpops, nrow)
+    res_loc <- estimate_theta_subpops_genotypes(loc_subpops, loc_subpops_ni)
+    
+    expect_equal(res_loc$theta, gda_loc$theta, tol = 1e-5)
+    expect_equal(res_loc$F, gda_loc$F, tol = 1e-5)
+    expect_equal(res_loc$f, gda_loc$f, tol = 1e-5)
+    
+    # Sigma
+    sigma_tmp <- gda_sigma[[ names(gda_thetaFf)[loc] ]]
+    
+    for (a_i in seq_along(sigma_tmp$Allele)) {
+      #a_i <- 1
+      a <- as.character(sigma_tmp$Allele[a_i])
+      
+      expect_equal(sigma_tmp$sigmasq_P[a_i], 
+                   res_loc$extra$allele_values[[a]]$sigmasq_P, tol = 1e-6)
+      expect_equal(sigma_tmp$sigmasq_I[a_i], 
+                   res_loc$extra$allele_values[[a]]$sigmasq_I, tol = 1e-6)
+      expect_equal(sigma_tmp$sigmasq_G[a_i], 
+                   res_loc$extra$allele_values[[a]]$sigmasq_G, tol = 1e-6)
+      
+    }
+  }
+})
 

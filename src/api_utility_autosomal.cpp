@@ -579,6 +579,8 @@ Rcpp::List estimate_theta_subpops_weighted_engine(
     Rcpp::stop("n.size() != r");
   }
   
+  double r_dbl = (double)r;
+  
   double n_mean = 0.0;
   double n_sum = 0.0;
   double n2_sum = 0.0;
@@ -586,7 +588,7 @@ Rcpp::List estimate_theta_subpops_weighted_engine(
   for (int i = 0; i < r; ++i) {
     // Different from subpop.size()!
     double n_i = n[i];
-    n_mean += n_i / (double)r;
+    n_mean += n_i / r_dbl;
     n_sum += n_i;
     n2_sum += n_i * n_i;
   }
@@ -594,35 +596,37 @@ Rcpp::List estimate_theta_subpops_weighted_engine(
   // So have a common container with alleles to iterate over later
   std::unordered_set<int> alleles;
   
+  // First, be sure that all alleles are known:
+  for (int i = 0; i < r; ++i) {
+    for (auto ele = p_A[i].begin(); ele != p_A[i].end(); ++ele) { 
+      alleles.insert(ele->first);
+    }
+  }
+  
   //********************************
   // GDA2, p. 168, p_A. tilde
   //********************************
   std::unordered_map<int, double> mean_pA;
   for (int i = 0; i < r; ++i) {
-    for (auto ele = p_A[i].begin(); ele != p_A[i].end(); ++ele) { 
-      alleles.insert(ele->first);
-      mean_pA[ ele->first ] += (n[i] * ele->second) / n_sum;
+    for (auto ele = alleles.begin(); ele != alleles.end(); ++ele) {
+      int allele = *ele;
+      double p = p_A[i][allele]; // 0 if not exists
+      mean_pA[allele] += (n[i] * p) / n_sum;
     } 
   }  
-  /*
-  Rcpp::Rcout << "mean_pA\n";
-  print_map(mean_pA);
-  */
+
   //********************************
   // GDA2, p. 173, s^2
   //********************************
   std::unordered_map<int, double> s2_A;
   for (int i = 0; i < r; ++i) {
-    for (auto ele = p_A[i].begin(); ele != p_A[i].end(); ++ele) {
-      alleles.insert(ele->first);
-      double d = ele->second - mean_pA[ele->first];
-      s2_A[ ele->first ] += (n[i] * d * d) / ((r-1.0) * n_mean);
+    for (auto ele = alleles.begin(); ele != alleles.end(); ++ele) {
+      int allele = *ele;
+      double p = p_A[i][allele]; // 0 if not exists
+      double d = p - mean_pA[allele];
+      s2_A[allele] += (n[i] * d * d) / ((r_dbl - 1.0) * n_mean);
     } 
   }  
-  /*
-  Rcpp::Rcout << "s2_A\n";
-  print_map(s2_A);
-  */
 
   
   ////////////////////////////////////////////////////
@@ -635,32 +639,23 @@ Rcpp::List estimate_theta_subpops_weighted_engine(
   std::unordered_map<int, double> mean_H_A;
   for (auto ele = alleles.begin(); ele != alleles.end(); ++ele) {
     int allele = *ele;
+    
     for (int i = 0; i < r; ++i) {
       double pA = p_A[i][allele];
       double PAA = P_AA[i][allele];
       mean_H_A[allele] += (2.0 * n[i] * (pA - PAA)) / n_sum;
     }
   }
-
+  
   ////////////////////////////////////////////////////
   // Calculating S1, S2, S3, GDA2, p. 178-179
   ////////////////////////////////////////////////////
   
-  double nc = (n_sum - n2_sum/n_sum) / (double)(r - 1);
-  
-  /*
-  Rcpp::Rcout << "n_c = " << nc << "\n";
-  Rcpp::Rcout << "n_mean = " << n_mean << "\n";
-  Rcpp::Rcout << "n_sum = " << n_sum << "\n";
-  Rcpp::Rcout << "n2_sum = " << n2_sum << "\n";
-  */
-  
-  double r_dbl = (double)r;
+  double nc = (n_sum - (n2_sum/n_sum)) / (r_dbl - 1.0);
   
   std::unordered_map<int, double> allele_S1;
   std::unordered_map<int, double> allele_S2;
   std::unordered_map<int, double> allele_S3;
-  
   
   std::unordered_map<int, double> allele_MSG;
   std::unordered_map<int, double> allele_MSI;
@@ -678,17 +673,21 @@ Rcpp::List estimate_theta_subpops_weighted_engine(
     allele_S1[allele] = tmp_s2 - (1.0 / (n_mean - 1.0)) * (tmp_p * (1.0 - tmp_p) - ((r_dbl - 1.0) / r_dbl) * tmp_s2 - 0.25*tmp_HA);
     
     double tmp_S2_p1 = (r_dbl*(n_mean - nc)/n_mean) * tmp_p * (1.0 - tmp_p);
-    double tmp_S2_p2 = tmp_s2 * ( (n_mean - 1) + (r_dbl - 1)*(n_mean - nc) ) / n_mean;
+    double tmp_S2_p2 = tmp_s2 * ( (n_mean - 1.0) + (r_dbl - 1.0)*(n_mean - nc) ) / n_mean;
     double tmp_S2_p3 = tmp_HA * r_dbl * (n_mean - nc) / (4.0 * n_mean * nc);
     allele_S2[allele] = (tmp_p * (1.0 - tmp_p)) - (n_mean / (r_dbl * (n_mean - 1.0))) * (tmp_S2_p1 - tmp_S2_p2 - tmp_S2_p3);
-    
     allele_S3[allele] = (nc / (2.0 * n_mean)) * tmp_HA;
     
     
-    /////////////
-    double tmp_MSP = 2.0*(r_dbl - 1.0)*n_mean*tmp_s2;
-    double tmp_MSI = 2.0*r_dbl*n_mean*tmp_p*(1.0-tmp_p) - 0.5*r_dbl*n_mean*tmp_HA - tmp_MSP;
-    double tmp_MSG = 0.5*r_dbl*n_mean*tmp_HA;
+    // GDA2 p. 177, Tab. 5.4
+    double tmp_SSP = 2.0*(r_dbl - 1.0)*n_mean*tmp_s2;
+    double tmp_SSI = 2.0*r_dbl*n_mean*tmp_p*(1.0-tmp_p) - 0.5*r_dbl*n_mean*tmp_HA - tmp_SSP;
+    double tmp_SSG = 0.5*r_dbl*n_mean*tmp_HA;
+    
+    // Divide sums of squares with the d.f.:
+    double tmp_MSP = tmp_SSP / (r_dbl - 1.0);
+    double tmp_MSI = tmp_SSI / (n_sum - r_dbl);
+    double tmp_MSG = tmp_SSG / n_sum;
     
     allele_MSG[allele] = tmp_MSG;
     allele_MSI[allele] = tmp_MSI;
@@ -702,18 +701,6 @@ Rcpp::List estimate_theta_subpops_weighted_engine(
     allele_sigmasq_I[allele] = tmp_sigmasq_I;
     allele_sigmasq_P[allele] = tmp_sigmasq_P;
   }  
-  
-  /*
-  Rcpp::Rcout << "allele_S1\n";
-  print_map(allele_S1);
-  
-  Rcpp::Rcout << "allele_S2\n";
-  print_map(allele_S2);
-  
-  Rcpp::Rcout << "allele_S3\n";
-  print_map(allele_S3);  
-  */
-  
   
   ////////////////////////////////////////////////////
   // Calculating S1, S2, S3, GDA2, p. 178-179
@@ -744,12 +731,6 @@ Rcpp::List estimate_theta_subpops_weighted_engine(
    f: Wright's F_{IS}
    Correlation of alleles within individuals within one populatoin.
    */
-  
-  /*
-   Rcpp::Rcout << "F = " << F << "\n";
-   Rcpp::Rcout << "theta = " << theta << "\n";
-   Rcpp::Rcout << "f = " << f << "\n";
-   */
 
   Rcpp::List res_allele;
   for (auto ele = alleles.begin(); ele != alleles.end(); ++ele) {
@@ -760,20 +741,22 @@ Rcpp::List estimate_theta_subpops_weighted_engine(
     res_tmp["allele"] = allele;
     
     res_tmp["s2"] = s2_A[allele];
-    res_tmp["PA"] = mean_pA[allele];
-    res_tmp["HA"] = mean_H_A[allele];
+    res_tmp["p_A_mean"] = mean_pA[allele];
+    res_tmp["H_A_mean"] = mean_H_A[allele];
 
-    res_tmp["MSG"] = allele_sigmasq_G[allele];
-    res_tmp["MSI"] = allele_sigmasq_I[allele];
-    res_tmp["MSP"] = allele_sigmasq_P[allele];
+    res_tmp["MSG"] = allele_MSG[allele];
+    res_tmp["MSI"] = allele_MSI[allele];
+    res_tmp["MSP"] = allele_MSP[allele];
     res_tmp["sigmasq_G"] = allele_sigmasq_G[allele];
     res_tmp["sigmasq_I"] = allele_sigmasq_I[allele];
     res_tmp["sigmasq_P"] = allele_sigmasq_P[allele];
-    res_tmp["S1"] = allele_sigmasq_G[allele];
-    res_tmp["S2"] = allele_sigmasq_I[allele];
-    res_tmp["S3"] = allele_sigmasq_P[allele];
+    res_tmp["S1"] = allele_S1[allele];
+    res_tmp["S2"] = allele_S2[allele];
+    res_tmp["S3"] = allele_S3[allele];
     
-    //res_allele.push_back(res_tmp);
+    res_tmp["theta_sigmasq"] = allele_sigmasq_P[allele] / (allele_sigmasq_P[allele] + allele_sigmasq_I[allele] + allele_sigmasq_G[allele]);
+    res_tmp["theta_S1S2"] = allele_S1[allele] / allele_S2[allele];
+    
     res_allele[allele_str] = res_tmp;
   }
 
@@ -843,7 +826,7 @@ void fill_P_AA_p_A(int a, int b, int i, double frac1, double frac2,
 //' @param subpops List of subpopulations, each a list of individuals
 //' @param subpops_sizes Size of each subpopulation
 //' 
-//' @return Estimates of F, theta, and f as well as sums of squares S1, S2 and S3
+//' @return Estimates of F, theta, and f as well as additional information
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -914,13 +897,6 @@ Rcpp::List estimate_theta_subpops_individuals(Rcpp::List subpops,
     }
   }
   
-  /*  
-  print_container("Heterozygous", H_A);
-  print_container("Homozygous", P_AA);
-  print_container("Allele", p_A);  
-  Rcpp::Rcout << "n_mean = " << n_mean << std::endl;
-  */
-  
   Rcpp::List res = estimate_theta_subpops_weighted_engine(P_AA, p_A, n);
 
   return res;
@@ -935,7 +911,7 @@ Rcpp::List estimate_theta_subpops_individuals(Rcpp::List subpops,
 //' @param subpops List of subpopulations, each a list of individuals
 //' @param subpops_sizes Size of each subpopulation
 //' 
-//' @return Estimates of F, theta, and f as well as sums of squares S1, S2 and S3
+//' @return Estimates of F, theta, and f as well as additional information
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -1025,7 +1001,7 @@ Rcpp::List estimate_theta_subpops_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> su
 //' @param subpops List of individual pids
 //' @param subpops_sizes Size of each subpopulation
 //' 
-//' @return Estimates of F, theta, and f as well as sums of squares S1, S2 and S3
+//' @return Estimates of F, theta, and f as well as additional information
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -1093,12 +1069,6 @@ Rcpp::List estimate_theta_subpops_pids(Rcpp::XPtr<Population> population,
       fill_P_AA_p_A(hap[0], hap[1], i, frac1, frac2, P_AA, p_A);    
     }
   }
-  
-  /*  
-   print_container("Homozygous", P_AA);
-   print_container("Allele", p_A);  
-   Rcpp::Rcout << "n_mean = " << n_mean << std::endl;
-   */
   
   Rcpp::List res = estimate_theta_subpops_weighted_engine(P_AA, p_A, n);
   
