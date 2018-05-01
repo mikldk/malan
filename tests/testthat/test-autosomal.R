@@ -233,15 +233,51 @@ loc4 <- list(two2cols(loc4_g), two2cols(loc4_n))
 loc4_ni <- sapply(loc4, nrow)
 
 # GDA2, Exercise 5.4 solution, p. 401
-loc4_sol_F <- -0.0082
-loc4_sol_theta <- 0.0633
-loc4_sol_f <- -0.0764
+# loc4_sol_F <- -0.0082
+# loc4_sol_theta <- 0.0633
+# loc4_sol_f <- -0.0764
+# From GDA1.1 program, too
+loc4_sol_F <- -0.008234
+loc4_sol_theta <- 0.063292
+loc4_sol_f <- -0.076359
 res_loc4 <- estimate_theta_subpops_genotypes(loc4, loc4_ni)
+#str(res_loc4, 1)
 
+if (FALSE) {
+  #       Locus      Allele     Sigma-G     Sigma-I     Sigma-P
+  #   ----------  ----------  ----------  ----------  ----------
+  #      locus-4         All    0.233333   -0.016553    0.014647
+  #                        2    0.116667   -0.008277    0.007324
+  #                        1    0.116667   -0.008277    0.007324
+  #                                                                                                                        
+  #   ----------  ----------  ----------  ----------  ----------
+  #      Overall         ---    0.822222    0.019770    0.126411
+  # 
+  #        Locus      Allele         MSG         MSI         MSP
+  #   ----------  ----------  ----------  ----------  ----------
+  #      locus-4         All    0.116667    0.116667    0.751111
+  #                        2    0.116667    0.100114    0.751111
+  #                        1    0.116667    0.100114    0.751111
+  #                                                             
+  #   ----------  ----------  ----------  ----------  ----------
+  #      Overall         ---    0.411111    0.411111    6.049167
+  # 
+  #        Locus      Allele          S3          S2          S1
+  #   ----------  ----------  ----------  ----------  ----------
+  #      locus-4         All   90.000000   79.500000   70.690000
+  #                        2   23.000000   12.500000    3.690000
+  #                        1  157.000000  146.500000  137.690000
+  
+  str(estimate_theta_subpops_genotypes(loc4, loc4_ni)$extra$allele_values[["1"]], 1)
+}
 test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 4", {
-  expect_equal(res_loc4$F, loc4_sol_F, tol = 1e-4) # results with 4 digits
-  expect_equal(res_loc4$theta, loc4_sol_theta, tol = 1e-4) # results with 4 digits
-  expect_equal(res_loc4$f, loc4_sol_f, tol = 1e-4) # results with 4 digits
+  expect_equal(res_loc4$F, loc4_sol_F, tol = 1e-5) # results with 4 digits
+  expect_equal(res_loc4$theta, loc4_sol_theta, tol = 1e-6) # results with 4 digits
+  expect_equal(res_loc4$f, loc4_sol_f, tol = 1e-5) # results with 4 digits
+  
+  # GDA1.1
+  expect_equal(res_loc4$extra$n_mean, 45)
+  expect_equal(res_loc4$extra$allele_values[["1"]]$HA, 2, tol = 1e-5) # results with 4 digits
 })
 
 # Same as above, now locus 6
@@ -266,4 +302,17 @@ test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 6", {
   expect_equal(res_loc6$theta, loc6_sol_theta, tol = 1e-4) # results with 4 digits
   expect_equal(res_loc6$f, loc6_sol_f, tol = 1e-4) # results with 4 digits
 })
+
+if (FALSE) {
+  d4 <- lapply(loc4, function(x) apply(x, 1, paste0, collapse = "/"))
+  d6 <- lapply(loc6, function(x) apply(x, 1, paste0, collapse = "/"))
+
+  p1 <- paste0(apply(cbind(d4[[1]], d6[[1]]), 1, paste0, collapse = " "), "\n")
+  p1 <- paste0("\t\t_", seq_along(p1), "_ ", p1, collapse = " ")
+  cat(p1)
+  
+  p2 <- paste0(apply(cbind(d4[[2]], d6[[2]]), 1, paste0, collapse = " "), "\n")
+  p2 <- paste0("\t\t_", seq_along(p2), "_ ", p2, collapse = " ")
+  cat(p2)
+}
 

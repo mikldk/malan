@@ -249,7 +249,7 @@ estimate_theta_1subpop_individuals <- function(individuals, return_estimation_in
 #' @param subpops List of subpopulations, each a list of individuals
 #' @param subpops_sizes Size of each subpopulation
 #' 
-#' @return  Estimates of F, theta, and f
+#' @return Estimates of F, theta, and f as well as sums of squares S1, S2 and S3
 #' 
 #' @export
 estimate_theta_subpops_individuals <- function(subpops, subpops_sizes) {
@@ -265,7 +265,7 @@ estimate_theta_subpops_individuals <- function(subpops, subpops_sizes) {
 #' @param subpops List of subpopulations, each a list of individuals
 #' @param subpops_sizes Size of each subpopulation
 #' 
-#' @return  Estimates of F, theta, and f
+#' @return Estimates of F, theta, and f as well as sums of squares S1, S2 and S3
 #' 
 #' @export
 estimate_theta_subpops_genotypes <- function(subpops, subpops_sizes) {
@@ -282,7 +282,7 @@ estimate_theta_subpops_genotypes <- function(subpops, subpops_sizes) {
 #' @param subpops List of individual pids
 #' @param subpops_sizes Size of each subpopulation
 #' 
-#' @return  Estimates of F, theta, and f
+#' @return Estimates of F, theta, and f as well as sums of squares S1, S2 and S3
 #' 
 #' @export
 estimate_theta_subpops_pids <- function(population, subpops, subpops_sizes) {

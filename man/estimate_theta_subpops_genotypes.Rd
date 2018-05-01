@@ -12,7 +12,7 @@ estimate_theta_subpops_genotypes(subpops, subpops_sizes)
 \item{subpops_sizes}{Size of each subpopulation}
 }
 \value{
-Estimates of F, theta, and f
+Estimates of F, theta, and f as well as sums of squares S1, S2 and S3
 }
 \description{
 Estimates F, theta, and f for a number of subpopulations given a list of genotypes.
