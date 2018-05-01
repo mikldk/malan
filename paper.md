@@ -34,7 +34,7 @@ a simulation model to approximate the distribution of the number of men in a pop
 Key parameters of the model include the STR locus mutation rates, the variance in reproductive success [@AndersenPLOSGEN2017] (VRS), and the population growth rate. 
 The simulation model was implemented and made available in the easy-to-use open-source software presented in this paper: `malan` (**MA**le **L**ineage **AN**alysis). 
 
-The `malan` software is made available as an R [@R] package with extensive use of C++ for efficient computations via [@Rcpp]. 
+The `malan` software is made available as an R [@R] package with extensive use of C++ for efficient computations via Rcpp [@Rcpp]. 
 This software was used for the analyses performed in [@AndersenPLOSGEN2017].
 The simulation model allows for flexible simulations by first simulating a genealogy (with population sizes at each generation specified by a vector) with different parameters as described by [@AndersenPLOSGEN2017]. 
 A forensic Y-chromosome profile typically consists of the allele at between 15 and 30 STR loci [@Butler05] and is often referred to as a Y-STR haplotype. 
