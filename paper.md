@@ -44,7 +44,7 @@ The `malan` software makes it possible to query the population in multiple ways.
 
 The documentation of `malan` consists of manual pages for the various available functions, articles describing how to perform contiguous analyses (*vignettes*), and unit tests.
 
-I would like to thank David J Balding (UCL, UoM) for helpful discussions.
+I would like to thank David J Balding for helpful discussions.
 
 -![Simulation illustration and example of analysis of matching individuals.](paper-fig-simulation.png)
 
