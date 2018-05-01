@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction</h1>
 <h4 class="author"><em>Mikkel Meyer Andersen</em></h4>
-<h4 class="date"><em>30 April, 2018</em></h4>
+<h4 class="date"><em>01 May, 2018</em></h4>
 
 
 
@@ -114,7 +114,8 @@ pedigrees</code></pre></div>
 ##  $ growth_type               : chr &quot;ConstantPopulationSize&quot;
 ##  $ sdo_type                  : chr &quot;StandardWF&quot;
 ##  $ end_generation_individuals:List of 10
-##  $ individuals_generations   :List of 23</code></pre>
+##  $ individuals_generations   :List of 23
+##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;malan_simulation&quot; &quot;list&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">live_individuals &lt;-<span class="st"> </span>sim_res$end_generation_individuals</code></pre></div>
 <p>And a live individual is printed:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print_individual</span>(live_individuals[[<span class="dv">1</span>]])</code></pre></div>

@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Case study: Partial profiles</h1>
 <h4 class="author"><em>Mikkel Meyer Andersen</em></h4>
-<h4 class="date"><em>30 April, 2018</em></h4>
+<h4 class="date"><em>01 May, 2018</em></h4>
 
 
 
@@ -179,16 +179,16 @@ if (<span class="kw">requireNamespace</span>(<span class="st">&quot;ggraph&quot;
 <pre><code>## # A tibble: 29 x 5
 ##    Marker  Mutations Meioses  MutProb Alleles   
 ##    &lt;fct&gt;       &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;list&gt;    
-##  1 DYS438         4.  10673. 0.000375 &lt;dbl [22]&gt;
-##  2 DYS392         8.  15418. 0.000519 &lt;dbl [22]&gt;
-##  3 DYS393        15.  14264. 0.00105  &lt;dbl [17]&gt;
-##  4 DYS437        13.  10652. 0.00122  &lt;dbl [15]&gt;
-##  5 DYS385a       32.  26171. 0.00122  &lt;dbl [52]&gt;
-##  6 DYS385b       32.  26171. 0.00122  &lt;dbl [52]&gt;
-##  7 DYS643         3.   2220. 0.00135  &lt;dbl [17]&gt;
-##  8 DYS448        11.   7229. 0.00152  &lt;dbl [36]&gt;
-##  9 DYS390        33.  15612. 0.00211  &lt;dbl [19]&gt;
-## 10 DYS19         36.  16090. 0.00224  &lt;dbl [19]&gt;
+##  1 DYS438          4   10673 0.000375 &lt;dbl [22]&gt;
+##  2 DYS392          8   15418 0.000519 &lt;dbl [22]&gt;
+##  3 DYS393         15   14264 0.00105  &lt;dbl [17]&gt;
+##  4 DYS437         13   10652 0.00122  &lt;dbl [15]&gt;
+##  5 DYS385a        32   26171 0.00122  &lt;dbl [52]&gt;
+##  6 DYS385b        32   26171 0.00122  &lt;dbl [52]&gt;
+##  7 DYS643          3    2220 0.00135  &lt;dbl [17]&gt;
+##  8 DYS448         11    7229 0.00152  &lt;dbl [36]&gt;
+##  9 DYS390         33   15612 0.00211  &lt;dbl [19]&gt;
+## 10 DYS19          36   16090 0.00224  &lt;dbl [19]&gt;
 ## # ... with 19 more rows</code></pre>
 <p>Note, that <code>MutProb</code> is the point estimate given by <code>MutProb = Mutations / Meioses</code>. Information about which markers that are in which kit is also provided:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ystr_kits</code></pre></div>
@@ -221,16 +221,16 @@ partial_kit</code></pre></div>
 <pre><code>## # A tibble: 21 x 7
 ##    Marker  Mutations Meioses  MutProb IntegerAlleles MinIntAllele
 ##    &lt;fct&gt;       &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;list&gt;                &lt;dbl&gt;
-##  1 DYS438         4.  10673. 0.000375 &lt;dbl [14]&gt;               5.
-##  2 DYS392         8.  15418. 0.000519 &lt;dbl [14]&gt;               6.
-##  3 DYS393        15.  14264. 0.00105  &lt;dbl [12]&gt;               7.
-##  4 DYS385a       32.  26171. 0.00122  &lt;dbl [23]&gt;               6.
-##  5 DYS385b       32.  26171. 0.00122  &lt;dbl [23]&gt;               6.
-##  6 DYS643         3.   2220. 0.00135  &lt;dbl [13]&gt;               4.
-##  7 DYS390        33.  15612. 0.00211  &lt;dbl [14]&gt;              17.
-##  8 DYS19         36.  16090. 0.00224  &lt;dbl [12]&gt;               9.
-##  9 DYS391        38.  15486. 0.00245  &lt;dbl [12]&gt;               5.
-## 10 DYS389I       42.  14339. 0.00293  &lt;dbl [9]&gt;                9.
+##  1 DYS438          4   10673 0.000375 &lt;dbl [14]&gt;                5
+##  2 DYS392          8   15418 0.000519 &lt;dbl [14]&gt;                6
+##  3 DYS393         15   14264 0.00105  &lt;dbl [12]&gt;                7
+##  4 DYS385a        32   26171 0.00122  &lt;dbl [23]&gt;                6
+##  5 DYS385b        32   26171 0.00122  &lt;dbl [23]&gt;                6
+##  6 DYS643          3    2220 0.00135  &lt;dbl [13]&gt;                4
+##  7 DYS390         33   15612 0.00211  &lt;dbl [14]&gt;               17
+##  8 DYS19          36   16090 0.00224  &lt;dbl [12]&gt;                9
+##  9 DYS391         38   15486 0.00245  &lt;dbl [12]&gt;                5
+## 10 DYS389I        42   14339 0.00293  &lt;dbl [9]&gt;                 9
 ## # ... with 11 more rows, and 1 more variable: MaxIntAllele &lt;dbl&gt;</code></pre>
 <p>This “partial kit” has the following mutation probabilities:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mu &lt;-<span class="st"> </span>partial_kit %&gt;%<span class="st"> </span><span class="kw">pull</span>(MutProb)
