@@ -265,12 +265,30 @@ test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 4", {
   expect_equal(res_loc4$extra$allele_values[["1"]]$sigmasq_G, 
                res_loc4$extra$allele_values[["2"]]$sigmasq_G)
   
+  expect_equal(res_loc4$extra$allele_values[["1"]]$sigmasq_P, 
+               res_loc4$extra$allele_values[["2"]]$sigmasq_P)
+  
   expect_equal(loc4_allele1_sigmasqP, 
                res_loc4$extra$allele_values[["1"]]$sigmasq_P, tol = 1e-6)
   expect_equal(loc4_allele1_sigmasqI, 
                res_loc4$extra$allele_values[["1"]]$sigmasq_I, tol = 1e-6)
   expect_equal(loc4_allele1_sigmasqG, 
                res_loc4$extra$allele_values[["1"]]$sigmasq_G, tol = 1e-6)
+
+  # Allele wise theta/F should be the same, GDA2, p. 178 mid.
+  # theta
+  for (allele_info in res_loc4$extra$allele_values) {
+    # allele_info <- res_loc4$extra$allele_values[["1"]]
+    expect_equal(with(allele_info, sigmasq_P / (sigmasq_P + sigmasq_I + sigmasq_G)),
+                 with(allele_info, S1  / S2), tol = 1e-6)
+  }
+  
+  # F
+  for (allele_info in res_loc4$extra$allele_values) {
+    # allele_info <- res_loc4$extra$allele_values[["1"]]
+    expect_equal(with(allele_info, (sigmasq_P + sigmasq_I) / (sigmasq_P + sigmasq_I + sigmasq_G)),
+                 with(allele_info, 1 - (S3  / S2)), tol = 1e-5)
+  }
 })
 
 # Same as above, now locus 6
@@ -347,6 +365,21 @@ test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 6", {
                res_loc6$extra$allele_values[["4"]]$sigmasq_I, tol = 1e-6)
   expect_equal(loc6_allele4_sigmasqG, 
                res_loc6$extra$allele_values[["4"]]$sigmasq_G, tol = 1e-6)
+  
+  # Allele wise theta/F should be the same, GDA2, p. 178 mid.
+  # theta
+  for (allele_info in res_loc6$extra$allele_values) {
+    # allele_info <- res_loc4$extra$allele_values[["1"]]
+    expect_equal(with(allele_info, sigmasq_P / (sigmasq_P + sigmasq_I + sigmasq_G)),
+                 with(allele_info, S1  / S2), tol = 1e-6)
+  }
+  
+  # F
+  for (allele_info in res_loc6$extra$allele_values) {
+    # allele_info <- res_loc4$extra$allele_values[["1"]]
+    expect_equal(with(allele_info, (sigmasq_P + sigmasq_I) / (sigmasq_P + sigmasq_I + sigmasq_G)),
+                 with(allele_info, 1 - (S3  / S2)), tol = 1e-5)
+  }
 })
 
 
@@ -449,6 +482,7 @@ if (FALSE) {
   dput(prof_loc)
   
 }
+
 diploid_nex_data <- structure(list(`2` = structure(list(`1` = structure(c(4L, 4L, 
                                                                           4L, 4L, 4L, 4L, 4L, 4L, 3L, 4L, 4L, 4L, 4L, 4L, 4L, 4L), .Dim = c(8L, 
                                                                                                                                             2L)), 
@@ -587,6 +621,21 @@ test_that("GDA 1.1 diploid.nex ", {
       expect_equal(sigma_tmp$sigmasq_G[a_i], 
                    res_loc$extra$allele_values[[a]]$sigmasq_G, tol = 1e-6)
       
+    }
+    
+    # Allele wise theta/F should be the same, GDA2, p. 178 mid.
+    # theta
+    for (allele_info in res_loc$extra$allele_values) {
+      # allele_info <- res_loc4$extra$allele_values[["1"]]
+      expect_equal(with(allele_info, sigmasq_P / (sigmasq_P + sigmasq_I + sigmasq_G)),
+                   with(allele_info, S1  / S2), tol = 1e-6)
+    }
+    
+    # F
+    for (allele_info in res_loc$extra$allele_values) {
+      # allele_info <- res_loc4$extra$allele_values[["1"]]
+      expect_equal(with(allele_info, (sigmasq_P + sigmasq_I) / (sigmasq_P + sigmasq_I + sigmasq_G)),
+                   with(allele_info, 1 - (S3  / S2)), tol = 1e-5)
     }
   }
 })
