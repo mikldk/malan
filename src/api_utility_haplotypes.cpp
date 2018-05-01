@@ -500,6 +500,11 @@ int count_haplotype_occurrences_pedigree(Rcpp::XPtr<Pedigree> pedigree,
 // [[Rcpp::export]]
 Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(const Rcpp::XPtr<Individual> suspect, 
                                                                             int generation_upper_bound_in_result = -1) {
+
+  if (!(suspect->is_haplotype_set())) {
+    Rcpp::stop("Haplotype not yet set for suspect.");
+  }
+  
   const std::vector<int> h = suspect->get_haplotype();
 
   const Pedigree* pedigree = suspect->get_pedigree();
@@ -522,7 +527,11 @@ Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(cons
     if (dest->get_pedigree_id() != suspect_pedigree_id) {
       continue;
     }
-    
+
+    if (!(dest->is_haplotype_set())) {
+      Rcpp::stop("Haplotype not yet set for dest.");
+    }
+        
     std::vector<int> dest_h = dest->get_haplotype();
     
     if (dest_h.size() != h.size()) {
