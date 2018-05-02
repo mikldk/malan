@@ -29,19 +29,24 @@ language: r
 sudo: true
 #dist: trusty
 cache: packages
-
+  
 matrix:
   include:
-  - r: oldrel
-  - r: release
-    env:
-    - BUILD_PKGDOWN: true
-  - r: devel
   - os: linux
     dist: trusty
     sudo: required
+    - r: oldrel
+    - r: release
+      env:
+      - BUILD_PKGDOWN: true
+    - r: devel
   - os: osx
     osx_image: xcode8.3
+    - r: oldrel
+    - r: release
+      env:
+      - BUILD_PKGDOWN: true
+    - r: devel
 
 #env
 env:
