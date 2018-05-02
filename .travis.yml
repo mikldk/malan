@@ -44,9 +44,6 @@ matrix:
       r: devel
     - os: osx
       osx_image: xcode8.3
-      r: oldrel
-    - os: osx
-      osx_image: xcode8.3
       r: release
     - os: osx
       osx_image: xcode8.3
