@@ -6,8 +6,6 @@ imposing short tandem repeats (STR) mutations forwards.
 Intended for forensic Y chromosomal STR (Y-STR) haplotype analyses. 
 Numerous analyses are possible, e.g. number of matches and meiotic distance to matches.
 
-See documentation included in package (vignettes and manual) at <https://mikldk.github.io/malan/>.
-
 ## Installation
 
 You first need `R` (<https://www.r-project.org/>). 
@@ -20,7 +18,9 @@ remotes::install_github("mikldk/malan")
 
 ## Getting started
 
-Refer to the included vignettes. You can get an overview of the included vignettes by the following `R` command:
+See documentation included in package (vignettes and manual) at <https://mikldk.github.io/malan/>. The introduction vignette is available at <https://mikldk.github.io/malan/articles/introduction.html>.
+
+You can also get an overview of the included vignettes by the following `R` command:
 
 ```r
 vignette(package = "malan")
