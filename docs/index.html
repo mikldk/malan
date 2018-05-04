@@ -81,6 +81,13 @@
 <p>You first need <code>R</code> (<a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a>). Then you can install <code>malan</code> from GitHub by using the <code>remotes</code> package (<a href="https://CRAN.R-project.org/package=remotes" class="uri">https://CRAN.R-project.org/package=remotes</a>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("remotes")</span>
 remotes::<span class="kw">install_github</span>(<span class="st">"mikldk/malan"</span>)</code></pre></div>
+<div id="for-mac-os-users" class="section level3">
+<h3 class="hasAnchor">
+<a href="#for-mac-os-users" class="anchor"></a>For Mac OS users</h3>
+<p>Building this package requires <code>gfortran</code>. The easiest way to obtain this is to install <code>gcc</code> using <code>homebrew</code> with the command <code>brew install gcc</code>. Your <code>~/.R/Makevars</code> will need to be updated to use <code>gcc</code> instead of <code>clang</code>:</p>
+<pre><code>CC=gcc
+CXX=g++</code></pre>
+</div>
 </div>
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">

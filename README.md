@@ -16,6 +16,15 @@ Then you can install `malan` from GitHub by using the `remotes` package (<https:
 remotes::install_github("mikldk/malan")
 ```
 
+### For Mac OS users
+
+Building this package requires `gfortran`. The easiest way to obtain this is to install `gcc` using `homebrew` with the command `brew install gcc`. Your `~/.R/Makevars` will need to be updated to use `gcc` instead of `clang`:
+
+```
+CC=gcc
+CXX=g++
+```
+
 ## Getting started
 
 See documentation included in package (vignettes and manual) at <https://mikldk.github.io/malan/>. The introduction vignette is available at <https://mikldk.github.io/malan/articles/introduction.html>.
