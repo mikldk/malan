@@ -81,9 +81,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 License: GPL-2.
 
-## Build status
+## Badges
 
 Travis CI:
 
 [![Travis-CI Build Status](https://travis-ci.org/mikldk/malan.svg?branch=master)](https://travis-ci.org/mikldk/malan)
+
+Zenodo: 
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1240896.svg)](https://doi.org/10.5281/zenodo.1240896)
 
