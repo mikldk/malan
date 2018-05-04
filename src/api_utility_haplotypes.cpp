@@ -542,7 +542,7 @@ Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(cons
       std::vector<Individual*> path = suspect->calculate_path_to(dest);  
       int meiosis_dist = suspect->meiosis_dist_tree(dest);
       
-      int meiosis_dist_from_path = path.size() - 1; // n vertices means n-1 edges (tree)
+      //int meiosis_dist_from_path = path.size() - 1; // n vertices means n-1 edges (tree)
       //Rcpp::Rcout << ">> path from " << suspect->get_pid() << " to " << dest->get_pid() << " has length = " << meiosis_dist_from_path << " and meioses = " << meiosis_dist << (meiosis_dist_from_path == meiosis_dist ? " ok" : " ERROR") << ": " << std::endl;
       
       int max_L1 = 0;

@@ -81,7 +81,7 @@ void print_pedigree(Rcpp::XPtr<Pedigree> ped) {
   Pedigree* p = ped;
   
   std::vector<Individual*>* inds = p->get_all_individuals();
-  std::vector< std::pair<Individual*, Individual*>* >* rels = p->get_relations();
+  //std::vector< std::pair<Individual*, Individual*>* >* rels = p->get_relations();
   
   Rcpp::Rcout << "Pedigree with " << p->get_all_individuals()->size() << " individuals:" << std::endl;
   

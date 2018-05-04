@@ -85,9 +85,12 @@ Rcpp::IntegerMatrix meioses_generation_distribution(Rcpp::XPtr<Individual> indiv
   
   int row = 0;
   for (auto const& x1 : tab) {
+    row += x1.second.size();
+    /*
     for (auto const& x2 : x1.second) {
       ++row;
     }
+    */
   }
   Rcpp::IntegerMatrix res(row, 3);
   colnames(res) = Rcpp::CharacterVector::create("generation", "meioses", "count");

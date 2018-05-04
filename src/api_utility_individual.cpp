@@ -19,8 +19,6 @@
 //' @export
 // [[Rcpp::export]]
 Rcpp::XPtr<Individual> get_individual(Rcpp::XPtr<Population> population, int pid) {  
-  Population* pop = population;
-  
   Individual* ind = population->get_individual(pid);
   Rcpp::XPtr<Individual> res(ind, RCPP_XPTR_2ND_ARG); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
   res.attr("class") = Rcpp::CharacterVector::create("malan_individual", "externalptr");
@@ -159,8 +157,6 @@ Rcpp::List get_family_info(Rcpp::XPtr<Individual> individual) {
 //' @export
 // [[Rcpp::export]]
 Rcpp::List get_children(Rcpp::XPtr<Individual> individual) {  
-  Individual* i = individual;
-  
   std::vector<Individual*>* individuals_boys = individual->get_children();
   
   Rcpp::List children;
