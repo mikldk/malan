@@ -38,7 +38,11 @@ Note that to also install the tests, you need to install the package as follows:
 ``` r
 # install.packages("remotes")
 remotes::install_github("mikldk/malan", INSTALL_opts="--install-tests")
+```
 
+You can now run the tests:
+
+``` r
 library(malan)
 library(testthat)
 test_package('malan')
