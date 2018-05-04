@@ -90,6 +90,17 @@ remotes::<span class="kw">install_github</span>(<span class="st">"mikldk/malan"<
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="dt">package =</span> <span class="st">"malan"</span>)</code></pre></div>
 <p>To read a vignette, type:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">"introduction"</span>, <span class="dt">package =</span> <span class="st">"malan"</span>)</code></pre></div>
+<div id="running-tests" class="section level3">
+<h3 class="hasAnchor">
+<a href="#running-tests" class="anchor"></a>Running tests</h3>
+<p>Note that to also install the tests, you need to install the package as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("remotes")</span>
+remotes::<span class="kw">install_github</span>(<span class="st">"mikldk/malan"</span>, <span class="dt">INSTALL_opts=</span><span class="st">"--install-tests"</span>)
+
+<span class="kw">library</span>(malan)
+<span class="kw">library</span>(testthat)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/testthat/topics/test_dir">test_package</a></span>(<span class="st">'malan'</span>)</code></pre></div>
+</div>
 </div>
 <div id="contribute-issues-and-support" class="section level2">
 <h2 class="hasAnchor">
