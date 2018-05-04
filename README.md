@@ -54,6 +54,11 @@ Please use the issue tracker at <https://github.com/mikldk/malan/issues>
 if you want to notify us of an issue or need support.
 If you want to contribute, please either create an issue or make a pull request.
 
+## Dependencies
+
+This package depends on R (<https://www.r-project.org/>) and the following R packages: 
+`Rcpp`, `RcppProgress`, `RcppArmadillo`, `igraph`, `tibble`, `magrittr`, `dplyr`, and `tidygraph`.
+
 ## References
 
 Andersen MM, Balding DJ (2017). *How convincing is a matching Y-chromosome profile?*. 
