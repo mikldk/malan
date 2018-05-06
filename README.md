@@ -18,12 +18,7 @@ remotes::install_github("mikldk/malan")
 
 ### For Mac OS users
 
-Building this package requires `gfortran`. The easiest way to obtain this is to install `gcc` using `homebrew` with the command `brew install gcc`. Your `~/.R/Makevars` will need to be updated to use `gcc` instead of `clang`:
-
-```
-CC=gcc
-CXX=g++
-```
+Some Mac OSX configurations may have installation problems (for example missing `gfortran` libraries). In such cases, it may help to use Conda package management system. See also the discussion in [issue #14](https://github.com/mikldk/malan/issues/14).
 
 ## Getting started
 
