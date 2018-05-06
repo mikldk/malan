@@ -3,6 +3,7 @@ title: 'malan: **MA**le **L**ineage **AN**alysis'
 tags:
   - Y-chromosome
   - forensic genetics
+  - lineage markers
   - population genetics
   - weight of evidence
 authors:
@@ -12,7 +13,7 @@ authors:
 affiliations:
  - name: Department of Mathematical Sciences, Aalborg University, Denmark
    index: 1
-date: 16 April 2018
+date: 6 May 2018
 bibliography: paper.bib
 ---
 
