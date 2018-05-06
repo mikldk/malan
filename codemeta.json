@@ -12,12 +12,12 @@
   ],
   "identifier": "",
   "codeRepository": "https://github.com/mikldk/malan",
-  "datePublished": "2018-04-17",
-  "dateModified": "2018-04-17",
-  "dateCreated": "2018-04-17",
+  "datePublished": "2018-05-06",
+  "dateModified": "2018-05-06",
+  "dateCreated": "2018-05-06",
   "description": "An R package to perform MAle Lineage ANalysis by simulating genealogies backwards and imposing short tandem repeats (STR) mutations forwards. Intended for forensic Y chromosomal STR (Y-STR) haplotype analyses. Numerous analyses are possible, e.g. number of matches and meiotic distance to matches.",
   "keywords": "forensic genetics, STR loci, Y-chromosome, population genetics",
   "license": "GPL v2.0",
   "title": "malan: MAle Lineage ANalysis",
-  "version": "0.0.3"
+  "version": "1.0.0"
 }
