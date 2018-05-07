@@ -78,11 +78,16 @@ License: GPL-2.
 
 ## Badges
 
-Travis CI:
+The Journal of Open Source Software:
 
-[![Travis-CI Build Status](https://travis-ci.org/mikldk/malan.svg?branch=master)](https://travis-ci.org/mikldk/malan)
+[![DOI](http://joss.theoj.org/papers/10.21105/joss.00684/status.svg)](https://doi.org/10.21105/joss.00684)
 
 Zenodo: 
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1241769.svg)](https://doi.org/10.5281/zenodo.1241769)
+
+Travis CI:
+
+[![Travis-CI Build Status](https://travis-ci.org/mikldk/malan.svg?branch=master)](https://travis-ci.org/mikldk/malan)
+
 
