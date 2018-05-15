@@ -128,6 +128,7 @@ Note, that `MutProb` is the point estimate given by `MutProb = Mutations / Meios
 
 ```{r}
 ystr_kits
+ystr_kits %>% count(Kit)
 ```
 
 Let us take all PowerPlex Y23 markers and assume that we only have a partial profile where `DYS437` and `DYS448` dropped out. At the same time, we also filter out the integer alleles (for generating random founder haplotypes in a minute):

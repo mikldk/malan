@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Size of pedigree — pedigree_size_generation • malan</title>
+<title>Get allele counts from subpopulations of genotypes — get_allele_counts_genotypes • malan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,10 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Size of pedigree — pedigree_size_generation" />
+<meta property="og:title" content="Get allele counts from subpopulations of genotypes — get_allele_counts_genotypes" />
 
-<meta property="og:description" content="Get the size of the pedigree.
-Note the generation_upper_bound_in_result parameter." />
+<meta property="og:description" content="Get allele counts from subpopulations of genotypes" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -104,31 +103,29 @@ Note the generation_upper_bound_in_result parameter." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Size of pedigree</h1>
+    <h1>Get allele counts from subpopulations of genotypes</h1>
     
-    <div class="hidden name"><code>pedigree_size_generation.Rd</code></div>
+    <div class="hidden name"><code>get_allele_counts_genotypes.Rd</code></div>
     </div>
 
     
-    <p>Get the size of the pedigree.
-Note the <code>generation_upper_bound_in_result</code> parameter.</p>
+    <p>Get allele counts from subpopulations of genotypes</p>
     
 
-    <pre class="usage"><span class='fu'>pedigree_size_generation</span>(<span class='no'>pedigree</span>, <span class='kw'>generation_upper_bound_in_result</span> <span class='kw'>=</span> -<span class='fl'>1L</span>)</pre>
+    <pre class="usage"><span class='fu'>get_allele_counts_genotypes</span>(<span class='no'>subpops</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pedigree</th>
-      <td><p>Pedigree to get size of</p></td>
-    </tr>
-    <tr>
-      <th>generation_upper_bound_in_result</th>
-      <td><p>Limit on generation to include in count; -1 means no limit.
-0 only include the final generation. 1 only second last generation etc.</p></td>
+      <th>subpops</th>
+      <td><p>List of individual genotypes</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Matrix with allele counts</p>
     
 
   </div>
@@ -136,7 +133,9 @@ Note the <code>generation_upper_bound_in_result</code> parameter.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

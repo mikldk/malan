@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">malan</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.1</span>
       </span>
     </div>
 
@@ -75,7 +75,7 @@
       <h1>Case study: Partial profiles</h1>
                         <h4 class="author">Mikkel Meyer Andersen</h4>
             
-            <h4 class="date">08 May, 2018</h4>
+            <h4 class="date">15 May, 2018</h4>
       
       
       <div class="hidden name"><code>case-study-partial.Rmd</code></div>
@@ -220,6 +220,12 @@ if (<span class="kw">requireNamespace</span>(<span class="st">"ggraph"</span>, <
 ##  9 DYS390  PowerPlex Y23
 ## 10 DYS19   PowerPlex Y23
 ## # ... with 40 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ystr_kits %&gt;%<span class="st"> </span><span class="kw">count</span>(Kit)</code></pre></div>
+<pre><code>## # A tibble: 2 x 2
+##   Kit               n
+##   &lt;chr&gt;         &lt;int&gt;
+## 1 PowerPlex Y23    23
+## 2 YfilerPlus       27</code></pre>
 <p>Let us take all PowerPlex Y23 markers and assume that we only have a partial profile where <code>DYS437</code> and <code>DYS448</code> dropped out. At the same time, we also filter out the integer alleles (for generating random founder haplotypes in a minute):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">partial_kit &lt;-<span class="st"> </span>ystr_kits %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(Kit ==<span class="st"> "PowerPlex Y23"</span>) %&gt;%<span class="st"> </span>

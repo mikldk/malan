@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Size of pedigree — pedigree_size_generation • malan</title>
+<title>Unweighted estimate of theta from subpopulations of individual ids — estimate_theta_subpops_unweighted_pids • malan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,10 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Size of pedigree — pedigree_size_generation" />
+<meta property="og:title" content="Unweighted estimate of theta from subpopulations of individual ids — estimate_theta_subpops_unweighted_pids" />
 
-<meta property="og:description" content="Get the size of the pedigree.
-Note the generation_upper_bound_in_result parameter." />
+<meta property="og:description" content="Estimates unweighted theta for a number of subpopulations given a list of pids (individual ids)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -104,31 +103,42 @@ Note the generation_upper_bound_in_result parameter." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Size of pedigree</h1>
+    <h1>Unweighted estimate of theta from subpopulations of individual ids</h1>
     
-    <div class="hidden name"><code>pedigree_size_generation.Rd</code></div>
+    <div class="hidden name"><code>estimate_theta_subpops_unweighted_pids.Rd</code></div>
     </div>
 
     
-    <p>Get the size of the pedigree.
-Note the <code>generation_upper_bound_in_result</code> parameter.</p>
+    <p>Estimates unweighted theta for a number of subpopulations given a list of pids (individual ids).</p>
     
 
-    <pre class="usage"><span class='fu'>pedigree_size_generation</span>(<span class='no'>pedigree</span>, <span class='kw'>generation_upper_bound_in_result</span> <span class='kw'>=</span> -<span class='fl'>1L</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_theta_subpops_unweighted_pids</span>(<span class='no'>population</span>, <span class='no'>subpops</span>, <span class='no'>assume_HWE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pedigree</th>
-      <td><p>Pedigree to get size of</p></td>
+      <th>population</th>
+      <td><p>Population obtain from simulation</p></td>
     </tr>
     <tr>
-      <th>generation_upper_bound_in_result</th>
-      <td><p>Limit on generation to include in count; -1 means no limit.
-0 only include the final generation. 1 only second last generation etc.</p></td>
+      <th>subpops</th>
+      <td><p>List of individual pids</p></td>
+    </tr>
+    <tr>
+      <th>assume_HWE</th>
+      <td><p>if the alleles themselves are used instead of genotypes</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Estimate of theta</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Based on Weir and Goudet, Genetics 2017:
+http://www.genetics.org/content/early/2017/05/26/genetics.116.198424</p>
     
 
   </div>
@@ -136,7 +146,11 @@ Note the <code>generation_upper_bound_in_result</code> parameter.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+          </ul>
 
   </div>
 </div>

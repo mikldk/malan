@@ -4,7 +4,7 @@
 \name{ystr_kits}
 \alias{ystr_kits}
 \title{Kit information about Y-STR markers}
-\format{A data frame with 53940 rows and 10 variables:
+\format{A data frame with 88 rows and 2 variables:
 \describe{
 \item{Marker}{name of Y-STR marker}
 \item{Kit}{name of Y-STR kit}
