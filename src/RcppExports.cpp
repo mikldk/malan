@@ -105,6 +105,54 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// estimate_theta_subpops_unweighted_genotypes
+double estimate_theta_subpops_unweighted_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> subpops, bool assume_HWE);
+RcppExport SEXP _malan_estimate_theta_subpops_unweighted_genotypes(SEXP subpopsSEXP, SEXP assume_HWESEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::IntegerMatrix> >::type subpops(subpopsSEXP);
+    Rcpp::traits::input_parameter< bool >::type assume_HWE(assume_HWESEXP);
+    rcpp_result_gen = Rcpp::wrap(estimate_theta_subpops_unweighted_genotypes(subpops, assume_HWE));
+    return rcpp_result_gen;
+END_RCPP
+}
+// estimate_theta_subpops_unweighted_pids
+double estimate_theta_subpops_unweighted_pids(Rcpp::XPtr<Population> population, Rcpp::ListOf<Rcpp::IntegerVector> subpops, bool assume_HWE);
+RcppExport SEXP _malan_estimate_theta_subpops_unweighted_pids(SEXP populationSEXP, SEXP subpopsSEXP, SEXP assume_HWESEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Population> >::type population(populationSEXP);
+    Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::IntegerVector> >::type subpops(subpopsSEXP);
+    Rcpp::traits::input_parameter< bool >::type assume_HWE(assume_HWESEXP);
+    rcpp_result_gen = Rcpp::wrap(estimate_theta_subpops_unweighted_pids(population, subpops, assume_HWE));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_allele_counts_genotypes
+Rcpp::IntegerMatrix get_allele_counts_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> subpops);
+RcppExport SEXP _malan_get_allele_counts_genotypes(SEXP subpopsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::IntegerMatrix> >::type subpops(subpopsSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_allele_counts_genotypes(subpops));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_allele_counts_pids
+Rcpp::IntegerMatrix get_allele_counts_pids(Rcpp::XPtr<Population> population, Rcpp::ListOf<Rcpp::IntegerVector> subpops);
+RcppExport SEXP _malan_get_allele_counts_pids(SEXP populationSEXP, SEXP subpopsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Population> >::type population(populationSEXP);
+    Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::IntegerVector> >::type subpops(subpopsSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_allele_counts_pids(population, subpops));
+    return rcpp_result_gen;
+END_RCPP
+}
 // hash_colisions
 std::unordered_map<int, int> hash_colisions(int p);
 RcppExport SEXP _malan_hash_colisions(SEXP pSEXP) {
@@ -739,6 +787,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_calc_autosomal_genotype_conditional_cumdist", (DL_FUNC) &_malan_calc_autosomal_genotype_conditional_cumdist, 2},
     {"_malan_sample_autosomal_genotype", (DL_FUNC) &_malan_sample_autosomal_genotype, 2},
     {"_malan_pedigrees_all_populate_autosomal", (DL_FUNC) &_malan_pedigrees_all_populate_autosomal, 5},
+    {"_malan_estimate_theta_subpops_unweighted_genotypes", (DL_FUNC) &_malan_estimate_theta_subpops_unweighted_genotypes, 2},
+    {"_malan_estimate_theta_subpops_unweighted_pids", (DL_FUNC) &_malan_estimate_theta_subpops_unweighted_pids, 3},
+    {"_malan_get_allele_counts_genotypes", (DL_FUNC) &_malan_get_allele_counts_genotypes, 1},
+    {"_malan_get_allele_counts_pids", (DL_FUNC) &_malan_get_allele_counts_pids, 2},
     {"_malan_hash_colisions", (DL_FUNC) &_malan_hash_colisions, 1},
     {"_malan_estimate_theta_1subpop_genotypes", (DL_FUNC) &_malan_estimate_theta_1subpop_genotypes, 2},
     {"_malan_estimate_theta_1subpop_individuals", (DL_FUNC) &_malan_estimate_theta_1subpop_individuals, 2},

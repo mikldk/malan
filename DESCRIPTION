@@ -1,8 +1,7 @@
 Package: malan
 Type: Package
 Title: MAle Lineage ANalysis
-Version: 1.0.0
-Date: 2018-05-06
+Version: 1.0.1
 Authors@R: c(
     person(given = "Mikkel Meyer", family = "Andersen", 
         email = "mikl@math.aau.dk", role = c("aut", "cre"))

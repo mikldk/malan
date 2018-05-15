@@ -32,6 +32,10 @@ vignettes/*.pdf
 src/*.o
 src/*.so
 
+# cov file
+src/*.gcda
+src/*.gcno
+
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md

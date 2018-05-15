@@ -2,6 +2,8 @@ context("Autosomal")
 
 ESTIMATION_TOL_DUE_TO_SAMPLING <- 0.01
 
+
+
 set.seed(1)
 sim_res_fixed <- sample_geneology(population_size = 1e3, 
                                   generations = 100, 
@@ -640,3 +642,102 @@ test_that("GDA 1.1 diploid.nex ", {
   }
 })
 
+######################################
+# Unweighted
+######################################
+
+
+
+set.seed(2000)
+grps <- sample(c(1, 2), length(livepop), replace = TRUE)
+subpops <- split(livepop, grps)
+subpops_haps <- lapply(split(seq_len(nrow(y_livepop)), grps), function(is) y_livepop[is, ])
+pids_livepop <- sapply(livepop, get_pid)
+subpops_pids <- split(pids_livepop, grps)
+
+test_that("get_allele_counts_pids/get_allele_counts_genotypes", {
+  expect_equal(get_allele_counts_pids(sim_res_fixed$population, subpops_pids)[, c("0", "1", "2")],
+               get_allele_counts_genotypes(subpops_haps)[, c("0", "1", "2")])
+})
+
+test_that("Theta unweighted", {
+  expect_equal(estimate_theta_subpops_unweighted_pids(sim_res_fixed$population, subpops_pids, assume_HWE = TRUE),
+               estimate_theta_subpops_unweighted_genotypes(subpops_haps, assume_HWE = TRUE))
+  # Not yet implemented
+  # expect_equal(estimate_theta_subpops_unweighted_pids(sim_res_fixed$population, subpops_pids, assume_HWE = FALSE),
+  #              estimate_theta_subpops_unweighted_genotypes(subpops_haps, assume_HWE = FALSE))
+})
+
+
+
+if (requireNamespace("dirmult", quietly = TRUE)) {
+  library(dirmult)
+  
+  dirmult_weir1 <- dirmult::weirMoM(get_allele_counts_pids(sim_res_fixed$population, subpops_pids))
+  dirmult_weir2 <- dirmult::weirMoM(get_allele_counts_genotypes(subpops_haps))
+  
+  test_that("Theta unweighted with dirmult::weirMoM", {
+    expect_equal(dirmult_weir1, dirmult_weir2)
+    
+    expect_equal(estimate_theta_subpops_unweighted_pids(sim_res_fixed$population, subpops_pids, assume_HWE = TRUE),
+                 estimate_theta_subpops_unweighted_genotypes(subpops_haps, assume_HWE = TRUE))
+  })
+  
+  ralleleprob <- function(n, ps, theta) {
+    #n <- 2; ps <- ALLELE_PROB; theta <- 0.1
+    #n <- 2; ps <- ALLELE_PROB; theta <- 0.001
+    #
+    stopifnot(length(ps) > 1)
+    
+    stopifnot(length(theta) == 1L)
+    stopifnot(theta >= 0)
+    stopifnot(theta <= 1)
+    
+    # FIXME: theta == 0 problematic...
+    alpha <- (1-theta)*ps/theta
+    
+    x <- rdirichlet(n, alpha)
+    return(x)
+  }
+  
+  set.seed(100)
+  for (theta in c(0.01, 0.02)) {
+    #theta <- 0.02
+    subpop_ps <- ralleleprob(10, ps = allele_prob, theta = theta)
+    
+    subpop_geno <- lapply(seq_len(nrow(subpop_ps)), function(i) {
+      geno <- t(replicate(1000, sample_autosomal_genotype(subpop_ps[i, ], 0))) # 0 for HWE
+      return(geno)
+    })
+    
+    # Missing alleles a technical issue, but not here because all are observed in all subpops
+    allele_counts <- do.call(rbind, lapply(subpop_geno, function(x) table(x)))
+    
+    #get_allele_counts_genotypes()
+    
+    if (FALSE) {
+      theta
+      fit <- dirmult(allele_counts, trace = FALSE)
+      fit$theta
+      dirmult::weirMoM(allele_counts)
+      estimate_theta_subpops_genotypes(subpop_geno, sapply(subpop_geno, function(x) 1000))$theta
+      estimate_theta_subpops_unweighted_genotypes(subpop_geno, assume_HWE = TRUE)
+    }
+    
+    test_that(paste0("Theta unweighted with dirmult: theta = ", theta), {
+      expect_equal(estimate_theta_subpops_unweighted_genotypes(subpop_geno, assume_HWE = TRUE), 
+                   dirmult::weirMoM(allele_counts))
+    })
+    
+    test_that(paste0("get_allele_counts_genotypes with dirmult: theta = ", theta), {
+      expect_equal(allele_counts,
+                   get_allele_counts_genotypes(subpop_geno)[, colnames(allele_counts)])
+    })
+  }
+}
+
+############ Others
+
+test_that("hash_colisions", {
+  expect_true(all(unique(as.integer(hash_colisions(20))) == 1L))
+})

@@ -203,6 +203,64 @@ pedigrees_all_populate_autosomal <- function(pedigrees, allele_dist, theta, muta
     invisible(.Call('_malan_pedigrees_all_populate_autosomal', PACKAGE = 'malan', pedigrees, allele_dist, theta, mutation_rate, progress))
 }
 
+#' Unweighted estimate of theta from subpopulations of genotypes
+#' 
+#' Estimates unweighted theta for a number of subpopulations given a list of subpopulations of genotypes.
+#' 
+#' Based on Weir and Goudet, Genetics 2017: 
+#' http://www.genetics.org/content/early/2017/05/26/genetics.116.198424
+#' 
+#' @param subpops List of individual genotypes
+#' @param assume_HWE if the alleles themselves are used instead of genotypes
+#' 
+#' @return Estimate of theta
+#' 
+#' @export
+estimate_theta_subpops_unweighted_genotypes <- function(subpops, assume_HWE) {
+    .Call('_malan_estimate_theta_subpops_unweighted_genotypes', PACKAGE = 'malan', subpops, assume_HWE)
+}
+
+#' Unweighted estimate of theta from subpopulations of individual ids
+#' 
+#' Estimates unweighted theta for a number of subpopulations given a list of pids (individual ids).
+#' 
+#' Based on Weir and Goudet, Genetics 2017: 
+#' http://www.genetics.org/content/early/2017/05/26/genetics.116.198424
+#' 
+#' @param population Population obtain from simulation
+#' @param subpops List of individual pids
+#' @param assume_HWE if the alleles themselves are used instead of genotypes
+#' 
+#' @return Estimate of theta
+#' 
+#' @export
+estimate_theta_subpops_unweighted_pids <- function(population, subpops, assume_HWE) {
+    .Call('_malan_estimate_theta_subpops_unweighted_pids', PACKAGE = 'malan', population, subpops, assume_HWE)
+}
+
+#' Get allele counts from subpopulations of genotypes
+#' 
+#' @param subpops List of individual genotypes
+#' 
+#' @return Matrix with allele counts
+#' 
+#' @export
+get_allele_counts_genotypes <- function(subpops) {
+    .Call('_malan_get_allele_counts_genotypes', PACKAGE = 'malan', subpops)
+}
+
+#' Get allele counts from subpopulations given by pids
+#' 
+#' @param population Population obtain from simulation
+#' @param subpops List of individual pids
+#' 
+#' @return Matrix with allele counts
+#' 
+#' @export
+get_allele_counts_pids <- function(population, subpops) {
+    .Call('_malan_get_allele_counts_pids', PACKAGE = 'malan', population, subpops)
+}
+
 hash_colisions <- function(p) {
     .Call('_malan_hash_colisions', PACKAGE = 'malan', p)
 }
