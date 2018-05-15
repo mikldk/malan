@@ -3,7 +3,8 @@ Version 1.0.1:
   Changes since last version:
 
     * NEWS file  
-    * New estimate_theta_subpops_unweighted_{pids, genotypes} functions
+    * Renaming estimate_theta_* to estimate_autotheta_* to make it more clear that they assume autosomal types were populated first
+    * New estimate_autotheta_subpops_unweighted_{pids, genotypes} functions
     * More kits included: Minimal, Yfiler, PowerPlex Y
   
 Version 1.0.0:

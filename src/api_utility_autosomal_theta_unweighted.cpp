@@ -21,7 +21,7 @@
 #include "api_utility_individual.h"
 
 
-double estimate_theta_subpops_unweighted_geno_engine_HWE(
+double estimate_autotheta_subpops_unweighted_geno_engine_HWE(
     const std::vector<int> ni, 
     std::unordered_map<int, std::vector<int>> type_counts) {
   
@@ -107,7 +107,7 @@ std::pair<int, int> get_ordered_genotype(int a1, int a2) {
   return geno;
 }
 
-void fill_count_hashmap_theta_unweighted_HWE(
+void fill_count_hashmap_autotheta_unweighted_HWE(
     const int r, // subpops
     const int i, // subpop index
     const int a1, const int a2, // genotype
@@ -127,9 +127,11 @@ void fill_count_hashmap_theta_unweighted_HWE(
 }
 
 
-//' Unweighted estimate of theta from subpopulations of genotypes
+//' Unweighted estimate of autosomal theta from subpopulations of genotypes
 //' 
-//' Estimates unweighted theta for a number of subpopulations given a list of subpopulations of genotypes.
+//' Estimates unweighted autosomal theta for a number of subpopulations given a list of subpopulations of genotypes.
+//' 
+//' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 //' 
 //' Based on Weir and Goudet, Genetics 2017: 
 //' http://www.genetics.org/content/early/2017/05/26/genetics.116.198424
@@ -137,11 +139,11 @@ void fill_count_hashmap_theta_unweighted_HWE(
 //' @param subpops List of individual genotypes
 //' @param assume_HWE if the alleles themselves are used instead of genotypes
 //' 
-//' @return Estimate of theta
+//' @return Estimate of autosomal theta
 //' 
 //' @export
 // [[Rcpp::export]]
-double estimate_theta_subpops_unweighted_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> subpops, 
+double estimate_autotheta_subpops_unweighted_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> subpops, 
                                                    bool assume_HWE) {
 
   if (assume_HWE == false) {
@@ -182,7 +184,7 @@ double estimate_theta_subpops_unweighted_genotypes(Rcpp::ListOf<Rcpp::IntegerMat
         Rcpp::stop("Expected exactly 2 autosomal loci");
       }  
       
-      fill_count_hashmap_theta_unweighted_HWE(r, i, hap[0], hap[1], type_counts_allele);
+      fill_count_hashmap_autotheta_unweighted_HWE(r, i, hap[0], hap[1], type_counts_allele);
     }
   }
   
@@ -197,7 +199,7 @@ double estimate_theta_subpops_unweighted_genotypes(Rcpp::ListOf<Rcpp::IntegerMat
   } 
   */
   
-  double res = estimate_theta_subpops_unweighted_geno_engine_HWE(
+  double res = estimate_autotheta_subpops_unweighted_geno_engine_HWE(
     ni, type_counts_allele);
   
   return res;
@@ -205,9 +207,11 @@ double estimate_theta_subpops_unweighted_genotypes(Rcpp::ListOf<Rcpp::IntegerMat
 
 
 
-//' Unweighted estimate of theta from subpopulations of individual ids
+//' Unweighted estimate of autosomal theta from subpopulations of individual ids
 //' 
-//' Estimates unweighted theta for a number of subpopulations given a list of pids (individual ids).
+//' Estimates unweighted autosomal theta for a number of subpopulations given a list of pids (individual ids).
+//'
+//' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 //' 
 //' Based on Weir and Goudet, Genetics 2017: 
 //' http://www.genetics.org/content/early/2017/05/26/genetics.116.198424
@@ -216,11 +220,11 @@ double estimate_theta_subpops_unweighted_genotypes(Rcpp::ListOf<Rcpp::IntegerMat
 //' @param subpops List of individual pids
 //' @param assume_HWE if the alleles themselves are used instead of genotypes
 //' 
-//' @return Estimate of theta
+//' @return Estimate of autosomal theta
 //' 
 //' @export
 // [[Rcpp::export]]
-double estimate_theta_subpops_unweighted_pids(Rcpp::XPtr<Population> population,
+double estimate_autotheta_subpops_unweighted_pids(Rcpp::XPtr<Population> population,
                                               Rcpp::ListOf<Rcpp::IntegerVector> subpops,
                                               bool assume_HWE) {
   if (assume_HWE == false) {
@@ -267,18 +271,15 @@ double estimate_theta_subpops_unweighted_pids(Rcpp::XPtr<Population> population,
       }  
       
       
-      fill_count_hashmap_theta_unweighted_HWE(r, i, hap[0], hap[1], type_counts_allele);
+      fill_count_hashmap_autotheta_unweighted_HWE(r, i, hap[0], hap[1], type_counts_allele);
     }
   }
   
-  double res = estimate_theta_subpops_unweighted_geno_engine_HWE(
+  double res = estimate_autotheta_subpops_unweighted_geno_engine_HWE(
     ni, type_counts_allele);
   
   return res;
 }
-
-
-
 
 
 
@@ -306,7 +307,9 @@ Rcpp::IntegerMatrix convert_map_to_matrix(const int r, const std::unordered_map<
   return res;
 }
 
-//' Get allele counts from subpopulations of genotypes
+//' Get autosomal allele counts from subpopulations of genotypes
+//'
+//' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 //' 
 //' @param subpops List of individual genotypes
 //' 
@@ -344,7 +347,7 @@ Rcpp::IntegerMatrix get_allele_counts_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix
         Rcpp::stop("Expected exactly 2 autosomal loci");
       }  
       
-      fill_count_hashmap_theta_unweighted_HWE(r, i, hap[0], hap[1], type_counts_allele);
+      fill_count_hashmap_autotheta_unweighted_HWE(r, i, hap[0], hap[1], type_counts_allele);
     }
   }
   
@@ -354,7 +357,9 @@ Rcpp::IntegerMatrix get_allele_counts_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix
 }
 
 
-//' Get allele counts from subpopulations given by pids
+//' Get autosomal allele counts from subpopulations given by pids
+//'
+//' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 //' 
 //' @param population Population obtain from simulation
 //' @param subpops List of individual pids
@@ -397,7 +402,7 @@ Rcpp::IntegerMatrix get_allele_counts_pids(Rcpp::XPtr<Population> population,
         Rcpp::stop("Expected exactly 2 autosomal loci");
       }        
       
-      fill_count_hashmap_theta_unweighted_HWE(r, i, hap[0], hap[1], type_counts_allele);
+      fill_count_hashmap_autotheta_unweighted_HWE(r, i, hap[0], hap[1], type_counts_allele);
     }
   }
   

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get autosomal allele counts from subpopulations of genotypes — get_allele_counts_genotypes • malan</title>
+<title>Unweighted estimate of autosomal theta from subpopulations of genotypes — estimate_autotheta_subpops_unweighted_genotypes • malan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,9 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Get autosomal allele counts from subpopulations of genotypes — get_allele_counts_genotypes" />
+<meta property="og:title" content="Unweighted estimate of autosomal theta from subpopulations of genotypes — estimate_autotheta_subpops_unweighted_genotypes" />
 
-<meta property="og:description" content="Assumes that pedigrees_all_populate_autosomal() was used first to populate autosomal genotypes." />
+<meta property="og:description" content="Estimates unweighted autosomal theta for a number of subpopulations given a list of subpopulations of genotypes." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -103,16 +103,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get autosomal allele counts from subpopulations of genotypes</h1>
+    <h1>Unweighted estimate of autosomal theta from subpopulations of genotypes</h1>
     
-    <div class="hidden name"><code>get_allele_counts_genotypes.Rd</code></div>
+    <div class="hidden name"><code>estimate_autotheta_subpops_unweighted_genotypes.Rd</code></div>
     </div>
 
     
-    <p>Assumes that <code><a href='pedigrees_all_populate_autosomal.html'>pedigrees_all_populate_autosomal()</a></code> was used first to populate autosomal genotypes.</p>
+    <p>Estimates unweighted autosomal theta for a number of subpopulations given a list of subpopulations of genotypes.</p>
     
 
-    <pre class="usage"><span class='fu'>get_allele_counts_genotypes</span>(<span class='no'>subpops</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_autotheta_subpops_unweighted_genotypes</span>(<span class='no'>subpops</span>, <span class='no'>assume_HWE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -121,11 +121,21 @@
       <th>subpops</th>
       <td><p>List of individual genotypes</p></td>
     </tr>
+    <tr>
+      <th>assume_HWE</th>
+      <td><p>if the alleles themselves are used instead of genotypes</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Matrix with allele counts</p>
+    <p>Estimate of autosomal theta</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Assumes that <code><a href='pedigrees_all_populate_autosomal.html'>pedigrees_all_populate_autosomal()</a></code> was used first to populate autosomal genotypes.</p>
+<p>Based on Weir and Goudet, Genetics 2017:
+http://www.genetics.org/content/early/2017/05/26/genetics.116.198424</p>
     
 
   </div>
@@ -135,6 +145,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

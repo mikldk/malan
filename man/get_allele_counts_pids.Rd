@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{get_allele_counts_pids}
 \alias{get_allele_counts_pids}
-\title{Get allele counts from subpopulations given by pids}
+\title{Get autosomal allele counts from subpopulations given by pids}
 \usage{
 get_allele_counts_pids(population, subpops)
 }
@@ -15,5 +15,5 @@ get_allele_counts_pids(population, subpops)
 Matrix with allele counts
 }
 \description{
-Get allele counts from subpopulations given by pids
+Assumes that \code{\link[=pedigrees_all_populate_autosomal]{pedigrees_all_populate_autosomal()}} was used first to populate autosomal genotypes.
 }

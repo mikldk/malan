@@ -38,7 +38,7 @@ std::unordered_map<int, int> hash_colisions(int p) {
 
 
 
-Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_p,
+Rcpp::List estimate_autotheta_1subpop(const std::unordered_map<int, double>& allele_p,
                                   const std::unordered_map<std::pair<int, int>, double>& genotype_p,
                                   const std::unordered_set<std::pair<int, int>>& genotypes_unique,
                                   const bool return_estimation_info = false) {
@@ -177,7 +177,7 @@ Rcpp::List estimate_theta_1subpop(const std::unordered_map<int, double>& allele_
 }
 
 
-void estimate_theta_1subpop_fill_containers(int a1,
+void estimate_autotheta_1subpop_fill_containers(int a1,
                                             int a2,
                                             const double one_over_n,
                                             const double one_over_2n,
@@ -205,9 +205,11 @@ void estimate_theta_1subpop_fill_containers(int a1,
 }
 
 
-//' Estimate theta from genotypes
+//' Estimate autosomal theta from genotypes
 //' 
-//' Estimate theta for one subpopulation given a sample of genotypes.
+//' Estimate autosomal theta for one subpopulation given a sample of genotypes.
+//'
+//' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 //' 
 //' @param genotypes Matrix of genotypes: two columns (allele1 and allele2) and a row per individual
 //' @param return_estimation_info Whether to return the quantities used to estimate `theta`
@@ -221,7 +223,7 @@ void estimate_theta_1subpop_fill_containers(int a1,
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List estimate_theta_1subpop_genotypes(Rcpp::IntegerMatrix genotypes, bool return_estimation_info = false) {
+Rcpp::List estimate_autotheta_1subpop_genotypes(Rcpp::IntegerMatrix genotypes, bool return_estimation_info = false) {
   int n = genotypes.nrow();
   
   if (n <= 0) {
@@ -244,29 +246,32 @@ Rcpp::List estimate_theta_1subpop_genotypes(Rcpp::IntegerMatrix genotypes, bool 
     int a1 = genotypes(i, 0);
     int a2 = genotypes(i, 1);
     
-    estimate_theta_1subpop_fill_containers(a1, a2, one_over_n, one_over_2n, 
+    estimate_autotheta_1subpop_fill_containers(a1, a2, one_over_n, one_over_2n, 
                                            allele_p, genotype_p, genotypes_unique);
   }
   
-  Rcpp::List theta = estimate_theta_1subpop(allele_p, genotype_p, genotypes_unique, 
+  Rcpp::List theta = estimate_autotheta_1subpop(allele_p, genotype_p, genotypes_unique, 
                                             return_estimation_info);
     
   return theta;
 }
 
 
-//' Estimate theta from individuals
+//' Estimate autosomal theta from individuals
 //' 
-//' Estimate theta for one subpopulation given a list of individuals.
+//' Estimate autosomal theta for one subpopulation given a list of individuals.
+//'
+//' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 //' 
-//' @inheritParams estimate_theta_1subpop_genotypes
+//' 
+//' @inheritParams estimate_autotheta_1subpop_genotypes
 //' @param individuals Individuals to get haplotypes for.
 //' 
-//' @inherit estimate_theta_1subpop_genotypes return
+//' @inherit estimate_autotheta_1subpop_genotypes return
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List estimate_theta_1subpop_individuals(Rcpp::ListOf< Rcpp::XPtr<Individual> > individuals, 
+Rcpp::List estimate_autotheta_1subpop_individuals(Rcpp::ListOf< Rcpp::XPtr<Individual> > individuals, 
                                               bool return_estimation_info = false) {
   
   int n = individuals.size();
@@ -297,11 +302,11 @@ Rcpp::List estimate_theta_1subpop_individuals(Rcpp::ListOf< Rcpp::XPtr<Individua
     Individual* individual = individuals[i];
     std::vector<int> hap = individual->get_haplotype();
     
-    estimate_theta_1subpop_fill_containers(hap[0], hap[1], one_over_n, one_over_2n, 
+    estimate_autotheta_1subpop_fill_containers(hap[0], hap[1], one_over_n, one_over_2n, 
                                            allele_p, genotype_p, genotypes_unique);
   }
   
-  Rcpp::List theta = estimate_theta_1subpop(allele_p, genotype_p, genotypes_unique, 
+  Rcpp::List theta = estimate_autotheta_1subpop(allele_p, genotype_p, genotypes_unique, 
                                             return_estimation_info);
   return theta;
 }
@@ -348,7 +353,7 @@ std::vector< std::unordered_map<int, double> > P_AA(r);
 // p_A: Allele probability:
 // p_A[i][l]: Allele probability of allele l in subpopulation i.
 */
-Rcpp::List estimate_theta_subpops_weighted_engine(
+Rcpp::List estimate_autotheta_subpops_weighted_engine(
     std::vector< std::unordered_map<int, double> > P_AA,
     std::vector< std::unordered_map<int, double> > p_A,
     std::vector<double> n) {
@@ -609,20 +614,23 @@ void fill_P_AA_p_A(int a, int b, int i, double frac1, double frac2,
 }
 
 
-//' Estimate F, theta, and f from subpopulations of individuals
+//' Estimate autosomal F, theta, and f from subpopulations of individuals
 //' 
-//' Estimates F, theta, and f for a number of subpopulations given a list of individuals.
+//' Estimates autosomal F, theta, and f for a number of subpopulations given a list of individuals.
+//'
+//' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
+//' 
 //' 
 //' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
 //' 
 //' @param subpops List of subpopulations, each a list of individuals
 //' @param subpops_sizes Size of each subpopulation
 //' 
-//' @return Estimates of F, theta, and f as well as additional information
+//' @return Estimates of autosomal F, theta, and f as well as additional information
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List estimate_theta_subpops_individuals(Rcpp::List subpops, 
+Rcpp::List estimate_autotheta_subpops_individuals(Rcpp::List subpops, 
                                               Rcpp::IntegerVector subpops_sizes) {
 
   int r = subpops.size();
@@ -689,25 +697,27 @@ Rcpp::List estimate_theta_subpops_individuals(Rcpp::List subpops,
     }
   }
   
-  Rcpp::List res = estimate_theta_subpops_weighted_engine(P_AA, p_A, n);
+  Rcpp::List res = estimate_autotheta_subpops_weighted_engine(P_AA, p_A, n);
 
   return res;
 }
 
-//' Estimate F, theta, and f from subpopulations of genotypes
+//' Estimate autosomal F, theta, and f from subpopulations of genotypes
 //' 
-//' Estimates F, theta, and f for a number of subpopulations given a list of genotypes.
+//' Estimates autosomal F, theta, and f for a number of subpopulations given a list of genotypes.
+//'
+//' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 //' 
 //' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
 //' 
 //' @param subpops List of subpopulations, each a list of individuals
 //' @param subpops_sizes Size of each subpopulation
 //' 
-//' @return Estimates of F, theta, and f as well as additional information
+//' @return Estimates of autosomal F, theta, and f as well as additional information
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List estimate_theta_subpops_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> subpops, 
+Rcpp::List estimate_autotheta_subpops_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> subpops, 
                                             Rcpp::IntegerVector subpops_sizes) {
   
   int r = subpops.size();
@@ -777,15 +787,17 @@ Rcpp::List estimate_theta_subpops_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> su
   Rcpp::print(Rcpp::wrap(n));
   */
   
-  Rcpp::List res = estimate_theta_subpops_weighted_engine(P_AA, p_A, n);
+  Rcpp::List res = estimate_autotheta_subpops_weighted_engine(P_AA, p_A, n);
   
   return res;
 }
 
 
-//' Estimate F, theta, and f from subpopulations of individual ids
+//' Estimate autosomal F, theta, and f from subpopulations of individual ids
 //' 
-//' Estimates F, theta, and f for a number of subpopulations given a list of pids (individual ids).
+//' Estimates autosomal F, theta, and f for a number of subpopulations given a list of pids (individual ids).
+//'
+//' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 //' 
 //' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
 //' 
@@ -793,11 +805,11 @@ Rcpp::List estimate_theta_subpops_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> su
 //' @param subpops List of individual pids
 //' @param subpops_sizes Size of each subpopulation
 //' 
-//' @return Estimates of F, theta, and f as well as additional information
+//' @return Estimates of autosomal F, theta, and f as well as additional information
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List estimate_theta_subpops_pids(Rcpp::XPtr<Population> population,
+Rcpp::List estimate_autotheta_subpops_pids(Rcpp::XPtr<Population> population,
                                        Rcpp::ListOf<Rcpp::IntegerVector> subpops, 
                                        Rcpp::IntegerVector subpops_sizes) {
   
@@ -862,7 +874,7 @@ Rcpp::List estimate_theta_subpops_pids(Rcpp::XPtr<Population> population,
     }
   }
   
-  Rcpp::List res = estimate_theta_subpops_weighted_engine(P_AA, p_A, n);
+  Rcpp::List res = estimate_autotheta_subpops_weighted_engine(P_AA, p_A, n);
   
   return res;
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get autosomal allele counts from subpopulations of genotypes — get_allele_counts_genotypes • malan</title>
+<title>Estimate autosomal F, theta, and f from subpopulations of individual ids — estimate_autotheta_subpops_pids • malan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,9 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Get autosomal allele counts from subpopulations of genotypes — get_allele_counts_genotypes" />
+<meta property="og:title" content="Estimate autosomal F, theta, and f from subpopulations of individual ids — estimate_autotheta_subpops_pids" />
 
-<meta property="og:description" content="Assumes that pedigrees_all_populate_autosomal() was used first to populate autosomal genotypes." />
+<meta property="og:description" content="Estimates autosomal F, theta, and f for a number of subpopulations given a list of pids (individual ids)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -103,29 +103,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get autosomal allele counts from subpopulations of genotypes</h1>
+    <h1>Estimate autosomal F, theta, and f from subpopulations of individual ids</h1>
     
-    <div class="hidden name"><code>get_allele_counts_genotypes.Rd</code></div>
+    <div class="hidden name"><code>estimate_autotheta_subpops_pids.Rd</code></div>
     </div>
 
     
-    <p>Assumes that <code><a href='pedigrees_all_populate_autosomal.html'>pedigrees_all_populate_autosomal()</a></code> was used first to populate autosomal genotypes.</p>
+    <p>Estimates autosomal F, theta, and f for a number of subpopulations given a list of pids (individual ids).</p>
     
 
-    <pre class="usage"><span class='fu'>get_allele_counts_genotypes</span>(<span class='no'>subpops</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_autotheta_subpops_pids</span>(<span class='no'>population</span>, <span class='no'>subpops</span>, <span class='no'>subpops_sizes</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>population</th>
+      <td><p>Population obtain from simulation</p></td>
+    </tr>
+    <tr>
       <th>subpops</th>
-      <td><p>List of individual genotypes</p></td>
+      <td><p>List of individual pids</p></td>
+    </tr>
+    <tr>
+      <th>subpops_sizes</th>
+      <td><p>Size of each subpopulation</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Matrix with allele counts</p>
+    <p>Estimates of autosomal F, theta, and f as well as additional information</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Assumes that <code><a href='pedigrees_all_populate_autosomal.html'>pedigrees_all_populate_autosomal()</a></code> was used first to populate autosomal genotypes.</p>
+<p>Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).</p>
     
 
   </div>
@@ -135,6 +148,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

@@ -203,9 +203,11 @@ pedigrees_all_populate_autosomal <- function(pedigrees, allele_dist, theta, muta
     invisible(.Call('_malan_pedigrees_all_populate_autosomal', PACKAGE = 'malan', pedigrees, allele_dist, theta, mutation_rate, progress))
 }
 
-#' Unweighted estimate of theta from subpopulations of genotypes
+#' Unweighted estimate of autosomal theta from subpopulations of genotypes
 #' 
-#' Estimates unweighted theta for a number of subpopulations given a list of subpopulations of genotypes.
+#' Estimates unweighted autosomal theta for a number of subpopulations given a list of subpopulations of genotypes.
+#' 
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
 #' Based on Weir and Goudet, Genetics 2017: 
 #' http://www.genetics.org/content/early/2017/05/26/genetics.116.198424
@@ -213,16 +215,18 @@ pedigrees_all_populate_autosomal <- function(pedigrees, allele_dist, theta, muta
 #' @param subpops List of individual genotypes
 #' @param assume_HWE if the alleles themselves are used instead of genotypes
 #' 
-#' @return Estimate of theta
+#' @return Estimate of autosomal theta
 #' 
 #' @export
-estimate_theta_subpops_unweighted_genotypes <- function(subpops, assume_HWE) {
-    .Call('_malan_estimate_theta_subpops_unweighted_genotypes', PACKAGE = 'malan', subpops, assume_HWE)
+estimate_autotheta_subpops_unweighted_genotypes <- function(subpops, assume_HWE) {
+    .Call('_malan_estimate_autotheta_subpops_unweighted_genotypes', PACKAGE = 'malan', subpops, assume_HWE)
 }
 
-#' Unweighted estimate of theta from subpopulations of individual ids
+#' Unweighted estimate of autosomal theta from subpopulations of individual ids
 #' 
-#' Estimates unweighted theta for a number of subpopulations given a list of pids (individual ids).
+#' Estimates unweighted autosomal theta for a number of subpopulations given a list of pids (individual ids).
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
 #' Based on Weir and Goudet, Genetics 2017: 
 #' http://www.genetics.org/content/early/2017/05/26/genetics.116.198424
@@ -231,14 +235,16 @@ estimate_theta_subpops_unweighted_genotypes <- function(subpops, assume_HWE) {
 #' @param subpops List of individual pids
 #' @param assume_HWE if the alleles themselves are used instead of genotypes
 #' 
-#' @return Estimate of theta
+#' @return Estimate of autosomal theta
 #' 
 #' @export
-estimate_theta_subpops_unweighted_pids <- function(population, subpops, assume_HWE) {
-    .Call('_malan_estimate_theta_subpops_unweighted_pids', PACKAGE = 'malan', population, subpops, assume_HWE)
+estimate_autotheta_subpops_unweighted_pids <- function(population, subpops, assume_HWE) {
+    .Call('_malan_estimate_autotheta_subpops_unweighted_pids', PACKAGE = 'malan', population, subpops, assume_HWE)
 }
 
-#' Get allele counts from subpopulations of genotypes
+#' Get autosomal allele counts from subpopulations of genotypes
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
 #' @param subpops List of individual genotypes
 #' 
@@ -249,7 +255,9 @@ get_allele_counts_genotypes <- function(subpops) {
     .Call('_malan_get_allele_counts_genotypes', PACKAGE = 'malan', subpops)
 }
 
-#' Get allele counts from subpopulations given by pids
+#' Get autosomal allele counts from subpopulations given by pids
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
 #' @param population Population obtain from simulation
 #' @param subpops List of individual pids
@@ -265,9 +273,11 @@ hash_colisions <- function(p) {
     .Call('_malan_hash_colisions', PACKAGE = 'malan', p)
 }
 
-#' Estimate theta from genotypes
+#' Estimate autosomal theta from genotypes
 #' 
-#' Estimate theta for one subpopulation given a sample of genotypes.
+#' Estimate autosomal theta for one subpopulation given a sample of genotypes.
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
 #' @param genotypes Matrix of genotypes: two columns (allele1 and allele2) and a row per individual
 #' @param return_estimation_info Whether to return the quantities used to estimate `theta`
@@ -280,59 +290,69 @@ hash_colisions <- function(p) {
 #'     + `estimation_info`: If `return_estimation_info = true`: a list with information used to estimate `theta`. Else `NULL`.
 #' 
 #' @export
-estimate_theta_1subpop_genotypes <- function(genotypes, return_estimation_info = FALSE) {
-    .Call('_malan_estimate_theta_1subpop_genotypes', PACKAGE = 'malan', genotypes, return_estimation_info)
+estimate_autotheta_1subpop_genotypes <- function(genotypes, return_estimation_info = FALSE) {
+    .Call('_malan_estimate_autotheta_1subpop_genotypes', PACKAGE = 'malan', genotypes, return_estimation_info)
 }
 
-#' Estimate theta from individuals
+#' Estimate autosomal theta from individuals
 #' 
-#' Estimate theta for one subpopulation given a list of individuals.
+#' Estimate autosomal theta for one subpopulation given a list of individuals.
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
-#' @inheritParams estimate_theta_1subpop_genotypes
+#' 
+#' @inheritParams estimate_autotheta_1subpop_genotypes
 #' @param individuals Individuals to get haplotypes for.
 #' 
-#' @inherit estimate_theta_1subpop_genotypes return
+#' @inherit estimate_autotheta_1subpop_genotypes return
 #' 
 #' @export
-estimate_theta_1subpop_individuals <- function(individuals, return_estimation_info = FALSE) {
-    .Call('_malan_estimate_theta_1subpop_individuals', PACKAGE = 'malan', individuals, return_estimation_info)
+estimate_autotheta_1subpop_individuals <- function(individuals, return_estimation_info = FALSE) {
+    .Call('_malan_estimate_autotheta_1subpop_individuals', PACKAGE = 'malan', individuals, return_estimation_info)
 }
 
-#' Estimate F, theta, and f from subpopulations of individuals
+#' Estimate autosomal F, theta, and f from subpopulations of individuals
 #' 
-#' Estimates F, theta, and f for a number of subpopulations given a list of individuals.
+#' Estimates autosomal F, theta, and f for a number of subpopulations given a list of individuals.
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
+#' 
 #' 
 #' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
 #' 
 #' @param subpops List of subpopulations, each a list of individuals
 #' @param subpops_sizes Size of each subpopulation
 #' 
-#' @return Estimates of F, theta, and f as well as additional information
+#' @return Estimates of autosomal F, theta, and f as well as additional information
 #' 
 #' @export
-estimate_theta_subpops_individuals <- function(subpops, subpops_sizes) {
-    .Call('_malan_estimate_theta_subpops_individuals', PACKAGE = 'malan', subpops, subpops_sizes)
+estimate_autotheta_subpops_individuals <- function(subpops, subpops_sizes) {
+    .Call('_malan_estimate_autotheta_subpops_individuals', PACKAGE = 'malan', subpops, subpops_sizes)
 }
 
-#' Estimate F, theta, and f from subpopulations of genotypes
+#' Estimate autosomal F, theta, and f from subpopulations of genotypes
 #' 
-#' Estimates F, theta, and f for a number of subpopulations given a list of genotypes.
+#' Estimates autosomal F, theta, and f for a number of subpopulations given a list of genotypes.
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
 #' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
 #' 
 #' @param subpops List of subpopulations, each a list of individuals
 #' @param subpops_sizes Size of each subpopulation
 #' 
-#' @return Estimates of F, theta, and f as well as additional information
+#' @return Estimates of autosomal F, theta, and f as well as additional information
 #' 
 #' @export
-estimate_theta_subpops_genotypes <- function(subpops, subpops_sizes) {
-    .Call('_malan_estimate_theta_subpops_genotypes', PACKAGE = 'malan', subpops, subpops_sizes)
+estimate_autotheta_subpops_genotypes <- function(subpops, subpops_sizes) {
+    .Call('_malan_estimate_autotheta_subpops_genotypes', PACKAGE = 'malan', subpops, subpops_sizes)
 }
 
-#' Estimate F, theta, and f from subpopulations of individual ids
+#' Estimate autosomal F, theta, and f from subpopulations of individual ids
 #' 
-#' Estimates F, theta, and f for a number of subpopulations given a list of pids (individual ids).
+#' Estimates autosomal F, theta, and f for a number of subpopulations given a list of pids (individual ids).
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
 #' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
 #' 
@@ -340,11 +360,11 @@ estimate_theta_subpops_genotypes <- function(subpops, subpops_sizes) {
 #' @param subpops List of individual pids
 #' @param subpops_sizes Size of each subpopulation
 #' 
-#' @return Estimates of F, theta, and f as well as additional information
+#' @return Estimates of autosomal F, theta, and f as well as additional information
 #' 
 #' @export
-estimate_theta_subpops_pids <- function(population, subpops, subpops_sizes) {
-    .Call('_malan_estimate_theta_subpops_pids', PACKAGE = 'malan', population, subpops, subpops_sizes)
+estimate_autotheta_subpops_pids <- function(population, subpops, subpops_sizes) {
+    .Call('_malan_estimate_autotheta_subpops_pids', PACKAGE = 'malan', population, subpops, subpops_sizes)
 }
 
 #' Populate haplotypes in pedigrees (0-founder/unbounded).
