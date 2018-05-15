@@ -31,9 +31,9 @@ cache: packages
 
 matrix:
   include:
-    - os: linux
-      dist: trusty
-      r: oldrel
+#    - os: linux
+#      dist: trusty
+#      r: oldrel
     - os: linux
       dist: trusty
       r: release
@@ -45,9 +45,9 @@ matrix:
     - os: osx
       osx_image: xcode8.3
       r: release
-#    - os: osx
-#      osx_image: xcode8.3
-#      r: devel
+    - os: osx
+      osx_image: xcode8.3
+      r: devel
 
 #env
 env:
