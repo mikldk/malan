@@ -20,7 +20,7 @@ Imports:
     methods
 Depends:
   R (>= 2.10),
-  dplyr (>= 0.7.4),
+  dplyr (>= 0.7.3),
   tidygraph (>= 1.0.0.9999)
 LinkingTo: Rcpp, RcppArmadillo, RcppProgress
 Suggests: knitr, rmarkdown, testthat, ggraph
