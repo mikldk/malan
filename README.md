@@ -35,6 +35,7 @@ To read a vignette, type:
 ```r
 vignette("introduction", package = "malan")
 ```
+
 ### Running tests
 
 Note that to also install the tests, you need to install the package as follows:

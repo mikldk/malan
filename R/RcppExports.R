@@ -893,7 +893,9 @@ pedigree_size_generation <- function(pedigree, generation_upper_bound_in_result 
 #' @param donor2 Contributor2/donor 2
 #' @return A list with mixture information about the mixture \code{donor1}+\code{donor2}+\code{donor3} from \code{individuals}
 #' 
-#' @seealso \code{\link{mixture_info_by_individuals_3pers}}
+#' @seealso \code{\link{mixture_info_by_individuals_3pers}}, 
+#'          \code{\link{mixture_info_by_individuals_4pers}}, 
+#'          \code{\link{mixture_info_by_individuals_5pers}}
 #' 
 #' @export
 mixture_info_by_individuals <- function(individuals, donor1, donor2) {
@@ -903,13 +905,43 @@ mixture_info_by_individuals <- function(individuals, donor1, donor2) {
 #' Mixture information about 3 persons' mixture of donor1, donor2 and donor3.
 #' 
 #' @inherit mixture_info_by_individuals
-#' @param donor3 Contributor2/donor 3
+#' @param donor3 Contributor3/donor 3
 #' 
-#' @seealso \code{\link{mixture_info_by_individuals}}
+#' @seealso \code{\link{mixture_info_by_individuals}}, 
+#'          \code{\link{mixture_info_by_individuals_4pers}}, 
+#'          \code{\link{mixture_info_by_individuals_5pers}}
 #' 
 #' @export
 mixture_info_by_individuals_3pers <- function(individuals, donor1, donor2, donor3) {
     .Call('_malan_mixture_info_by_individuals_3pers', PACKAGE = 'malan', individuals, donor1, donor2, donor3)
+}
+
+#' Mixture information about 4 persons' mixture of donor1, donor2, donor3 and donor4.
+#' 
+#' @inherit mixture_info_by_individuals_3pers
+#' @param donor4 Contributor4/donor 4
+#' 
+#' @seealso \code{\link{mixture_info_by_individuals}}, 
+#'          \code{\link{mixture_info_by_individuals_3pers}}, 
+#'          \code{\link{mixture_info_by_individuals_5pers}}
+#' 
+#' @export
+mixture_info_by_individuals_4pers <- function(individuals, donor1, donor2, donor3, donor4) {
+    .Call('_malan_mixture_info_by_individuals_4pers', PACKAGE = 'malan', individuals, donor1, donor2, donor3, donor4)
+}
+
+#' Mixture information about 5 persons' mixture of donor1, donor2, donor3, donor4 and donor5.
+#' 
+#' @inherit mixture_info_by_individuals_4pers
+#' @param donor5 Contributor5/donor 5
+#' 
+#' @seealso \code{\link{mixture_info_by_individuals}}, 
+#'          \code{\link{mixture_info_by_individuals_3pers}}, 
+#'          \code{\link{mixture_info_by_individuals_4pers}}
+#' 
+#' @export
+mixture_info_by_individuals_5pers <- function(individuals, donor1, donor2, donor3, donor4, donor5) {
+    .Call('_malan_mixture_info_by_individuals_5pers', PACKAGE = 'malan', individuals, donor1, donor2, donor3, donor4, donor5)
 }
 
 #' Get pedigree id

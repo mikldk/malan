@@ -647,6 +647,37 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// mixture_info_by_individuals_4pers
+Rcpp::List mixture_info_by_individuals_4pers(const Rcpp::List individuals, Rcpp::XPtr<Individual>& donor1, Rcpp::XPtr<Individual>& donor2, Rcpp::XPtr<Individual>& donor3, Rcpp::XPtr<Individual>& donor4);
+RcppExport SEXP _malan_mixture_info_by_individuals_4pers(SEXP individualsSEXP, SEXP donor1SEXP, SEXP donor2SEXP, SEXP donor3SEXP, SEXP donor4SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List >::type individuals(individualsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor1(donor1SEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor2(donor2SEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor3(donor3SEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor4(donor4SEXP);
+    rcpp_result_gen = Rcpp::wrap(mixture_info_by_individuals_4pers(individuals, donor1, donor2, donor3, donor4));
+    return rcpp_result_gen;
+END_RCPP
+}
+// mixture_info_by_individuals_5pers
+Rcpp::List mixture_info_by_individuals_5pers(const Rcpp::List individuals, Rcpp::XPtr<Individual>& donor1, Rcpp::XPtr<Individual>& donor2, Rcpp::XPtr<Individual>& donor3, Rcpp::XPtr<Individual>& donor4, Rcpp::XPtr<Individual>& donor5);
+RcppExport SEXP _malan_mixture_info_by_individuals_5pers(SEXP individualsSEXP, SEXP donor1SEXP, SEXP donor2SEXP, SEXP donor3SEXP, SEXP donor4SEXP, SEXP donor5SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List >::type individuals(individualsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor1(donor1SEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor2(donor2SEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor3(donor3SEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor4(donor4SEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor5(donor5SEXP);
+    rcpp_result_gen = Rcpp::wrap(mixture_info_by_individuals_5pers(individuals, donor1, donor2, donor3, donor4, donor5));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_pedigree_id
 int get_pedigree_id(Rcpp::XPtr<Pedigree> ped);
 RcppExport SEXP _malan_get_pedigree_id(SEXP pedSEXP) {
@@ -833,6 +864,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_pedigree_size_generation", (DL_FUNC) &_malan_pedigree_size_generation, 2},
     {"_malan_mixture_info_by_individuals", (DL_FUNC) &_malan_mixture_info_by_individuals, 3},
     {"_malan_mixture_info_by_individuals_3pers", (DL_FUNC) &_malan_mixture_info_by_individuals_3pers, 4},
+    {"_malan_mixture_info_by_individuals_4pers", (DL_FUNC) &_malan_mixture_info_by_individuals_4pers, 5},
+    {"_malan_mixture_info_by_individuals_5pers", (DL_FUNC) &_malan_mixture_info_by_individuals_5pers, 6},
     {"_malan_get_pedigree_id", (DL_FUNC) &_malan_get_pedigree_id, 1},
     {"_malan_pedigrees_count", (DL_FUNC) &_malan_pedigrees_count, 1},
     {"_malan_pedigree_size", (DL_FUNC) &_malan_pedigree_size, 1},
