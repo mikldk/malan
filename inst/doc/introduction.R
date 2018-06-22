@@ -172,7 +172,7 @@ rbind(H1, H2)
 
 ## ------------------------------------------------------------------------
 #mixres <- indices_in_mixture_by_haplotype_matrix(haplotypes = haps, H1 = H1, H2 = H2)
-mixres <- mixture_info_by_individuals(live_individuals, U1, U2)
+mixres <- mixture_info_by_individuals_2pers(live_individuals, U1, U2)
 str(mixres, 1)
 
 ## ------------------------------------------------------------------------

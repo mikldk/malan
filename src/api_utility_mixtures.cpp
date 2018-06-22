@@ -442,7 +442,7 @@ Rcpp::List mixture_info_by_individuals_4pers(const Rcpp::List individuals,
 //' @inherit mixture_info_by_individuals_4pers
 //' @param donor5 Contributor5/donor 5
 //' 
-//' @seealso \code{\link{mixture_info_by_individuals}}, 
+//' @seealso \code{\link{mixture_info_by_individuals_2pers}}, 
 //'          \code{\link{mixture_info_by_individuals_3pers}}, 
 //'          \code{\link{mixture_info_by_individuals_4pers}}
 //' 

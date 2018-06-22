@@ -401,11 +401,11 @@ Rcpp::List analyse_mixture_result(Rcpp::List& mix_res,
 //' 
 //' NOTE: Only takes up to 9 contributors!
 //' 
-//' @param mix_res List of `n` mixture results from [mixture_info_by_individuals_2pers()], 
+//' @param mixture_results List of `n` mixture results from [mixture_info_by_individuals_2pers()], 
 //' [mixture_info_by_individuals_3pers()], [mixture_info_by_individuals_4pers()], 
 //' [mixture_info_by_individuals_5pers()]
-//' @param unique_haps_in_mixture List of `n` included unique haplotypes, one for each element in `mix_res`
-//' @param unique_haps_in_mixture_counts List of `n` population counts of the included unique haplotypes
+//' @param unique_haps_in_mixture_list List of `n` included unique haplotypes, one for each element in `mix_res`
+//' @param unique_haps_in_mixture_counts_list List of `n` population counts of the included unique haplotypes
 //' 
 //' @return A list with lists of numeric quantities
 // [[Rcpp::export]]

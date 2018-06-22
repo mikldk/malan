@@ -8,13 +8,13 @@ analyse_mixture_results(mixture_results, unique_haps_in_mixture_list,
   unique_haps_in_mixture_counts_list)
 }
 \arguments{
-\item{mix_res}{List of \code{n} mixture results from \code{\link[=mixture_info_by_individuals_2pers]{mixture_info_by_individuals_2pers()}},
+\item{mixture_results}{List of \code{n} mixture results from \code{\link[=mixture_info_by_individuals_2pers]{mixture_info_by_individuals_2pers()}},
 \code{\link[=mixture_info_by_individuals_3pers]{mixture_info_by_individuals_3pers()}}, \code{\link[=mixture_info_by_individuals_4pers]{mixture_info_by_individuals_4pers()}},
 \code{\link[=mixture_info_by_individuals_5pers]{mixture_info_by_individuals_5pers()}}}
 
-\item{unique_haps_in_mixture}{List of \code{n} included unique haplotypes, one for each element in \code{mix_res}}
+\item{unique_haps_in_mixture_list}{List of \code{n} included unique haplotypes, one for each element in \code{mix_res}}
 
-\item{unique_haps_in_mixture_counts}{List of \code{n} population counts of the included unique haplotypes}
+\item{unique_haps_in_mixture_counts_list}{List of \code{n} population counts of the included unique haplotypes}
 }
 \value{
 A list with lists of numeric quantities
