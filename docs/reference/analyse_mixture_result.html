@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Mixture information about 3 persons' mixture of donor1, donor2 and donor3. — mixture_info_by_individuals_3pers • malan</title>
+<title>Analyse mixture results — analyse_mixture_result • malan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,9 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Mixture information about 3 persons' mixture of donor1, donor2 and donor3. — mixture_info_by_individuals_3pers" />
+<meta property="og:title" content="Analyse mixture results — analyse_mixture_result" />
 
-<meta property="og:description" content="Mixture information about 3 persons' mixture of donor1, donor2 and donor3." />
+<meta property="og:description" content="Calculate LR-like quantities by haplotype counts." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -103,47 +103,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Mixture information about 3 persons' mixture of donor1, donor2 and donor3.</h1>
+    <h1>Analyse mixture results</h1>
     
-    <div class="hidden name"><code>mixture_info_by_individuals_3pers.Rd</code></div>
+    <div class="hidden name"><code>analyse_mixture_result.Rd</code></div>
     </div>
 
     
-    <p>Mixture information about 3 persons' mixture of donor1, donor2 and donor3.</p>
+    <p>Calculate LR-like quantities by haplotype counts.</p>
     
 
-    <pre class="usage"><span class='fu'>mixture_info_by_individuals_3pers</span>(<span class='no'>individuals</span>, <span class='no'>donor1</span>, <span class='no'>donor2</span>, <span class='no'>donor3</span>)</pre>
+    <pre class="usage"><span class='fu'>analyse_mixture_result</span>(<span class='no'>mix_res</span>, <span class='no'>unique_haps_in_mixture</span>,
+  <span class='no'>unique_haps_in_mixture_counts</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>individuals</th>
-      <td><p>Individuals to consider as possible contributors and thereby get information from.</p></td>
+      <th>mix_res</th>
+      <td><p>Mixture result from <code><a href='mixture_info_by_individuals_2pers.html'>mixture_info_by_individuals_2pers()</a></code>,
+<code><a href='mixture_info_by_individuals_3pers.html'>mixture_info_by_individuals_3pers()</a></code>, <code><a href='mixture_info_by_individuals_4pers.html'>mixture_info_by_individuals_4pers()</a></code>,
+<code><a href='mixture_info_by_individuals_5pers.html'>mixture_info_by_individuals_5pers()</a></code></p></td>
     </tr>
     <tr>
-      <th>donor1</th>
-      <td><p>Contributor1/donor 1</p></td>
+      <th>unique_haps_in_mixture</th>
+      <td><p>Included unique haplotypes to use as elements in contributor tuples.</p></td>
     </tr>
     <tr>
-      <th>donor2</th>
-      <td><p>Contributor2/donor 2</p></td>
-    </tr>
-    <tr>
-      <th>donor3</th>
-      <td><p>Contributor3/donor 3</p></td>
+      <th>unique_haps_in_mixture_counts</th>
+      <td><p>Population counts of the included haplotypes</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with mixture information about the mixture <code>donor1</code>+<code>donor2</code>+<code>donor3</code> from <code>individuals</code></p>
+    <p>A list with numeric quantities</p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'><p><code><a href='mixture_info_by_individuals_2pers.html'>mixture_info_by_individuals_2pers</a></code>,
-<code><a href='mixture_info_by_individuals_4pers.html'>mixture_info_by_individuals_4pers</a></code>,
-<code><a href='mixture_info_by_individuals_5pers.html'>mixture_info_by_individuals_5pers</a></code></p></div>
+    <p>NOTE: Only takes up to 9 contributors!</p>
     
 
   </div>
@@ -154,7 +151,7 @@
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#details">Details</a></li>
           </ul>
 
   </div>

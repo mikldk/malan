@@ -886,6 +886,41 @@ pedigree_size_generation <- function(pedigree, generation_upper_bound_in_result 
     .Call('_malan_pedigree_size_generation', PACKAGE = 'malan', pedigree, generation_upper_bound_in_result)
 }
 
+#' Analyse mixture results
+#' 
+#' Calculate LR-like quantities by haplotype counts.
+#' 
+#' NOTE: Only takes up to 9 contributors!
+#' 
+#' @param mix_res Mixture result from [mixture_info_by_individuals_2pers()], 
+#' [mixture_info_by_individuals_3pers()], [mixture_info_by_individuals_4pers()], 
+#' [mixture_info_by_individuals_5pers()]
+#' @param unique_haps_in_mixture Included unique haplotypes to use as elements in contributor tuples.
+#' @param unique_haps_in_mixture_counts Population counts of the included haplotypes
+#' 
+#' @return A list with numeric quantities
+analyse_mixture_result <- function(mix_res, unique_haps_in_mixture, unique_haps_in_mixture_counts) {
+    .Call('_malan_analyse_mixture_result', PACKAGE = 'malan', mix_res, unique_haps_in_mixture, unique_haps_in_mixture_counts)
+}
+
+#' Analyse mixture results in a vectorised fashion
+#' 
+#' Refer to [analyse_mixture_result()] for details. 
+#' Essentially, [analyse_mixture_result()] is run on each element of `mixture_results`.
+#' 
+#' NOTE: Only takes up to 9 contributors!
+#' 
+#' @param mix_res List of `n` mixture results from [mixture_info_by_individuals_2pers()], 
+#' [mixture_info_by_individuals_3pers()], [mixture_info_by_individuals_4pers()], 
+#' [mixture_info_by_individuals_5pers()]
+#' @param unique_haps_in_mixture List of `n` included unique haplotypes, one for each element in `mix_res`
+#' @param unique_haps_in_mixture_counts List of `n` population counts of the included unique haplotypes
+#' 
+#' @return A list with lists of numeric quantities
+analyse_mixture_results <- function(mixture_results, unique_haps_in_mixture_list, unique_haps_in_mixture_counts_list) {
+    .Call('_malan_analyse_mixture_results', PACKAGE = 'malan', mixture_results, unique_haps_in_mixture_list, unique_haps_in_mixture_counts_list)
+}
+
 #' Mixture information about 2 persons' mixture of donor1 and donor2.
 #' 
 #' @param individuals Individuals to consider as possible contributors and thereby get information from.
@@ -898,16 +933,16 @@ pedigree_size_generation <- function(pedigree, generation_upper_bound_in_result 
 #'          \code{\link{mixture_info_by_individuals_5pers}}
 #' 
 #' @export
-mixture_info_by_individuals <- function(individuals, donor1, donor2) {
-    .Call('_malan_mixture_info_by_individuals', PACKAGE = 'malan', individuals, donor1, donor2)
+mixture_info_by_individuals_2pers <- function(individuals, donor1, donor2) {
+    .Call('_malan_mixture_info_by_individuals_2pers', PACKAGE = 'malan', individuals, donor1, donor2)
 }
 
 #' Mixture information about 3 persons' mixture of donor1, donor2 and donor3.
 #' 
-#' @inherit mixture_info_by_individuals
+#' @inherit mixture_info_by_individuals_2pers
 #' @param donor3 Contributor3/donor 3
 #' 
-#' @seealso \code{\link{mixture_info_by_individuals}}, 
+#' @seealso \code{\link{mixture_info_by_individuals_2pers}}, 
 #'          \code{\link{mixture_info_by_individuals_4pers}}, 
 #'          \code{\link{mixture_info_by_individuals_5pers}}
 #' 
@@ -921,7 +956,7 @@ mixture_info_by_individuals_3pers <- function(individuals, donor1, donor2, donor
 #' @inherit mixture_info_by_individuals_3pers
 #' @param donor4 Contributor4/donor 4
 #' 
-#' @seealso \code{\link{mixture_info_by_individuals}}, 
+#' @seealso \code{\link{mixture_info_by_individuals_2pers}}, 
 #'          \code{\link{mixture_info_by_individuals_3pers}}, 
 #'          \code{\link{mixture_info_by_individuals_5pers}}
 #' 

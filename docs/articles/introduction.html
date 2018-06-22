@@ -75,7 +75,7 @@
       <h1>Introduction</h1>
                         <h4 class="author">Mikkel Meyer Andersen</h4>
             
-            <h4 class="date">18 June, 2018</h4>
+            <h4 class="date">22 June, 2018</h4>
       
       
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -348,7 +348,7 @@ H2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_hapl
 ## H2     0    -1     0    -1     0     0     0</code></pre>
 <p>Now, find those haplotype in live individuals (those haplotypes are in <code>haps</code> from before) that are included in (or compatible with) the mixture:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#mixres &lt;- indices_in_mixture_by_haplotype_matrix(haplotypes = haps, H1 = H1, H2 = H2)</span>
-mixres &lt;-<span class="st"> </span><span class="kw"><a href="../reference/mixture_info_by_individuals.html">mixture_info_by_individuals</a></span>(live_individuals, U1, U2)
+mixres &lt;-<span class="st"> </span><span class="kw">mixture_info_by_individuals</span>(live_individuals, U1, U2)
 <span class="kw">str</span>(mixres, <span class="dv">1</span>)</code></pre></div>
 <pre><code>## List of 13
 ##  $ pids_included_in_mixture     : int [1:183] 3 41 48 51 59 72 85 149 164 192 ...

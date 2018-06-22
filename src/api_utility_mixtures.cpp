@@ -16,6 +16,17 @@
 #include "malan_types.h"
 #include "api_utility_individual.h"
 
+/*
+FIXME: ?
+
+Rcpp::List mixture_info_by_haplotypes(const Rcpp::List individuals, const Rcpp::ListOf< Rcpp::IntegerVector >& haplotypes) { 
+}
+
+Rcpp::List mixture_info_by_individuals(const Rcpp::List individuals, const Rcpp::ListOf< Rcpp::XPtr<Individual> >& donors) { 
+
+}
+*/
+
 //' Mixture information about 2 persons' mixture of donor1 and donor2.
 //' 
 //' @param individuals Individuals to consider as possible contributors and thereby get information from.
@@ -29,7 +40,7 @@
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List mixture_info_by_individuals(const Rcpp::List individuals, Rcpp::XPtr<Individual>& donor1, Rcpp::XPtr<Individual>& donor2) { 
+Rcpp::List mixture_info_by_individuals_2pers(const Rcpp::List individuals, Rcpp::XPtr<Individual>& donor1, Rcpp::XPtr<Individual>& donor2) { 
   size_t N = individuals.size();
   
   Rcpp::List res;
@@ -157,10 +168,10 @@ Rcpp::List mixture_info_by_individuals(const Rcpp::List individuals, Rcpp::XPtr<
 
 //' Mixture information about 3 persons' mixture of donor1, donor2 and donor3.
 //' 
-//' @inherit mixture_info_by_individuals
+//' @inherit mixture_info_by_individuals_2pers
 //' @param donor3 Contributor3/donor 3
 //' 
-//' @seealso \code{\link{mixture_info_by_individuals}}, 
+//' @seealso \code{\link{mixture_info_by_individuals_2pers}}, 
 //'          \code{\link{mixture_info_by_individuals_4pers}}, 
 //'          \code{\link{mixture_info_by_individuals_5pers}}
 //' 
@@ -287,7 +298,7 @@ Rcpp::List mixture_info_by_individuals_3pers(const Rcpp::List individuals,
 //' @inherit mixture_info_by_individuals_3pers
 //' @param donor4 Contributor4/donor 4
 //' 
-//' @seealso \code{\link{mixture_info_by_individuals}}, 
+//' @seealso \code{\link{mixture_info_by_individuals_2pers}}, 
 //'          \code{\link{mixture_info_by_individuals_3pers}}, 
 //'          \code{\link{mixture_info_by_individuals_5pers}}
 //' 

@@ -22,7 +22,7 @@ A list with mixture information about the mixture \code{donor1}+\code{donor2}+\c
 Mixture information about 3 persons' mixture of donor1, donor2 and donor3.
 }
 \seealso{
-\code{\link{mixture_info_by_individuals}},
+\code{\link{mixture_info_by_individuals_2pers}},
 \code{\link{mixture_info_by_individuals_4pers}},
 \code{\link{mixture_info_by_individuals_5pers}}
 }
