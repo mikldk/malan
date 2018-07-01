@@ -25,6 +25,10 @@ Rcpp::List mixture_info_by_haplotypes(const Rcpp::List individuals, const Rcpp::
 Rcpp::List mixture_info_by_individuals(const Rcpp::List individuals, const Rcpp::ListOf< Rcpp::XPtr<Individual> >& donors) { 
 
 }
+
+
+FIXME:
+Use unordered_set and equal sets like in api_utility_mixtures_analyse.cpp?
 */
 
 //' Mixture information about 2 persons' mixture of donor1 and donor2.
