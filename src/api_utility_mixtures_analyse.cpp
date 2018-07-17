@@ -26,15 +26,15 @@ Rcpp::List get_mixture_analyse_failure(std::string fail_reason) {
   Given haplotypes by haps_in_mixture_indices and haps_in_mixture (with counts haps_in_mixture_counts), 
   do they together with known_contributors give the mixture?
   If so, add the counts of the haplotypes in haps_in_mixture_indices to 
-  counts_contributor_tuples.
+  counts_contributor_sets.
 */
-void analyse_tuple(const int num_contributors, 
-                   const std::vector<int>& haps_in_mixture_indices, 
-                   const std::vector< std::vector<int> >& haps_in_mixture,
-                   const std::vector<int>& haps_in_mixture_counts, 
-                   const std::vector< std::vector<int> >& known_contributors,
-                   const std::vector< std::unordered_set<int> >& mixture,
-                   std::vector< std::vector<int> >& counts_contributor_tuples) {
+void analyse_set(const int num_contributors, 
+                 const std::vector<int>& haps_in_mixture_indices, 
+                 const std::vector< std::vector<int> >& haps_in_mixture,
+                 const std::vector<int>& haps_in_mixture_counts, 
+                 const std::vector< std::vector<int> >& known_contributors,
+                 const std::vector< std::unordered_set<int> >& mixture,
+                 std::vector< std::vector<int> >& counts_contributor_sets) {
 
   //Rcpp::Rcout << "Hello...." << std::endl;
   //Rcpp::print(Rcpp::wrap(haps_in_mixture_indices));  
@@ -49,8 +49,8 @@ void analyse_tuple(const int num_contributors,
 
   std::vector< std::vector<int> > suggested_contributors;
     
-  for (int tuple_i = 0; tuple_i < haps_in_mixture_indices.size(); tuple_i++) {
-    int hap_index = haps_in_mixture_indices[tuple_i];    
+  for (int set_i = 0; set_i < haps_in_mixture_indices.size(); set_i++) {
+    int hap_index = haps_in_mixture_indices[set_i];    
     const std::vector<int> h = haps_in_mixture[hap_index];
     //Rcpp::print(Rcpp::wrap(h));
     suggested_contributors.push_back(h);
@@ -58,38 +58,38 @@ void analyse_tuple(const int num_contributors,
 
   const int loci = haps_in_mixture[0].size();
   
-  bool tuple_gives_mixtures = true;
+  bool set_gives_mixtures = true;
   
   //Rcpp::Rcout << "=========================" << std::endl;
   
   std::vector< std::unordered_set<int> > tmp(loci);
   
   for (int locus = 0; locus < loci; ++locus) {   
-    std::unordered_set<int> tuple_alleles;
+    std::unordered_set<int> set_alleles;
     
     // known:
-    for (int tuple_i = 0; tuple_i < known_contributors.size(); ++tuple_i) {
-      tuple_alleles.insert(known_contributors[tuple_i][locus]);
+    for (int set_i = 0; set_i < known_contributors.size(); ++set_i) {
+      set_alleles.insert(known_contributors[set_i][locus]);
     }
         
     // unknown:
-    for (int tuple_i = 0; tuple_i < suggested_contributors.size(); ++tuple_i) {
-      tuple_alleles.insert(suggested_contributors[tuple_i][locus]);
+    for (int set_i = 0; set_i < suggested_contributors.size(); ++set_i) {
+      set_alleles.insert(suggested_contributors[set_i][locus]);
     }
     
-    tmp[locus] = tuple_alleles;
+    tmp[locus] = set_alleles;
     
     //Rcpp::Rcout << "Test..." << std::endl;
-    //Rcpp::print(Rcpp::wrap(tuple_alleles));
+    //Rcpp::print(Rcpp::wrap(set_alleles));
     //Rcpp::print(Rcpp::wrap(mixture[locus]));  
   
-    if (mixture[locus] != tuple_alleles) {
-      tuple_gives_mixtures = false;
+    if (mixture[locus] != set_alleles) {
+      set_gives_mixtures = false;
       break;
     }
   }
   
-  if (!tuple_gives_mixtures) {
+  if (!set_gives_mixtures) {
     return;
   }
   
@@ -119,7 +119,7 @@ void analyse_tuple(const int num_contributors,
   //Rcpp::Rcout << "HURRA!" << std::endl;
   //Rcpp::print(Rcpp::wrap(counts));
   
-  counts_contributor_tuples.push_back(counts);                            
+  counts_contributor_sets.push_back(counts);                            
 }
 
 // https://stackoverflow.com/a/19406536
@@ -131,7 +131,7 @@ void nested_loop_operation(std::vector<int> counters,
                            const std::vector<int>& haps_in_mixture_counts, 
                            const std::vector< std::vector<int> >& known_contributors,
                            const std::vector< std::unordered_set<int> >& mixture,
-                           std::vector< std::vector<int> >& counts_contributor_tuples);
+                           std::vector< std::vector<int> >& counts_contributor_sets);
 
 void nested_loop_operation(std::vector<int> counters, 
                            std::vector<int>& length, 
@@ -141,7 +141,7 @@ void nested_loop_operation(std::vector<int> counters,
                            const std::vector<int>& haps_in_mixture_counts, 
                            const std::vector< std::vector<int> >& known_contributors,
                            const std::vector< std::unordered_set<int> >& mixture,
-                           std::vector< std::vector<int> >& counts_contributor_tuples) {
+                           std::vector< std::vector<int> >& counts_contributor_sets) {
   if ((counters.size() + known_contributors.size()) != num_contributors) {
     Rcpp::stop("# unknown + # known != K");
   }
@@ -159,22 +159,22 @@ void nested_loop_operation(std::vector<int> counters,
         ...
     Can maybe be done elsewhere, but for now this is done...
     */    
-    for (int tuple_i = 1; tuple_i < counters.size(); tuple_i++) {
-      if (counters[tuple_i - 1] >= counters[tuple_i]) {
+    for (int set_i = 1; set_i < counters.size(); set_i++) {
+      if (counters[set_i - 1] >= counters[set_i]) {
         return; // exit function, don't call
       }
     }
     
-    analyse_tuple(num_contributors, 
-                  counters, haps_in_mixture, haps_in_mixture_counts, 
-                  known_contributors, mixture, counts_contributor_tuples);                              
+    analyse_set(num_contributors, 
+                counters, haps_in_mixture, haps_in_mixture_counts, 
+                known_contributors, mixture, counts_contributor_sets);                              
   } else {
     for (counters[level] = 0; counters[level] < length[level]; counters[level]++) {
        nested_loop_operation(counters, length, level + 1,
                              num_contributors, 
                              haps_in_mixture, haps_in_mixture_counts ,
                              known_contributors, mixture, 
-                             counts_contributor_tuples);
+                             counts_contributor_sets);
     }
   }
 }
@@ -190,7 +190,7 @@ void nested_loop_operation(std::vector<int> counters,
 //' @param mix_res Mixture result from [mixture_info_by_individuals_2pers()], 
 //' [mixture_info_by_individuals_3pers()], [mixture_info_by_individuals_4pers()], 
 //' [mixture_info_by_individuals_5pers()]
-//' @param unique_haps_in_mixture Included unique haplotypes to use as elements in contributor tuples.
+//' @param unique_haps_in_mixture Included unique haplotypes to use as elements in contributor sets.
 //' @param unique_haps_in_mixture_counts Population counts of the included haplotypes
 //' 
 //' @return A list with numeric quantities
@@ -338,7 +338,7 @@ Rcpp::List analyse_mixture_result(Rcpp::List& mix_res,
                         haps_in_mixture, haps_in_mixture_counts,
                         std::vector< std::vector<int> >(), // known_contributors for denom is none
                         mixture, 
-                        terms_Hd); // counts_contributor_tuples
+                        terms_Hd); // counts_contributor_sets
   
   for (int term_i = 0; term_i < terms_Hd.size(); ++term_i) {
     int term = std::accumulate(terms_Hd[term_i].begin(), terms_Hd[term_i].end(), 1, std::multiplies<int>());
@@ -368,7 +368,7 @@ Rcpp::List analyse_mixture_result(Rcpp::List& mix_res,
                         haps_in_mixture, haps_in_mixture_counts,
                         known_contribs, // known_contributors for num simply assumed the first donor
                         mixture, 
-                        terms_Hp); // counts_contributor_tuples
+                        terms_Hp); // counts_contributor_sets
   
   for (int term_i = 0; term_i < terms_Hp.size(); ++term_i) {
     int term = std::accumulate(terms_Hp[term_i].begin(), terms_Hp[term_i].end(), 1, std::multiplies<int>());

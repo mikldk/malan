@@ -12,7 +12,7 @@ analyse_mixture_result(mix_res, unique_haps_in_mixture,
 \code{\link[=mixture_info_by_individuals_3pers]{mixture_info_by_individuals_3pers()}}, \code{\link[=mixture_info_by_individuals_4pers]{mixture_info_by_individuals_4pers()}},
 \code{\link[=mixture_info_by_individuals_5pers]{mixture_info_by_individuals_5pers()}}}
 
-\item{unique_haps_in_mixture}{Included unique haplotypes to use as elements in contributor tuples.}
+\item{unique_haps_in_mixture}{Included unique haplotypes to use as elements in contributor sets.}
 
 \item{unique_haps_in_mixture_counts}{Population counts of the included haplotypes}
 }
