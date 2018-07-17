@@ -32,6 +32,7 @@ void analyse_set(const int num_contributors,
                  const std::vector<int>& haps_in_mixture_indices, 
                  const std::vector< std::vector<int> >& haps_in_mixture,
                  const std::vector<int>& haps_in_mixture_counts, 
+                 const std::vector<int>& poi_profile,
                  const std::vector< std::vector<int> >& known_contributors,
                  const std::vector< std::unordered_set<int> >& mixture,
                  std::vector< std::vector<int> >& counts_contributor_sets) {
@@ -98,7 +99,18 @@ void analyse_set(const int num_contributors,
   
   for (int level = 0; level < haps_in_mixture_indices.size(); level++) {
     int hap_index = haps_in_mixture_indices[level];    
-    counts.push_back(haps_in_mixture_counts[hap_index]);
+    
+    std::vector<int> rnd_profile = haps_in_mixture[hap_index];
+    int n_u = haps_in_mixture_counts[hap_index];
+    
+    // Defence's hypothesis: 
+    //   K random males different from the suspect, 
+    //   hence ignore the suspect by substracting one
+    if (poi_profile.size() > 0 && poi_profile == rnd_profile) {
+      n_u = n_u - 1;
+    }
+    
+    counts.push_back(n_u);
   }
   
   /*
@@ -116,9 +128,7 @@ void analyse_set(const int num_contributors,
   }
   Rcpp::Rcout << "################################################" << std::endl;      
   */
-  //Rcpp::Rcout << "HURRA!" << std::endl;
-  //Rcpp::print(Rcpp::wrap(counts));
-  
+
   counts_contributor_sets.push_back(counts);                            
 }
 
@@ -129,6 +139,7 @@ void nested_loop_operation(std::vector<int> counters,
                            const int num_contributors, 
                            const std::vector< std::vector<int> >& haps_in_mixture,
                            const std::vector<int>& haps_in_mixture_counts, 
+                           const std::vector<int>& poi_profile,
                            const std::vector< std::vector<int> >& known_contributors,
                            const std::vector< std::unordered_set<int> >& mixture,
                            std::vector< std::vector<int> >& counts_contributor_sets);
@@ -139,6 +150,7 @@ void nested_loop_operation(std::vector<int> counters,
                            const int num_contributors, 
                            const std::vector< std::vector<int> >& haps_in_mixture,
                            const std::vector<int>& haps_in_mixture_counts, 
+                           const std::vector<int>& poi_profile,
                            const std::vector< std::vector<int> >& known_contributors,
                            const std::vector< std::unordered_set<int> >& mixture,
                            std::vector< std::vector<int> >& counts_contributor_sets) {
@@ -167,12 +179,14 @@ void nested_loop_operation(std::vector<int> counters,
     
     analyse_set(num_contributors, 
                 counters, haps_in_mixture, haps_in_mixture_counts, 
+                poi_profile, 
                 known_contributors, mixture, counts_contributor_sets);                              
   } else {
     for (counters[level] = 0; counters[level] < length[level]; counters[level]++) {
        nested_loop_operation(counters, length, level + 1,
                              num_contributors, 
-                             haps_in_mixture, haps_in_mixture_counts ,
+                             haps_in_mixture, haps_in_mixture_counts,
+                             poi_profile,
                              known_contributors, mixture, 
                              counts_contributor_sets);
     }
@@ -204,6 +218,12 @@ Rcpp::List analyse_mixture_result(Rcpp::List& mix_res,
   // No. contributors:
   std::vector< std::vector<int> > true_donors;
 
+  if (!mix_res.containsElementNamed("donor1_profile")) {
+    Rcpp::stop("No donor1 as expected");
+  }
+  
+  std::vector<int> poi_profile = mix_res["donor1_profile"];
+  
   // FIXME: Stupid, but fast
   if (mix_res.containsElementNamed("donor1_profile")) true_donors.push_back(mix_res["donor1_profile"]);
   if (mix_res.containsElementNamed("donor2_profile")) true_donors.push_back(mix_res["donor2_profile"]);
@@ -289,7 +309,7 @@ Rcpp::List analyse_mixture_result(Rcpp::List& mix_res,
 
   /*
   ****************************************************************************
-  * DENOMINATOR: 
+  * DENOMINATOR: Defence's hypothesis
   * CHECKING IF R+S+T = CSP.
   ****************************************************************************
   */
@@ -336,6 +356,7 @@ Rcpp::List analyse_mixture_result(Rcpp::List& mix_res,
                         0, // level
                         K, // num_contributors
                         haps_in_mixture, haps_in_mixture_counts,
+                        poi_profile, 
                         std::vector< std::vector<int> >(), // known_contributors for denom is none
                         mixture, 
                         terms_Hd); // counts_contributor_sets
@@ -347,7 +368,7 @@ Rcpp::List analyse_mixture_result(Rcpp::List& mix_res,
   
   /*
   ****************************************************************************
-  * NUMERATOR: 
+  * NUMERATOR: Prosecutor's hypothesis
   * CHECKING IF 
   *    donor1+U+V = CSP.
   ****************************************************************************
@@ -366,6 +387,7 @@ Rcpp::List analyse_mixture_result(Rcpp::List& mix_res,
                         0, // level
                         K, // num_contributors
                         haps_in_mixture, haps_in_mixture_counts,
+                        std::vector<int>(), // poi_profile := empty, no need to possibly decrease by one
                         known_contribs, // known_contributors for num simply assumed the first donor
                         mixture, 
                         terms_Hp); // counts_contributor_sets

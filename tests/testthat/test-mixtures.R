@@ -117,7 +117,10 @@ test_that("mixture 2 persons", {
   expect_equal(res2$terms_Hp, list(22))
   
   # Hd: mixture either (1, 1)+(2, 2) or (1, 2)+(2, 1) [(2, 1) + (1, 2) is same but considering order]
-  expect_equal(res2$terms_Hd, list(c(11, 22), c(12, 21)))
+  # Two random males would give:
+  #   expect_equal(res2$terms_Hd, list(c(11, 22), c(12, 21)))
+  # But now we say two random different from the PoI, so substract by 1 for PoI's profile (11):
+  expect_equal(res2$terms_Hd, list(c(11-1, 22), c(12, 21)))
 })
 
 
@@ -172,10 +175,24 @@ test_that("mixture 3 persons", {
   #     (1, 2) + (2, 1) + (2, 3)
   # 
   #     (1, 3) + (2, 1) + (2, 2)
+  
+  # Three random males would give:
+  #   expect_equal(res3$terms_Hd, list(
+  #     c(11, 12, 23), 
+  #     c(11, 13, 22), # (1, 1) + (2, 2) + (1, 3) -> [enumeration order] -> (1, 1) + (1, 3) + (2, 2)
+  #     c(11, 22, 23),
+  #   
+  #     c(12, 13, 21),
+  #     c(12, 21, 23),
+  #   
+  #     c(13, 21, 22)
+  #   ))
+  #   expect_equal(res2$terms_Hd, list(c(11, 22), c(12, 21)))
+  # But now we say three random different from the PoI, so substract by 1 for PoI's profile (11):
   expect_equal(res3$terms_Hd, list(
-    c(11, 12, 23), 
-    c(11, 13, 22), # (1, 1) + (2, 2) + (1, 3) -> [enumeration order] -> (1, 1) + (1, 3) + (2, 2)
-    c(11, 22, 23),
+    c(11-1, 12, 23), 
+    c(11-1, 13, 22), # (1, 1) + (2, 2) + (1, 3) -> [enumeration order] -> (1, 1) + (1, 3) + (2, 2)
+    c(11-1, 22, 23),
     
     c(12, 13, 21),
     c(12, 21, 23),
