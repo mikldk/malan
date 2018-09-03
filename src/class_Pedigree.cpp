@@ -98,17 +98,33 @@ Individual* Pedigree::get_root() {
 }
 
 
-void Pedigree::populate_haplotypes(int loci, std::vector<double>& mutation_rates) {
+void Pedigree::populate_haplotypes(
+    int loci, 
+    std::vector<double>& mutation_rates, 
+    double prob_two_step) {
+
+  if (prob_two_step < 0.0 || prob_two_step > 1.0) {
+    Rcpp::stop("prob_two_step must be between 0.0 and 1.0");
+  }
+  
   /* FIXME: Exploits tree */
   Individual* root = this->get_root();
   
   std::vector<int> h(loci); // initialises to 0, 0, ..., 0
-  
+
   root->set_haplotype(h);
-  root->pass_haplotype_to_children(true, mutation_rates);
+  root->pass_haplotype_to_children(true, mutation_rates, prob_two_step);
 }
 
-void Pedigree::populate_haplotypes_custom_founders(std::vector<double>& mutation_rates, Rcpp::Function get_founder_hap) {
+void Pedigree::populate_haplotypes_custom_founders(
+    std::vector<double>& mutation_rates, 
+    Rcpp::Function get_founder_hap, 
+    double prob_two_step) {
+  
+  if (prob_two_step < 0.0 || prob_two_step > 1.0) {
+    Rcpp::stop("prob_two_step must be between 0.0 and 1.0");
+  }
+  
   /* FIXME: Exploits tree */
   Individual* root = this->get_root();
   
@@ -123,18 +139,33 @@ void Pedigree::populate_haplotypes_custom_founders(std::vector<double>& mutation
   }
   
   //Rf_PrintValue(Rcpp::wrap(h));
-  
+
   root->set_haplotype(h);
-  root->pass_haplotype_to_children(true, mutation_rates);
+  root->pass_haplotype_to_children(true, mutation_rates, prob_two_step);
 }
 
-void Pedigree::populate_haplotypes_ladder_bounded(std::vector<double>& mutation_rates, std::vector<int>& ladder_min, std::vector<int>& ladder_max, Rcpp::Function get_founder_hap) {
+// Assumes ladders are okay, see checks in api_utility_haplotypes.cpp
+void Pedigree::populate_haplotypes_ladder_bounded(
+    std::vector<double>& mutation_rates, 
+    std::vector<int>& ladder_min, 
+    std::vector<int>& ladder_max, 
+    Rcpp::Function get_founder_hap,
+    double prob_two_step) {
+  
   if (mutation_rates.size() != ladder_min.size()) {
     Rcpp::stop("mutation_rates and ladder_min must have same length");
   }
   
   if (mutation_rates.size() != ladder_min.size()) {
     Rcpp::stop("mutation_rates and ladder_max must have same length");
+  }
+  
+  if (ladder_min.size() != ladder_max.size()) {
+    Rcpp::stop("ladder_min and ladder_max must have same length");
+  }
+
+  if (prob_two_step < 0.0 || prob_two_step > 1.0) {
+    Rcpp::stop("prob_two_step must be between 0.0 and 1.0");
   }
 
   /* Exploits tree */
@@ -155,7 +186,7 @@ void Pedigree::populate_haplotypes_ladder_bounded(std::vector<double>& mutation_
   //Rf_PrintValue(Rcpp::wrap(h));
   
   root->set_haplotype(h);
-  root->pass_haplotype_to_children_ladder_bounded(true, mutation_rates, ladder_min, ladder_max);
+  root->pass_haplotype_to_children_ladder_bounded(true, mutation_rates, ladder_min, ladder_max, prob_two_step);
 }
 
 

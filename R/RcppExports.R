@@ -378,14 +378,15 @@ estimate_autotheta_subpops_pids <- function(population, subpops, subpops_sizes) 
 #' @param pedigrees Pedigree list in which to populate haplotypes
 #' @param loci Number of loci
 #' @param mutation_rates Vector with mutation rates, length `loci`
+#' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
 #' @param progress Show progress
 #'
 #' @seealso [pedigrees_all_populate_haplotypes_custom_founders()] and 
 #' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 #' 
 #' @export
-pedigrees_all_populate_haplotypes <- function(pedigrees, loci, mutation_rates, progress = TRUE) {
-    invisible(.Call('_malan_pedigrees_all_populate_haplotypes', PACKAGE = 'malan', pedigrees, loci, mutation_rates, progress))
+pedigrees_all_populate_haplotypes <- function(pedigrees, loci, mutation_rates, prob_two_step = 0.0, progress = TRUE) {
+    invisible(.Call('_malan_pedigrees_all_populate_haplotypes', PACKAGE = 'malan', pedigrees, loci, mutation_rates, prob_two_step, progress))
 }
 
 #' Populate haplotypes in pedigrees (custom founder/unbounded).
@@ -400,14 +401,15 @@ pedigrees_all_populate_haplotypes <- function(pedigrees, loci, mutation_rates, p
 #' @param pedigrees Pedigree list in which to populate haplotypes
 #' @param mutation_rates Vector with mutation rates
 #' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
+#' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
 #' @param progress Show progress
 #'
 #' @seealso [pedigrees_all_populate_haplotypes()] and 
 #' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 #' 
 #' @export
-pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutation_rates, get_founder_haplotype = NULL, progress = TRUE) {
-    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_custom_founders', PACKAGE = 'malan', pedigrees, mutation_rates, get_founder_haplotype, progress))
+pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutation_rates, get_founder_haplotype = NULL, prob_two_step = 0.0, progress = TRUE) {
+    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_custom_founders', PACKAGE = 'malan', pedigrees, mutation_rates, get_founder_haplotype, prob_two_step, progress))
 }
 
 #' Populate haplotypes in pedigrees (custom founder/bounded).
@@ -417,6 +419,10 @@ pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutatio
 #' All founders get a haplotype from calling the user 
 #' provided function `get_founder_haplotype()`.
 #' 
+#' Given that a two step mutation should happen (probability specified by `prob_two_step`):
+#' With distances >= 2 to ladder bounds, mutations happen as usual.
+#' At distance = 0 or 1 to a ladder bound, the mutation is forced to move away from the boundary.
+#' 
 #' Note, that pedigrees must first have been inferred by [build_pedigrees()].
 #' 
 #' @param pedigrees Pedigree list in which to populate haplotypes
@@ -424,14 +430,15 @@ pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutatio
 #' @param ladder_min Lower bounds for haplotypes, same length as `mutation_rates`
 #' @param ladder_max Upper bounds for haplotypes, same length as `mutation_rates`; all entries must be strictly greater than `ladder_min`
 #' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
+#' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries
 #' @param progress Show progress
 #'
 #' @seealso [pedigrees_all_populate_haplotypes()] and 
 #' [pedigrees_all_populate_haplotypes_custom_founders()].
 #' 
 #' @export
-pedigrees_all_populate_haplotypes_ladder_bounded <- function(pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype = NULL, progress = TRUE) {
-    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_ladder_bounded', PACKAGE = 'malan', pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype, progress))
+pedigrees_all_populate_haplotypes_ladder_bounded <- function(pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype = NULL, prob_two_step = 0.0, progress = TRUE) {
+    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_ladder_bounded', PACKAGE = 'malan', pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype, prob_two_step, progress))
 }
 
 #' Get haplotype from an individual

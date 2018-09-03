@@ -117,7 +117,7 @@ that all founders get haplotype <code>rep(0L, loci)</code>.</p>
     
 
     <pre class="usage"><span class='fu'>pedigrees_all_populate_haplotypes</span>(<span class='no'>pedigrees</span>, <span class='no'>loci</span>, <span class='no'>mutation_rates</span>,
-  <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>prob_two_step</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,6 +133,10 @@ that all founders get haplotype <code>rep(0L, loci)</code>.</p>
     <tr>
       <th>mutation_rates</th>
       <td><p>Vector with mutation rates, length <code>loci</code></p></td>
+    </tr>
+    <tr>
+      <th>prob_two_step</th>
+      <td><p>Given a mutation happens, this is the probability that the mutation is a two-step mutation</p></td>
     </tr>
     <tr>
       <th>progress</th>

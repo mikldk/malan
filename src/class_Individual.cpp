@@ -187,7 +187,10 @@ int Individual::meiosis_dist_tree(Individual* dest) const {
 Father haplotype
 FIXME mutation_model?
 */
-void Individual::haplotype_mutate(std::vector<double>& mutation_rates) {
+void Individual::haplotype_mutate(
+    std::vector<double>& mutation_rates, 
+    double prob_two_step) {
+  
   if (!m_haplotype_set) {
     throw std::invalid_argument("Father haplotype not set yet, so cannot mutate");
   }
@@ -201,17 +204,30 @@ void Individual::haplotype_mutate(std::vector<double>& mutation_rates) {
   
   for (int loc = 0; loc < m_haplotype.size(); ++loc) {
     if (R::runif(0.0, 1.0) < mutation_rates[loc]) {
+      // Mutation must happen
+      int mut_size = 1;
+      if (R::runif(0.0, 1.0) < prob_two_step) {
+        mut_size = 2;
+      }
+      
       if (R::runif(0.0, 1.0) < 0.5) {
-        m_haplotype[loc] = m_haplotype[loc] - 1;
+        m_haplotype[loc] = m_haplotype[loc] - mut_size;
       } else {
-        m_haplotype[loc] = m_haplotype[loc] + 1;
+        m_haplotype[loc] = m_haplotype[loc] + mut_size;
       }
     }
   }
 }
 
 
-void Individual::haplotype_mutate_ladder_bounded(std::vector<double>& mutation_rates, std::vector<int>& ladder_min, std::vector<int>& ladder_max) {
+// Two-step mutations in ladder boundary direction not allowed at distance 1 to ladder boundaries.
+// Convention: If two-step mutation happens at allele in distance 1 to a boundary, then mutate away.
+void Individual::haplotype_mutate_ladder_bounded(
+    std::vector<double>& mutation_rates, 
+    std::vector<int>& ladder_min, 
+    std::vector<int>& ladder_max,
+    double prob_two_step) {
+  
   if (!m_haplotype_set) {
     throw std::invalid_argument("Father haplotype not set yet, so cannot mutate");
   }
@@ -224,6 +240,7 @@ void Individual::haplotype_mutate_ladder_bounded(std::vector<double>& mutation_r
   
   for (int loc = 0; loc < m_haplotype.size(); ++loc) {
     if (R::runif(0.0, 1.0) < mutation_rates[loc]) {
+      
       // A mutation must happen:
       
       if (m_haplotype[loc] < ladder_min[loc]) {
@@ -234,7 +251,9 @@ void Individual::haplotype_mutate_ladder_bounded(std::vector<double>& mutation_r
         Rcpp::print(Rcpp::wrap(ladder_min));
         
         throw std::invalid_argument("Haplotype locus lower than ladder minimum");
-      }      
+      }
+      
+      
       if (m_haplotype[loc] > ladder_max[loc]) {
         Rcpp::Rcout << "Locus (0-based): " << loc << std::endl;
         Rcpp::Rcout << "Haplotype " << m_haplotype[loc] << std::endl;
@@ -244,31 +263,45 @@ void Individual::haplotype_mutate_ladder_bounded(std::vector<double>& mutation_r
         
         throw std::invalid_argument("Haplotype locus higher than ladder minimum");
       }
+      // Mutation must happen
+      int mut_size = 1;
+      if (R::runif(0.0, 1.0) < prob_two_step) {
+        mut_size = 2;
+      }
 
       /*
-      if (m_haplotype[loc] <= ladder_min[loc]) {
-        // Already at lower bound (or less, by wrong initial conditions), move upwards
-        m_haplotype[loc] = ladder_min[loc] + 1; // mutate upwards
-      } else if (m_haplotype[loc] >= ladder_max[loc]) {
-        // Already at upper bound (or more, by wrong initial conditions), move downwards
-        m_haplotype[loc] = ladder_max[loc] - 1;
-      }*/
+       *       
+       // Two-step mutations not allowed at distance 1 to ladder boundaries
+       if (abs(m_haplotype[loc] - ladder_min[loc]) == 1 || 
+       */
+      
       if (m_haplotype[loc] == ladder_min[loc]) {
         // Already at lower bound, move upwards
-        m_haplotype[loc] = ladder_min[loc] + 1; // mutate upwards        
+        m_haplotype[loc] = ladder_min[loc] + mut_size; // mutate upwards        
         //Rcpp::Rcout << "Hit lower bound, mutating upwards: " << ladder_min[loc] << " -> " << m_haplotype[loc] << std::endl;
       } else if (m_haplotype[loc] == ladder_max[loc]) {
         // Already at upper bound, move downwards
-        m_haplotype[loc] = ladder_max[loc] - 1;
+        m_haplotype[loc] = ladder_max[loc] - mut_size;
         //Rcpp::Rcout << "Hit upper bound, mutating downwards: " << ladder_max[loc] << " -> " << m_haplotype[loc] << std::endl;
-      }
-       else {
+      } else {
         // Somewhere on non-boundary ladder, choose direction
-        if (R::runif(0.0, 1.0) < 0.5) {
-          m_haplotype[loc] = m_haplotype[loc] - 1;
+
+        // A mutation of size 2 close to ladder is by convention moving away from ladder boundary
+        if (mut_size == 2 && m_haplotype[loc] == (ladder_max[loc] - 1)) {
+          // Close to upper bound, move downwards
+          m_haplotype[loc] = m_haplotype[loc] - mut_size;
+        } else if (mut_size == 2 && m_haplotype[loc] == (ladder_min[loc] + 1)) {
+          // Close to upper bound, move downwards
+          m_haplotype[loc] = m_haplotype[loc] + mut_size;
         } else {
-          m_haplotype[loc] = m_haplotype[loc] + 1;
+          // At distance >= 2 away from any ladder boundary
+          if (R::runif(0.0, 1.0) < 0.5) {
+            m_haplotype[loc] = m_haplotype[loc] - mut_size;
+          } else {
+            m_haplotype[loc] = m_haplotype[loc] + mut_size;
+          }
         }
+        
       }
     }
   }
@@ -288,24 +321,34 @@ std::vector<int> Individual::get_haplotype() const {
   return m_haplotype;
 }
 
-void Individual::pass_haplotype_to_children(bool recursive, std::vector<double>& mutation_rates) {
+void Individual::pass_haplotype_to_children(
+    bool recursive, 
+    std::vector<double>& mutation_rates, 
+    double prob_two_step) {
+  
   for (auto &child : (*m_children)) {
     child->set_haplotype(m_haplotype);
-    child->haplotype_mutate(mutation_rates);
+    child->haplotype_mutate(mutation_rates, prob_two_step);
     
     if (recursive) {
-      child->pass_haplotype_to_children(recursive, mutation_rates);
+      child->pass_haplotype_to_children(recursive, mutation_rates, prob_two_step);
     }
   }
 }
 
-void Individual::pass_haplotype_to_children_ladder_bounded(bool recursive, std::vector<double>& mutation_rates, std::vector<int>& ladder_min, std::vector<int>& ladder_max) {
+void Individual::pass_haplotype_to_children_ladder_bounded(
+    bool recursive, 
+    std::vector<double>& mutation_rates, 
+    std::vector<int>& ladder_min, 
+    std::vector<int>& ladder_max,
+    double prob_two_step) {
+  
   for (auto &child : (*m_children)) {
     child->set_haplotype(m_haplotype);
-    child->haplotype_mutate_ladder_bounded(mutation_rates, ladder_min, ladder_max);
+    child->haplotype_mutate_ladder_bounded(mutation_rates, ladder_min, ladder_max, prob_two_step);
     
     if (recursive) {
-      child->pass_haplotype_to_children_ladder_bounded(recursive, mutation_rates, ladder_min, ladder_max);
+      child->pass_haplotype_to_children_ladder_bounded(recursive, mutation_rates, ladder_min, ladder_max, prob_two_step);
     }
   }
 }

@@ -119,7 +119,8 @@ provided function <code>get_founder_haplotype()</code>.</p>
     
 
     <pre class="usage"><span class='fu'>pedigrees_all_populate_haplotypes_ladder_bounded</span>(<span class='no'>pedigrees</span>, <span class='no'>mutation_rates</span>,
-  <span class='no'>ladder_min</span>, <span class='no'>ladder_max</span>, <span class='kw'>get_founder_haplotype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='no'>ladder_min</span>, <span class='no'>ladder_max</span>, <span class='kw'>get_founder_haplotype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>prob_two_step</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,6 +146,10 @@ provided function <code>get_founder_haplotype()</code>.</p>
       <td><p>Function taking no arguments returning a haplotype of <code>length(mutation_rates)</code></p></td>
     </tr>
     <tr>
+      <th>prob_two_step</th>
+      <td><p>Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries</p></td>
+    </tr>
+    <tr>
       <th>progress</th>
       <td><p>Show progress</p></td>
     </tr>
@@ -152,7 +157,10 @@ provided function <code>get_founder_haplotype()</code>.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note, that pedigrees must first have been inferred by <code><a href='build_pedigrees.html'>build_pedigrees()</a></code>.</p>
+    <p>Given that a two step mutation should happen (probability specified by <code>prob_two_step</code>):
+With distances &gt;= 2 to ladder bounds, mutations happen as usual.
+At distance = 0 or 1 to a ladder bound, the mutation is forced to move away from the boundary.</p>
+<p>Note, that pedigrees must first have been inferred by <code><a href='build_pedigrees.html'>build_pedigrees()</a></code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

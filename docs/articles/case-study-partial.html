@@ -75,7 +75,7 @@
       <h1>Case study: Partial profiles</h1>
                         <h4 class="author">Mikkel Meyer Andersen</h4>
             
-            <h4 class="date">17 July, 2018</h4>
+            <h4 class="date">03 September, 2018</h4>
       
       
       <div class="hidden name"><code>case-study-partial.Rmd</code></div>
@@ -242,18 +242,18 @@ if (<span class="kw">requireNamespace</span>(<span class="st">"ggraph"</span>, <
 <span class="st">  </span><span class="kw">select</span>(-Kit, -Alleles)
 partial_kit</code></pre></div>
 <pre><code>## # A tibble: 21 x 7
-##    Marker  Mutations Meioses  MutProb IntegerAlleles MinIntAllele
-##    &lt;fct&gt;       &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;list&gt;                &lt;dbl&gt;
-##  1 DYS438          4   10673 0.000375 &lt;dbl [14]&gt;                5
-##  2 DYS392          8   15418 0.000519 &lt;dbl [14]&gt;                6
-##  3 DYS393         15   14264 0.00105  &lt;dbl [12]&gt;                7
-##  4 DYS385a        32   26171 0.00122  &lt;dbl [23]&gt;                6
-##  5 DYS385b        32   26171 0.00122  &lt;dbl [23]&gt;                6
-##  6 DYS643          3    2220 0.00135  &lt;dbl [13]&gt;                4
-##  7 DYS390         33   15612 0.00211  &lt;dbl [14]&gt;               17
-##  8 DYS19          36   16090 0.00224  &lt;dbl [12]&gt;                9
-##  9 DYS391         38   15486 0.00245  &lt;dbl [12]&gt;                5
-## 10 DYS389I        42   14339 0.00293  &lt;dbl [9]&gt;                 9
+##    Marker Mutations Meioses MutProb IntegerAlleles MinIntAllele
+##    &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;list&gt;                &lt;dbl&gt;
+##  1 DYS438         4   10673 3.75e-4 &lt;dbl [14]&gt;                5
+##  2 DYS392         8   15418 5.19e-4 &lt;dbl [14]&gt;                6
+##  3 DYS393        15   14264 1.05e-3 &lt;dbl [12]&gt;                7
+##  4 DYS38…        32   26171 1.22e-3 &lt;dbl [23]&gt;                6
+##  5 DYS38…        32   26171 1.22e-3 &lt;dbl [23]&gt;                6
+##  6 DYS643         3    2220 1.35e-3 &lt;dbl [13]&gt;                4
+##  7 DYS390        33   15612 2.11e-3 &lt;dbl [14]&gt;               17
+##  8 DYS19         36   16090 2.24e-3 &lt;dbl [12]&gt;                9
+##  9 DYS391        38   15486 2.45e-3 &lt;dbl [12]&gt;                5
+## 10 DYS38…        42   14339 2.93e-3 &lt;dbl [9]&gt;                 9
 ## # ... with 11 more rows, and 1 more variable: MaxIntAllele &lt;dbl&gt;</code></pre>
 <p>This “partial kit” has the following mutation probabilities:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mu &lt;-<span class="st"> </span>partial_kit %&gt;%<span class="st"> </span><span class="kw">pull</span>(MutProb)

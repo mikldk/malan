@@ -28,6 +28,7 @@
 //' @param pedigrees Pedigree list in which to populate haplotypes
 //' @param loci Number of loci
 //' @param mutation_rates Vector with mutation rates, length `loci`
+//' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
 //' @param progress Show progress
 //'
 //' @seealso [pedigrees_all_populate_haplotypes_custom_founders()] and 
@@ -38,6 +39,7 @@
 void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, 
                                        int loci, 
                                        Rcpp::NumericVector mutation_rates, 
+                                       double prob_two_step = 0.0,
                                        bool progress = true) {
   std::vector<Pedigree*> peds = (*pedigrees);
   
@@ -51,7 +53,7 @@ void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedi
   Progress p(N, progress);
   
   for (size_t i = 0; i < N; ++i) {
-    peds.at(i)->populate_haplotypes(loci, mut_rates);
+    peds.at(i)->populate_haplotypes(loci, mut_rates, prob_two_step);
     
      if (i % CHECK_ABORT_EVERY == 0 && Progress::check_abort()) {
       Rcpp::stop("Aborted.");
@@ -75,6 +77,7 @@ void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedi
 //' @param pedigrees Pedigree list in which to populate haplotypes
 //' @param mutation_rates Vector with mutation rates
 //' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
+//' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
 //' @param progress Show progress
 //'
 //' @seealso [pedigrees_all_populate_haplotypes()] and 
@@ -85,6 +88,7 @@ void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedi
 void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, 
                                        Rcpp::NumericVector mutation_rates,
                                        Rcpp::Nullable<Rcpp::Function> get_founder_haplotype = R_NilValue,
+                                       double prob_two_step = 0.0,
                                        bool progress = true) {
   std::vector<Pedigree*> peds = (*pedigrees);
   
@@ -100,7 +104,7 @@ void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<P
   Progress p(N, progress);
   
   for (size_t i = 0; i < N; ++i) {
-    peds.at(i)->populate_haplotypes_custom_founders(mut_rates, g_founder_hap);
+    peds.at(i)->populate_haplotypes_custom_founders(mut_rates, g_founder_hap, prob_two_step);
     
      if (i % CHECK_ABORT_EVERY == 0 && Progress::check_abort()) {
       Rcpp::stop("Aborted.");
@@ -119,6 +123,10 @@ void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<P
 //' All founders get a haplotype from calling the user 
 //' provided function `get_founder_haplotype()`.
 //' 
+//' Given that a two step mutation should happen (probability specified by `prob_two_step`):
+//' With distances >= 2 to ladder bounds, mutations happen as usual.
+//' At distance = 0 or 1 to a ladder bound, the mutation is forced to move away from the boundary.
+//' 
 //' Note, that pedigrees must first have been inferred by [build_pedigrees()].
 //' 
 //' @param pedigrees Pedigree list in which to populate haplotypes
@@ -126,6 +134,7 @@ void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<P
 //' @param ladder_min Lower bounds for haplotypes, same length as `mutation_rates`
 //' @param ladder_max Upper bounds for haplotypes, same length as `mutation_rates`; all entries must be strictly greater than `ladder_min`
 //' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
+//' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries
 //' @param progress Show progress
 //'
 //' @seealso [pedigrees_all_populate_haplotypes()] and 
@@ -138,6 +147,7 @@ void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pe
                                                       Rcpp::IntegerVector ladder_min,
                                                       Rcpp::IntegerVector ladder_max,
                                                       Rcpp::Nullable<Rcpp::Function> get_founder_haplotype = R_NilValue,
+                                                      double prob_two_step = 0.0,
                                                       bool progress = true) {
 
   if (ladder_min.size() != ladder_max.size()) {
@@ -147,7 +157,15 @@ void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pe
   if (any((ladder_max - ladder_min) <= 0).is_true()) {
     Rcpp::stop("ladder_max must be at least 1 greater than ladder_min at all loci");
   }
-    
+  
+  if (prob_two_step < 0.0 || prob_two_step > 1.0) {
+    Rcpp::stop("prob_two_step must be between 0.0 and 1.0");
+  }
+  
+  if (any((ladder_max - ladder_min) <= 1).is_true() && prob_two_step > 1e-10) {
+    Rcpp::stop("ladder_max must be at least 2 greater than ladder_min at all loci when prob_two_step > 1e-10.");
+  }
+  
   std::vector<Pedigree*> peds = (*pedigrees);
 
   std::vector<double> mut_rates = Rcpp::as< std::vector<double> >(mutation_rates);
@@ -172,7 +190,7 @@ void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pe
   Progress p(N, progress);
   
   for (size_t i = 0; i < N; ++i) {
-    peds.at(i)->populate_haplotypes_ladder_bounded(mut_rates, lad_min, lad_max, g_founder_hap);
+    peds.at(i)->populate_haplotypes_ladder_bounded(mut_rates, lad_min, lad_max, g_founder_hap, prob_two_step);
     
      if (i % CHECK_ABORT_EVERY == 0 && Progress::check_abort()) {
       Rcpp::stop("Aborted.");

@@ -214,3 +214,115 @@ x <- x[ord_2]
 test_that("split pid by haplotype works", {
   expect_equal(length(hap_fac), length(hashes))
 })
+
+
+
+
+
+
+###################################################
+# Mutate distance 1
+###################################################
+
+
+LOCI <- 5L
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(0.1, LOCI), prob_two_step = 0, progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+}
+test_that("pedigrees_all_populate_haplotypes mut step 1 works", {
+  expect_equal(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))), c(-1L, 0L, 1L))
+})
+
+###################
+
+get_founder_h <- function() rep(-1L, LOCI)
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes_custom_founders(peds, 
+                                                  mutation_rates = rep(0.5, LOCI), 
+                                                  get_founder_haplotype = get_founder_h,
+                                                  prob_two_step = 0, 
+                                                  progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+}
+as <- sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]]))))
+test_that("pedigrees_all_populate_haplotypes_custom_founders mut step 1 works", {
+  expect_equal(as, min(as):max(as))
+})
+
+#-------------
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes_ladder_bounded(peds, 
+                                                 mutation_rates = rep(0.5, LOCI), 
+                                                 ladder_min = rep(-4L, LOCI),
+                                                 ladder_max = rep(4L, LOCI),
+                                                 get_founder_haplotype = get_founder_h,
+                                                 prob_two_step = 0, 
+                                                 progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+  sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]]))))
+}
+as <- sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]]))))
+test_that("pedigrees_all_populate_haplotypes_ladder_bounded mut step 1 works", {
+  expect_equal(as, min(as):max(as))
+})
+
+###################################################
+# Mutate distance 2
+###################################################
+
+LOCI <- 5L
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(0.1, LOCI), prob_two_step = 1, progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+}
+test_that("pedigrees_all_populate_haplotypes mut step 2 works", {
+  expect_equal(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))), c(-2L, 0L, 2L))
+})
+
+###################
+
+get_founder_h <- function() rep(-1L, LOCI)
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes_custom_founders(peds, 
+                                                 mutation_rates = rep(0.5, LOCI), 
+                                                 get_founder_haplotype = get_founder_h,
+                                                 prob_two_step = 1, 
+                                                 progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+}
+# Start at -1, mutate 2, always odd (or == 1 mod 2)
+test_that("pedigrees_all_populate_haplotypes_custom_founders mut step 2 works", {
+  expect_true(all(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))) %% 2 == 1L))
+})
+
+#-------------
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes_ladder_bounded(peds, 
+                                                 mutation_rates = rep(0.5, LOCI), 
+                                                 ladder_min = rep(-4L, LOCI),
+                                                 ladder_max = rep(4L, LOCI),
+                                                 get_founder_haplotype = get_founder_h,
+                                                 prob_two_step = 1, 
+                                                 progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+  sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]]))))
+}
+# Start at -1, mutate 2, ladder -4 to 4, only -3, -1, 1, 3 possible
+test_that("pedigrees_all_populate_haplotypes_ladder_bounded mut step 2 works", {
+  expect_equal(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))), c(-3L, -1L, 1L, 3L))
+})
+
+

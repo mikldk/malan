@@ -5,7 +5,7 @@
 \title{Populate haplotypes in pedigrees (0-founder/unbounded).}
 \usage{
 pedigrees_all_populate_haplotypes(pedigrees, loci, mutation_rates,
-  progress = TRUE)
+  prob_two_step = 0, progress = TRUE)
 }
 \arguments{
 \item{pedigrees}{Pedigree list in which to populate haplotypes}
@@ -13,6 +13,8 @@ pedigrees_all_populate_haplotypes(pedigrees, loci, mutation_rates,
 \item{loci}{Number of loci}
 
 \item{mutation_rates}{Vector with mutation rates, length \code{loci}}
+
+\item{prob_two_step}{Given a mutation happens, this is the probability that the mutation is a two-step mutation}
 
 \item{progress}{Show progress}
 }
