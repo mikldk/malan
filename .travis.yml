@@ -34,22 +34,22 @@ matrix:
     - os: linux
       dist: trusty
       r: release
-      r_check_args: --as-cran --no-build-vignettes --no-vignettes
+#      r_check_args: --as-cran --no-build-vignettes --no-vignettes
       env: 
         - BUILD_PKGDOWN: true
     - os: linux
       dist: trusty
       r: devel
-      r_check_args: --as-cran --no-build-vignettes --no-vignettes
+#      r_check_args: --as-cran --no-build-vignettes --no-vignettes
     - os: osx
       osx_image: xcode9.4
       r: release
-      r_check_args: --as-cran --no-build-vignettes --no-vignettes
+#      r_check_args: --as-cran --no-build-vignettes --no-vignettes
 
 #env
 env:
   global:
-  - _R_CHECK_FORCE_SUGGESTS_=false
+#  - _R_CHECK_FORCE_SUGGESTS_=false
   - MAKEFLAGS="-j 2"
   - TRAVIS_CXXFLAGS="-Wall -Wextra -pedantic -Werror"
 
