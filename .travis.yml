@@ -29,6 +29,8 @@ language: r
 sudo: true
 cache: packages
 
+r_check_args: "--no-vignettes"
+
 matrix:
   include:
 #    - os: linux
