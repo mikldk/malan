@@ -29,30 +29,22 @@ language: r
 sudo: true
 cache: packages
 
-r_check_args: "--no-vignettes"
-
 matrix:
   include:
-#    - os: linux
-#      dist: trusty
-#      r: oldrel
     - os: linux
       dist: trusty
       r: release
+      r_check_args: --as-cran --no-build-vignettes --no-vignettes
       env: 
         - BUILD_PKGDOWN: true
     - os: linux
       dist: trusty
       r: devel
+      r_check_args: --as-cran --no-build-vignettes --no-vignettes
     - os: osx
       osx_image: xcode9.4
       r: release
-#    - os: osx
-#      osx_image: xcode8.3
-#      r: release
-#    - os: osx
-#      osx_image: xcode8.3
-#      r: devel
+      r_check_args: --as-cran --no-build-vignettes --no-vignettes
 
 #env
 env:
