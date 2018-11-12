@@ -181,7 +181,7 @@ sample_autosomal_genotype <- function(allele_dist, theta) {
     .Call('_malan_sample_autosomal_genotype', PACKAGE = 'malan', allele_dist, theta)
 }
 
-#' Populate 1-locus autosomal DNA profile in pedigrees.
+#' Populate 1-locus autosomal DNA profile in pedigrees with single-step mutation model.
 #' 
 #' Populate 1-locus autosomal DNA profile from founder and down in all pedigrees.
 #' Note, that only alleles from ladder is assigned and 
@@ -201,6 +201,31 @@ sample_autosomal_genotype <- function(allele_dist, theta) {
 #' @export
 pedigrees_all_populate_autosomal <- function(pedigrees, allele_dist, theta, mutation_rate, progress = TRUE) {
     invisible(.Call('_malan_pedigrees_all_populate_autosomal', PACKAGE = 'malan', pedigrees, allele_dist, theta, mutation_rate, progress))
+}
+
+#' Populate 1-locus autosomal DNA profile in pedigrees with infinite alleles mutation model.
+#' 
+#' Populate 1-locus autosomal DNA profile from founder and down in all pedigrees.
+#' Note, that all founders have type 0 to begin with.
+#' 
+#' The maternal allele is taken by random from 
+#' the 2*N[g] alleles in the previous generation consisting of N[g] males
+#' with descendants in the live population.
+#' 
+#' This is also why this is not using pedigrees but instead the population.
+#' 
+#' Note, that pedigrees need not be inferred.
+#' 
+#' @param pedigrees Pedigree list in which to populate haplotypes
+#' @param mutation_rate Mutation rate between 0 and 1 (both included)
+#' @param progress Show progress
+#'
+#' @seealso [pedigrees_all_populate_haplotypes_custom_founders()] and 
+#' [pedigrees_all_populate_haplotypes_ladder_bounded()].
+#' 
+#' @export
+pedigrees_all_populate_autosomal_infinite_alleles <- function(population, mutation_rate, progress = TRUE) {
+    invisible(.Call('_malan_pedigrees_all_populate_autosomal_infinite_alleles', PACKAGE = 'malan', population, mutation_rate, progress))
 }
 
 #' Unweighted estimate of autosomal theta from subpopulations of genotypes
@@ -893,41 +918,6 @@ pedigree_size_generation <- function(pedigree, generation_upper_bound_in_result 
     .Call('_malan_pedigree_size_generation', PACKAGE = 'malan', pedigree, generation_upper_bound_in_result)
 }
 
-#' Analyse mixture results
-#' 
-#' Calculate LR-like quantities by haplotype counts.
-#' 
-#' NOTE: Only takes up to 9 contributors!
-#' 
-#' @param mix_res Mixture result from [mixture_info_by_individuals_2pers()], 
-#' [mixture_info_by_individuals_3pers()], [mixture_info_by_individuals_4pers()], 
-#' [mixture_info_by_individuals_5pers()]
-#' @param unique_haps_in_mixture Included unique haplotypes to use as elements in contributor sets.
-#' @param unique_haps_in_mixture_counts Population counts of the included haplotypes
-#' 
-#' @return A list with numeric quantities
-analyse_mixture_result <- function(mix_res, unique_haps_in_mixture, unique_haps_in_mixture_counts) {
-    .Call('_malan_analyse_mixture_result', PACKAGE = 'malan', mix_res, unique_haps_in_mixture, unique_haps_in_mixture_counts)
-}
-
-#' Analyse mixture results in a vectorised fashion
-#' 
-#' Refer to [analyse_mixture_result()] for details. 
-#' Essentially, [analyse_mixture_result()] is run on each element of `mixture_results`.
-#' 
-#' NOTE: Only takes up to 9 contributors!
-#' 
-#' @param mixture_results List of `n` mixture results from [mixture_info_by_individuals_2pers()], 
-#' [mixture_info_by_individuals_3pers()], [mixture_info_by_individuals_4pers()], 
-#' [mixture_info_by_individuals_5pers()]
-#' @param unique_haps_in_mixture_list List of `n` included unique haplotypes, one for each element in `mix_res`
-#' @param unique_haps_in_mixture_counts_list List of `n` population counts of the included unique haplotypes
-#' 
-#' @return A list with lists of numeric quantities
-analyse_mixture_results <- function(mixture_results, unique_haps_in_mixture_list, unique_haps_in_mixture_counts_list) {
-    .Call('_malan_analyse_mixture_results', PACKAGE = 'malan', mixture_results, unique_haps_in_mixture_list, unique_haps_in_mixture_counts_list)
-}
-
 #' Mixture information about 2 persons' mixture of donor1 and donor2.
 #' 
 #' @param individuals Individuals to consider as possible contributors and thereby get information from.
@@ -984,6 +974,41 @@ mixture_info_by_individuals_4pers <- function(individuals, donor1, donor2, donor
 #' @export
 mixture_info_by_individuals_5pers <- function(individuals, donor1, donor2, donor3, donor4, donor5) {
     .Call('_malan_mixture_info_by_individuals_5pers', PACKAGE = 'malan', individuals, donor1, donor2, donor3, donor4, donor5)
+}
+
+#' Analyse mixture results
+#' 
+#' Calculate LR-like quantities by haplotype counts.
+#' 
+#' NOTE: Only takes up to 9 contributors!
+#' 
+#' @param mix_res Mixture result from [mixture_info_by_individuals_2pers()], 
+#' [mixture_info_by_individuals_3pers()], [mixture_info_by_individuals_4pers()], 
+#' [mixture_info_by_individuals_5pers()]
+#' @param unique_haps_in_mixture Included unique haplotypes to use as elements in contributor sets.
+#' @param unique_haps_in_mixture_counts Population counts of the included haplotypes
+#' 
+#' @return A list with numeric quantities
+analyse_mixture_result <- function(mix_res, unique_haps_in_mixture, unique_haps_in_mixture_counts) {
+    .Call('_malan_analyse_mixture_result', PACKAGE = 'malan', mix_res, unique_haps_in_mixture, unique_haps_in_mixture_counts)
+}
+
+#' Analyse mixture results in a vectorised fashion
+#' 
+#' Refer to [analyse_mixture_result()] for details. 
+#' Essentially, [analyse_mixture_result()] is run on each element of `mixture_results`.
+#' 
+#' NOTE: Only takes up to 9 contributors!
+#' 
+#' @param mixture_results List of `n` mixture results from [mixture_info_by_individuals_2pers()], 
+#' [mixture_info_by_individuals_3pers()], [mixture_info_by_individuals_4pers()], 
+#' [mixture_info_by_individuals_5pers()]
+#' @param unique_haps_in_mixture_list List of `n` included unique haplotypes, one for each element in `mix_res`
+#' @param unique_haps_in_mixture_counts_list List of `n` population counts of the included unique haplotypes
+#' 
+#' @return A list with lists of numeric quantities
+analyse_mixture_results <- function(mixture_results, unique_haps_in_mixture_list, unique_haps_in_mixture_counts_list) {
+    .Call('_malan_analyse_mixture_results', PACKAGE = 'malan', mixture_results, unique_haps_in_mixture_list, unique_haps_in_mixture_counts_list)
 }
 
 #' Get pedigree id

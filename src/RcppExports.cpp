@@ -105,6 +105,18 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// pedigrees_all_populate_autosomal_infinite_alleles
+void pedigrees_all_populate_autosomal_infinite_alleles(Rcpp::XPtr<Population> population, double mutation_rate, bool progress);
+RcppExport SEXP _malan_pedigrees_all_populate_autosomal_infinite_alleles(SEXP populationSEXP, SEXP mutation_rateSEXP, SEXP progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Population> >::type population(populationSEXP);
+    Rcpp::traits::input_parameter< double >::type mutation_rate(mutation_rateSEXP);
+    Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
+    pedigrees_all_populate_autosomal_infinite_alleles(population, mutation_rate, progress);
+    return R_NilValue;
+END_RCPP
+}
 // estimate_autotheta_subpops_unweighted_genotypes
 double estimate_autotheta_subpops_unweighted_genotypes(Rcpp::ListOf<Rcpp::IntegerMatrix> subpops, bool assume_HWE);
 RcppExport SEXP _malan_estimate_autotheta_subpops_unweighted_genotypes(SEXP subpopsSEXP, SEXP assume_HWESEXP) {
@@ -623,32 +635,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// analyse_mixture_result
-Rcpp::List analyse_mixture_result(Rcpp::List& mix_res, const Rcpp::List& unique_haps_in_mixture, const Rcpp::List& unique_haps_in_mixture_counts);
-RcppExport SEXP _malan_analyse_mixture_result(SEXP mix_resSEXP, SEXP unique_haps_in_mixtureSEXP, SEXP unique_haps_in_mixture_countsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type mix_res(mix_resSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::List& >::type unique_haps_in_mixture(unique_haps_in_mixtureSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::List& >::type unique_haps_in_mixture_counts(unique_haps_in_mixture_countsSEXP);
-    rcpp_result_gen = Rcpp::wrap(analyse_mixture_result(mix_res, unique_haps_in_mixture, unique_haps_in_mixture_counts));
-    return rcpp_result_gen;
-END_RCPP
-}
-// analyse_mixture_results
-Rcpp::List analyse_mixture_results(Rcpp::List& mixture_results, const Rcpp::List& unique_haps_in_mixture_list, const Rcpp::List& unique_haps_in_mixture_counts_list);
-RcppExport SEXP _malan_analyse_mixture_results(SEXP mixture_resultsSEXP, SEXP unique_haps_in_mixture_listSEXP, SEXP unique_haps_in_mixture_counts_listSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type mixture_results(mixture_resultsSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::List& >::type unique_haps_in_mixture_list(unique_haps_in_mixture_listSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::List& >::type unique_haps_in_mixture_counts_list(unique_haps_in_mixture_counts_listSEXP);
-    rcpp_result_gen = Rcpp::wrap(analyse_mixture_results(mixture_results, unique_haps_in_mixture_list, unique_haps_in_mixture_counts_list));
-    return rcpp_result_gen;
-END_RCPP
-}
 // mixture_info_by_individuals_2pers
 Rcpp::List mixture_info_by_individuals_2pers(const Rcpp::List individuals, Rcpp::XPtr<Individual>& donor1, Rcpp::XPtr<Individual>& donor2);
 RcppExport SEXP _malan_mixture_info_by_individuals_2pers(SEXP individualsSEXP, SEXP donor1SEXP, SEXP donor2SEXP) {
@@ -704,6 +690,32 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor4(donor4SEXP);
     Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor5(donor5SEXP);
     rcpp_result_gen = Rcpp::wrap(mixture_info_by_individuals_5pers(individuals, donor1, donor2, donor3, donor4, donor5));
+    return rcpp_result_gen;
+END_RCPP
+}
+// analyse_mixture_result
+Rcpp::List analyse_mixture_result(Rcpp::List& mix_res, const Rcpp::List& unique_haps_in_mixture, const Rcpp::List& unique_haps_in_mixture_counts);
+RcppExport SEXP _malan_analyse_mixture_result(SEXP mix_resSEXP, SEXP unique_haps_in_mixtureSEXP, SEXP unique_haps_in_mixture_countsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type mix_res(mix_resSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type unique_haps_in_mixture(unique_haps_in_mixtureSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type unique_haps_in_mixture_counts(unique_haps_in_mixture_countsSEXP);
+    rcpp_result_gen = Rcpp::wrap(analyse_mixture_result(mix_res, unique_haps_in_mixture, unique_haps_in_mixture_counts));
+    return rcpp_result_gen;
+END_RCPP
+}
+// analyse_mixture_results
+Rcpp::List analyse_mixture_results(Rcpp::List& mixture_results, const Rcpp::List& unique_haps_in_mixture_list, const Rcpp::List& unique_haps_in_mixture_counts_list);
+RcppExport SEXP _malan_analyse_mixture_results(SEXP mixture_resultsSEXP, SEXP unique_haps_in_mixture_listSEXP, SEXP unique_haps_in_mixture_counts_listSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List& >::type mixture_results(mixture_resultsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type unique_haps_in_mixture_list(unique_haps_in_mixture_listSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type unique_haps_in_mixture_counts_list(unique_haps_in_mixture_counts_listSEXP);
+    rcpp_result_gen = Rcpp::wrap(analyse_mixture_results(mixture_results, unique_haps_in_mixture_list, unique_haps_in_mixture_counts_list));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -847,6 +859,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_calc_autosomal_genotype_conditional_cumdist", (DL_FUNC) &_malan_calc_autosomal_genotype_conditional_cumdist, 2},
     {"_malan_sample_autosomal_genotype", (DL_FUNC) &_malan_sample_autosomal_genotype, 2},
     {"_malan_pedigrees_all_populate_autosomal", (DL_FUNC) &_malan_pedigrees_all_populate_autosomal, 5},
+    {"_malan_pedigrees_all_populate_autosomal_infinite_alleles", (DL_FUNC) &_malan_pedigrees_all_populate_autosomal_infinite_alleles, 3},
     {"_malan_estimate_autotheta_subpops_unweighted_genotypes", (DL_FUNC) &_malan_estimate_autotheta_subpops_unweighted_genotypes, 2},
     {"_malan_estimate_autotheta_subpops_unweighted_pids", (DL_FUNC) &_malan_estimate_autotheta_subpops_unweighted_pids, 3},
     {"_malan_get_allele_counts_genotypes", (DL_FUNC) &_malan_get_allele_counts_genotypes, 1},
@@ -891,12 +904,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_meioses_generation_distribution", (DL_FUNC) &_malan_meioses_generation_distribution, 2},
     {"_malan_population_size_generation", (DL_FUNC) &_malan_population_size_generation, 2},
     {"_malan_pedigree_size_generation", (DL_FUNC) &_malan_pedigree_size_generation, 2},
-    {"_malan_analyse_mixture_result", (DL_FUNC) &_malan_analyse_mixture_result, 3},
-    {"_malan_analyse_mixture_results", (DL_FUNC) &_malan_analyse_mixture_results, 3},
     {"_malan_mixture_info_by_individuals_2pers", (DL_FUNC) &_malan_mixture_info_by_individuals_2pers, 3},
     {"_malan_mixture_info_by_individuals_3pers", (DL_FUNC) &_malan_mixture_info_by_individuals_3pers, 4},
     {"_malan_mixture_info_by_individuals_4pers", (DL_FUNC) &_malan_mixture_info_by_individuals_4pers, 5},
     {"_malan_mixture_info_by_individuals_5pers", (DL_FUNC) &_malan_mixture_info_by_individuals_5pers, 6},
+    {"_malan_analyse_mixture_result", (DL_FUNC) &_malan_analyse_mixture_result, 3},
+    {"_malan_analyse_mixture_results", (DL_FUNC) &_malan_analyse_mixture_results, 3},
     {"_malan_get_pedigree_id", (DL_FUNC) &_malan_get_pedigree_id, 1},
     {"_malan_pedigrees_count", (DL_FUNC) &_malan_pedigrees_count, 1},
     {"_malan_pedigree_size", (DL_FUNC) &_malan_pedigree_size, 1},

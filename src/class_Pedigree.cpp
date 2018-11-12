@@ -216,5 +216,3 @@ void Pedigree::populate_autosomal(
   root->set_haplotype(h); // Not actually haplotype, but use this slot for lower memory footprint
   root->pass_autosomal_to_children(true, allele_conditional_cumdists_theta, mutation_rate);
 }
-
-

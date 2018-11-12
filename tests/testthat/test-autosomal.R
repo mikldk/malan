@@ -741,3 +741,52 @@ if (requireNamespace("dirmult", quietly = TRUE)) {
 test_that("hash_colisions", {
   expect_true(all(unique(as.integer(hash_colisions(20))) == 1L))
 })
+
+
+############################################
+
+# Infinite alleles
+
+
+set.seed(1)
+sim_res_fixed <- sample_geneology(population_size = 1e3, 
+                                  generations = 100, 
+                                  generations_full = 3,
+                                  generations_return = 3, # default value
+                                  progress = FALSE)
+pop <- sim_res_fixed$population
+livepop <- sim_res_fixed$individuals_generations
+#peds <- build_pedigrees(sim_res_fixed$population, progress = FALSE)
+
+get_generation(get_individual(pop, get_pid(livepop[[1]])))
+
+set.seed(1)
+pedigrees_all_populate_autosomal_infinite_alleles(pop, mutation_rate = 0, FALSE)
+
+y_livepop <- get_haplotypes_individuals(livepop)
+
+test_that("infinite alleles -- no mutations", {
+  expect_true(all.equal(unique(c(y_livepop)), 0L))
+})
+
+set.seed(1)
+pedigrees_all_populate_autosomal_infinite_alleles(pop, mutation_rate = 1, FALSE)
+
+y_livepop <- get_haplotypes_individuals(livepop)
+
+test_that("infinite alleles -- always mutations", {
+  expect_equal(length(unique(c(y_livepop))), 2L*length(livepop))
+})
+
+
+set.seed(1)
+pedigrees_all_populate_autosomal_infinite_alleles(pop, mutation_rate = 0.003, FALSE)
+
+y_livepop <- get_haplotypes_individuals(livepop)
+c(y_livepop) %>% table() %>% sort(decreasing = TRUE) %>% head()
+
+test_that("infinite alleles -- sometimes mutations", {
+  expect_true(length(unique(c(y_livepop))) > 1)
+  expect_true(length(unique(c(y_livepop))) < 2L*length(livepop))
+})
+

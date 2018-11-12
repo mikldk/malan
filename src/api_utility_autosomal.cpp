@@ -146,7 +146,7 @@ std::vector<int> sample_autosomal_genotype(Rcpp::NumericVector allele_dist,
   return geno;
 }
                                       
-//' Populate 1-locus autosomal DNA profile in pedigrees.
+//' Populate 1-locus autosomal DNA profile in pedigrees with single-step mutation model.
 //' 
 //' Populate 1-locus autosomal DNA profile from founder and down in all pedigrees.
 //' Note, that only alleles from ladder is assigned and 
@@ -210,4 +210,175 @@ void pedigrees_all_populate_autosomal(Rcpp::XPtr< std::vector<Pedigree*> > pedig
   }
 }
 
+
+
+//' Populate 1-locus autosomal DNA profile in pedigrees with infinite alleles mutation model.
+//' 
+//' Populate 1-locus autosomal DNA profile from founder and down in all pedigrees.
+//' Note, that all founders have type 0 to begin with.
+//' 
+//' The maternal allele is taken by random from 
+//' the 2*N[g] alleles in the previous generation consisting of N[g] males
+//' with descendants in the live population.
+//' 
+//' This is also why this is not using pedigrees but instead the population.
+//' 
+//' Note, that pedigrees need not be inferred.
+//' 
+//' @param pedigrees Pedigree list in which to populate haplotypes
+//' @param mutation_rate Mutation rate between 0 and 1 (both included)
+//' @param progress Show progress
+//'
+//' @seealso [pedigrees_all_populate_haplotypes_custom_founders()] and 
+//' [pedigrees_all_populate_haplotypes_ladder_bounded()].
+//' 
+//' @export
+// [[Rcpp::export]]
+void pedigrees_all_populate_autosomal_infinite_alleles(
+    Rcpp::XPtr<Population> population, 
+    double mutation_rate,
+    bool progress = true) {  
+  
+  // FIXME: Maternal alleles: Only from individuals with descendants...
+  
+  // Put individuals into generations
+  std::unordered_map<int, Individual*> population_map = *(population->get_population());
+  
+  int max_generation = -1;
+
+  for (std::pair<int, Individual*> element : population_map) {
+    Individual* ind = element.second;
+    int gen = ind->get_generation();
+    
+    if (gen > max_generation) {
+      max_generation = gen;
+    }
+  }
+  
+  if (max_generation == -1) {
+    Rcpp::stop("Unexpected error");
+  }
+  
+  std::vector< std::vector<Individual*> > generation_individuals(max_generation + 1);
+  
+  for (std::pair<int, Individual*> element : population_map) {
+    Individual* ind = element.second;
+    int gen = ind->get_generation();
+    generation_individuals[gen].push_back(ind);
+  }
+  
+  //////////////////////////////////////////////
+  // Then iterate over generations
+  //////////////////////////////////////////////
+  
+  //--------------------------------------------
+  // First generation.
+  //--------------------------------------------
+  // Note, that last generation is 0, so max_generation is 
+  // actually the first generation.
+  int current_allele = 0;
+  
+  std::unordered_map<int, int> allele_counts;
+  allele_counts[current_allele] = 1;
+  
+  //Rcpp::print(Rcpp::wrap(max_generation));
+  for (Individual* ind : generation_individuals[max_generation]) {
+    std::vector<int> h = {current_allele, current_allele};
+    ind->set_haplotype(h);
+  }
+  
+  if (max_generation == 0) {
+    return;
+  }
+  
+  //--------------------------------------------
+  // Second generation and forward
+  //--------------------------------------------
+  for (int i = max_generation - 1; i >= 0; --i) {
+    //Rcpp::print(Rcpp::wrap(i));
+    
+    // Previous generation's alleles
+    int alleles_count = 0;
+    for (std::pair<int, int> p : allele_counts) {
+      alleles_count += p.second;
+    }
+    double alleles_count_dbl = (double)alleles_count;
+    
+    double p_sum = 0.0;
+    std::vector<int> alleles_support;
+    std::vector<double> alleles_cumdist;
+    for (std::pair<int, int> p : allele_counts) {
+      p_sum += p.second / alleles_count_dbl;
+      alleles_support.push_back(p.first);
+      alleles_cumdist.push_back(p_sum);
+    }
+    
+    //if (i >= max_generation - 2) {
+    if (true) {
+      Rcpp::Rcout << "===========" << std::endl;
+      Rcpp::Rcout << i << std::endl;
+      Rcpp::Rcout << "===========" << std::endl;
+      Rcpp::print(Rcpp::wrap(allele_counts));
+      Rcpp::print(Rcpp::wrap(alleles_cumdist));
+      Rcpp::print(Rcpp::wrap(alleles_support));
+    }
+    
+    allele_counts.clear();
+    
+    for (Individual* ind : generation_individuals[i]) {
+      int father_allele = -1;
+      int mother_allele = -1;
+      
+      // Mutation father_allele; if so, mutate to new kind, 
+      // doesn't depend on father's actual allele!
+      if (R::runif(0.0, 1.0) < mutation_rate) {
+        // Mutation happened
+        if ((current_allele + 1) < current_allele) {
+          Rcpp::stop("Overflow for current_allele happened!");
+        }
+        current_allele += 1;
+        father_allele = current_allele;
+      } else {
+        std::vector<int> geno_father = ind->get_father()->get_haplotype();
+        father_allele = (R::runif(0.0, 1.0) < 0.5) ? geno_father[0] : geno_father[1];
+      }
+
+      // Mutations mother_allele; if so, mutate to new kind, 
+      // doesn't depend on mothers's actual allele!
+      if (R::runif(0.0, 1.0) < mutation_rate) {
+        // Mutation happened
+        if ((current_allele + 1) < current_allele) {
+          Rcpp::stop("Overflow for current_allele happened!");
+        }
+        current_allele += 1;
+        mother_allele = current_allele;
+      } else {
+        const double u_mother_allele = R::runif(0.0, 1.0); // in (0, 1), both 0/1 excluded
+        mother_allele = alleles_support[0];
+        
+        if (u_mother_allele > alleles_cumdist[0]) {
+          for (int i = 1; i < alleles_support.size(); ++i) {
+            if (u_mother_allele <= alleles_cumdist[i]) {
+              mother_allele = alleles_support[i];
+              break;
+            }
+          }
+        }
+      }
+      
+      std::vector<int> geno = { father_allele, mother_allele };
+      
+      if (geno[1] <= geno[0]) {
+        int tmp = geno[0];
+        geno[0] = geno[1];
+        geno[1] = tmp;
+      }
+
+      ind->set_haplotype(geno);
+      
+      allele_counts[father_allele] += 1;
+      allele_counts[mother_allele] += 1;
+    }
+  }
+}
 
