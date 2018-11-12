@@ -4,8 +4,9 @@
 \alias{pedigrees_all_populate_haplotypes_custom_founders}
 \title{Populate haplotypes in pedigrees (custom founder/unbounded).}
 \usage{
-pedigrees_all_populate_haplotypes_custom_founders(pedigrees, mutation_rates,
-  get_founder_haplotype = NULL, prob_two_step = 0, progress = TRUE)
+pedigrees_all_populate_haplotypes_custom_founders(pedigrees,
+  mutation_rates, get_founder_haplotype = NULL, prob_two_step = 0,
+  progress = TRUE)
 }
 \arguments{
 \item{pedigrees}{Pedigree list in which to populate haplotypes}

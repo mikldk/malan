@@ -4,7 +4,8 @@
 \alias{mixture_info_by_individuals_4pers}
 \title{Mixture information about 4 persons' mixture of donor1, donor2, donor3 and donor4.}
 \usage{
-mixture_info_by_individuals_4pers(individuals, donor1, donor2, donor3, donor4)
+mixture_info_by_individuals_4pers(individuals, donor1, donor2, donor3,
+  donor4)
 }
 \arguments{
 \item{individuals}{Individuals to consider as possible contributors and thereby get information from.}

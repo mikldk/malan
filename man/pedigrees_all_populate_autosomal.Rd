@@ -2,10 +2,10 @@
 % Please edit documentation in R/RcppExports.R
 \name{pedigrees_all_populate_autosomal}
 \alias{pedigrees_all_populate_autosomal}
-\title{Populate 1-locus autosomal DNA profile in pedigrees.}
+\title{Populate 1-locus autosomal DNA profile in pedigrees with single-step mutation model.}
 \usage{
-pedigrees_all_populate_autosomal(pedigrees, allele_dist, theta, mutation_rate,
-  progress = TRUE)
+pedigrees_all_populate_autosomal(pedigrees, allele_dist, theta,
+  mutation_rate, progress = TRUE)
 }
 \arguments{
 \item{pedigrees}{Pedigree list in which to populate haplotypes}

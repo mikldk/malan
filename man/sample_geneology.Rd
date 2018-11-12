@@ -6,8 +6,8 @@
 \usage{
 sample_geneology(population_size, generations, generations_full = 1L,
   generations_return = 3L, enable_gamma_variance_extension = FALSE,
-  gamma_parameter_shape = 5, gamma_parameter_scale = 1/5, progress = TRUE,
-  verbose_result = FALSE)
+  gamma_parameter_shape = 5, gamma_parameter_scale = 1/5,
+  progress = TRUE, verbose_result = FALSE)
 }
 \arguments{
 \item{population_size}{The size of the population.}
