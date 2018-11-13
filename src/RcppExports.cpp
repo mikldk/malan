@@ -105,15 +105,15 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// pedigrees_all_populate_autosomal_infinite_alleles
-void pedigrees_all_populate_autosomal_infinite_alleles(Rcpp::XPtr<Population> population, double mutation_rate, bool progress);
-RcppExport SEXP _malan_pedigrees_all_populate_autosomal_infinite_alleles(SEXP populationSEXP, SEXP mutation_rateSEXP, SEXP progressSEXP) {
+// population_populate_autosomal_infinite_alleles
+void population_populate_autosomal_infinite_alleles(Rcpp::XPtr<Population> population, double mutation_rate, bool progress);
+RcppExport SEXP _malan_population_populate_autosomal_infinite_alleles(SEXP populationSEXP, SEXP mutation_rateSEXP, SEXP progressSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Population> >::type population(populationSEXP);
     Rcpp::traits::input_parameter< double >::type mutation_rate(mutation_rateSEXP);
     Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
-    pedigrees_all_populate_autosomal_infinite_alleles(population, mutation_rate, progress);
+    population_populate_autosomal_infinite_alleles(population, mutation_rate, progress);
     return R_NilValue;
 END_RCPP
 }
@@ -859,7 +859,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_calc_autosomal_genotype_conditional_cumdist", (DL_FUNC) &_malan_calc_autosomal_genotype_conditional_cumdist, 2},
     {"_malan_sample_autosomal_genotype", (DL_FUNC) &_malan_sample_autosomal_genotype, 2},
     {"_malan_pedigrees_all_populate_autosomal", (DL_FUNC) &_malan_pedigrees_all_populate_autosomal, 5},
-    {"_malan_pedigrees_all_populate_autosomal_infinite_alleles", (DL_FUNC) &_malan_pedigrees_all_populate_autosomal_infinite_alleles, 3},
+    {"_malan_population_populate_autosomal_infinite_alleles", (DL_FUNC) &_malan_population_populate_autosomal_infinite_alleles, 3},
     {"_malan_estimate_autotheta_subpops_unweighted_genotypes", (DL_FUNC) &_malan_estimate_autotheta_subpops_unweighted_genotypes, 2},
     {"_malan_estimate_autotheta_subpops_unweighted_pids", (DL_FUNC) &_malan_estimate_autotheta_subpops_unweighted_pids, 3},
     {"_malan_get_allele_counts_genotypes", (DL_FUNC) &_malan_get_allele_counts_genotypes, 1},

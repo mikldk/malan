@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Populate 1-locus autosomal DNA profile in pedigrees with single-step mutation model. — pedigrees_all_populate_autosomal • malan</title>
+<title>Populate 1-locus autosomal DNA profile in pedigrees with infinite alleles mutation model. — population_populate_autosomal_infinite_alleles • malan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,11 +25,10 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Populate 1-locus autosomal DNA profile in pedigrees with single-step mutation model. — pedigrees_all_populate_autosomal" />
+<meta property="og:title" content="Populate 1-locus autosomal DNA profile in pedigrees with infinite alleles mutation model. — population_populate_autosomal_infinite_alleles" />
 
 <meta property="og:description" content="Populate 1-locus autosomal DNA profile from founder and down in all pedigrees.
-Note, that only alleles from ladder is assigned and
-that all founders draw type randomly." />
+Note, that all founders have type 0 to begin with." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -105,34 +104,25 @@ that all founders draw type randomly." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Populate 1-locus autosomal DNA profile in pedigrees with single-step mutation model.</h1>
+    <h1>Populate 1-locus autosomal DNA profile in pedigrees with infinite alleles mutation model.</h1>
     
-    <div class="hidden name"><code>pedigrees_all_populate_autosomal.Rd</code></div>
+    <div class="hidden name"><code>population_populate_autosomal_infinite_alleles.Rd</code></div>
     </div>
 
     
     <p>Populate 1-locus autosomal DNA profile from founder and down in all pedigrees.
-Note, that only alleles from ladder is assigned and
-that all founders draw type randomly.</p>
+Note, that all founders have type 0 to begin with.</p>
     
 
-    <pre class="usage"><span class='fu'>pedigrees_all_populate_autosomal</span>(<span class='no'>pedigrees</span>, <span class='no'>allele_dist</span>, <span class='no'>theta</span>,
-  <span class='no'>mutation_rate</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>population_populate_autosomal_infinite_alleles</span>(<span class='no'>population</span>, <span class='no'>mutation_rate</span>,
+  <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pedigrees</th>
-      <td><p>Pedigree list in which to populate genotypes</p></td>
-    </tr>
-    <tr>
-      <th>allele_dist</th>
-      <td><p>Allele distribution (probabilities) -- gets normalised</p></td>
-    </tr>
-    <tr>
-      <th>theta</th>
-      <td><p>Theta correction between 0 and 1 (both included)</p></td>
+      <th>population</th>
+      <td><p>Population in which to populate genotypes</p></td>
     </tr>
     <tr>
       <th>mutation_rate</th>
@@ -146,7 +136,11 @@ that all founders draw type randomly.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note, that pedigrees must first have been inferred by <code><a href='build_pedigrees.html'>build_pedigrees()</a></code>.</p>
+    <p>The maternal allele is taken by random from
+the <code>2*N[g]</code> alleles in the previous generation consisting of <code>N[g]</code> males
+with descendants in the live population.</p>
+<p>This is also why this is not using pedigrees but instead the population.</p>
+<p>Note, that pedigrees need not be inferred.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

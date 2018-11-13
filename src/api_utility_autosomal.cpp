@@ -154,7 +154,7 @@ std::vector<int> sample_autosomal_genotype(Rcpp::NumericVector allele_dist,
 //' 
 //' Note, that pedigrees must first have been inferred by [build_pedigrees()].
 //' 
-//' @param pedigrees Pedigree list in which to populate haplotypes
+//' @param pedigrees Pedigree list in which to populate genotypes
 //' @param allele_dist Allele distribution (probabilities) -- gets normalised
 //' @param theta Theta correction between 0 and 1 (both included)
 //' @param mutation_rate Mutation rate between 0 and 1 (both included)
@@ -218,14 +218,14 @@ void pedigrees_all_populate_autosomal(Rcpp::XPtr< std::vector<Pedigree*> > pedig
 //' Note, that all founders have type 0 to begin with.
 //' 
 //' The maternal allele is taken by random from 
-//' the 2*N[g] alleles in the previous generation consisting of N[g] males
+//' the `2*N[g]` alleles in the previous generation consisting of `N[g]` males
 //' with descendants in the live population.
 //' 
 //' This is also why this is not using pedigrees but instead the population.
 //' 
 //' Note, that pedigrees need not be inferred.
 //' 
-//' @param pedigrees Pedigree list in which to populate haplotypes
+//' @param population Population in which to populate genotypes
 //' @param mutation_rate Mutation rate between 0 and 1 (both included)
 //' @param progress Show progress
 //'
@@ -234,7 +234,7 @@ void pedigrees_all_populate_autosomal(Rcpp::XPtr< std::vector<Pedigree*> > pedig
 //' 
 //' @export
 // [[Rcpp::export]]
-void pedigrees_all_populate_autosomal_infinite_alleles(
+void population_populate_autosomal_infinite_alleles(
     Rcpp::XPtr<Population> population, 
     double mutation_rate,
     bool progress = true) {  

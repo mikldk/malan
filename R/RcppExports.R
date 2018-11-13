@@ -189,7 +189,7 @@ sample_autosomal_genotype <- function(allele_dist, theta) {
 #' 
 #' Note, that pedigrees must first have been inferred by [build_pedigrees()].
 #' 
-#' @param pedigrees Pedigree list in which to populate haplotypes
+#' @param pedigrees Pedigree list in which to populate genotypes
 #' @param allele_dist Allele distribution (probabilities) -- gets normalised
 #' @param theta Theta correction between 0 and 1 (both included)
 #' @param mutation_rate Mutation rate between 0 and 1 (both included)
@@ -209,14 +209,14 @@ pedigrees_all_populate_autosomal <- function(pedigrees, allele_dist, theta, muta
 #' Note, that all founders have type 0 to begin with.
 #' 
 #' The maternal allele is taken by random from 
-#' the 2*N[g] alleles in the previous generation consisting of N[g] males
+#' the `2*N[g]` alleles in the previous generation consisting of `N[g]` males
 #' with descendants in the live population.
 #' 
 #' This is also why this is not using pedigrees but instead the population.
 #' 
 #' Note, that pedigrees need not be inferred.
 #' 
-#' @param pedigrees Pedigree list in which to populate haplotypes
+#' @param population Population in which to populate genotypes
 #' @param mutation_rate Mutation rate between 0 and 1 (both included)
 #' @param progress Show progress
 #'
@@ -224,8 +224,8 @@ pedigrees_all_populate_autosomal <- function(pedigrees, allele_dist, theta, muta
 #' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 #' 
 #' @export
-pedigrees_all_populate_autosomal_infinite_alleles <- function(population, mutation_rate, progress = TRUE) {
-    invisible(.Call('_malan_pedigrees_all_populate_autosomal_infinite_alleles', PACKAGE = 'malan', population, mutation_rate, progress))
+population_populate_autosomal_infinite_alleles <- function(population, mutation_rate, progress = TRUE) {
+    invisible(.Call('_malan_population_populate_autosomal_infinite_alleles', PACKAGE = 'malan', population, mutation_rate, progress))
 }
 
 #' Unweighted estimate of autosomal theta from subpopulations of genotypes

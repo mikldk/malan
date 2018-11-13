@@ -8,7 +8,7 @@ pedigrees_all_populate_autosomal(pedigrees, allele_dist, theta,
   mutation_rate, progress = TRUE)
 }
 \arguments{
-\item{pedigrees}{Pedigree list in which to populate haplotypes}
+\item{pedigrees}{Pedigree list in which to populate genotypes}
 
 \item{allele_dist}{Allele distribution (probabilities) -- gets normalised}
 

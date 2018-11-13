@@ -761,7 +761,7 @@ livepop <- sim_res_fixed$individuals_generations
 get_generation(get_individual(pop, get_pid(livepop[[1]])))
 
 set.seed(1)
-pedigrees_all_populate_autosomal_infinite_alleles(pop, mutation_rate = 0, FALSE)
+population_populate_autosomal_infinite_alleles(pop, mutation_rate = 0, FALSE)
 
 y_livepop <- get_haplotypes_individuals(livepop)
 
@@ -770,7 +770,7 @@ test_that("infinite alleles -- no mutations", {
 })
 
 set.seed(1)
-pedigrees_all_populate_autosomal_infinite_alleles(pop, mutation_rate = 1, FALSE)
+population_populate_autosomal_infinite_alleles(pop, mutation_rate = 1, FALSE)
 
 y_livepop <- get_haplotypes_individuals(livepop)
 
@@ -780,7 +780,7 @@ test_that("infinite alleles -- always mutations", {
 
 
 set.seed(1)
-pedigrees_all_populate_autosomal_infinite_alleles(pop, mutation_rate = 0.003, FALSE)
+population_populate_autosomal_infinite_alleles(pop, mutation_rate = 0.003, FALSE)
 
 y_livepop <- get_haplotypes_individuals(livepop)
 c(y_livepop) %>% table() %>% sort(decreasing = TRUE) %>% head()
