@@ -528,11 +528,31 @@ get_haplotypes_pids <- function(population, pids) {
 #' 
 #' @return Number of times that `haplotype` occurred amongst `individuals`.
 #' 
-#' @seealso [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()].
+#' @seealso [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()],
+#' [count_haplotype_near_matches_individuals()].
 #' 
 #' @export
 count_haplotype_occurrences_individuals <- function(individuals, haplotype) {
     .Call('_malan_count_haplotype_occurrences_individuals', PACKAGE = 'malan', individuals, haplotype)
+}
+
+#' Count near haplotype matches in list of individuals
+#' 
+#' Counts the number of types close to `haplotype` in `individuals`.
+#' 
+#' @param individuals List of individuals to count occurrences in.
+#' @param haplotype Haplotype to count near-matches occurrences of.
+#' @param max_dist Maximum distance (0 = match, 1 = 1 STR allele difference, ...)
+#' 
+#' @return Number of times that a haplotype within a radius of `max_dist` of 
+#' `haplotype` occurred amongst `individuals`.
+#' 
+#' @seealso [count_haplotype_occurrences_individuals()], 
+#' [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()].
+#' 
+#' @export
+count_haplotype_near_matches_individuals <- function(individuals, haplotype, max_dist) {
+    .Call('_malan_count_haplotype_near_matches_individuals', PACKAGE = 'malan', individuals, haplotype, max_dist)
 }
 
 #' Get individuals matching from list of individuals

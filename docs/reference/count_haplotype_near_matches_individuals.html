@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Count haplotypes occurrences in list of individuals — count_haplotype_occurrences_individuals • malan</title>
+<title>Count near haplotype matches in list of individuals — count_haplotype_near_matches_individuals • malan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,9 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Count haplotypes occurrences in list of individuals — count_haplotype_occurrences_individuals" />
+<meta property="og:title" content="Count near haplotype matches in list of individuals — count_haplotype_near_matches_individuals" />
 
-<meta property="og:description" content="Counts the number of types haplotype appears in individuals." />
+<meta property="og:description" content="Counts the number of types close to haplotype in individuals." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -103,16 +103,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Count haplotypes occurrences in list of individuals</h1>
+    <h1>Count near haplotype matches in list of individuals</h1>
     
-    <div class="hidden name"><code>count_haplotype_occurrences_individuals.Rd</code></div>
+    <div class="hidden name"><code>count_haplotype_near_matches_individuals.Rd</code></div>
     </div>
 
     
-    <p>Counts the number of types <code>haplotype</code> appears in <code>individuals</code>.</p>
+    <p>Counts the number of types close to <code>haplotype</code> in <code>individuals</code>.</p>
     
 
-    <pre class="usage"><span class='fu'>count_haplotype_occurrences_individuals</span>(<span class='no'>individuals</span>, <span class='no'>haplotype</span>)</pre>
+    <pre class="usage"><span class='fu'>count_haplotype_near_matches_individuals</span>(<span class='no'>individuals</span>, <span class='no'>haplotype</span>, <span class='no'>max_dist</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -123,18 +123,23 @@
     </tr>
     <tr>
       <th>haplotype</th>
-      <td><p>Haplotype to count occurrences of.</p></td>
+      <td><p>Haplotype to count near-matches occurrences of.</p></td>
+    </tr>
+    <tr>
+      <th>max_dist</th>
+      <td><p>Maximum distance (0 = match, 1 = 1 STR allele difference, ...)</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Number of times that <code>haplotype</code> occurred amongst <code>individuals</code>.</p>
+    <p>Number of times that a haplotype within a radius of <code>max_dist</code> of
+<code>haplotype</code> occurred amongst <code>individuals</code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists.html'>pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()</a></code>,
-<code>count_haplotype_near_matches_individuals()</code>.</p></div>
+    <div class='dont-index'><p><code><a href='count_haplotype_occurrences_individuals.html'>count_haplotype_occurrences_individuals()</a></code>,
+<code><a href='pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists.html'>pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()</a></code>.</p></div>
     
 
   </div>

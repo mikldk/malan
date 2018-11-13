@@ -18,5 +18,6 @@ Number of times that \code{haplotype} occurred amongst \code{individuals}.
 Counts the number of types \code{haplotype} appears in \code{individuals}.
 }
 \seealso{
-\code{\link[=pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists]{pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()}}.
+\code{\link[=pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists]{pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()}},
+\code{\link[=count_haplotype_near_matches_individuals]{count_haplotype_near_matches_individuals()}}.
 }

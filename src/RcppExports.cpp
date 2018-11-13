@@ -327,6 +327,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// count_haplotype_near_matches_individuals
+int count_haplotype_near_matches_individuals(const Rcpp::List individuals, const Rcpp::IntegerVector haplotype, const int max_dist);
+RcppExport SEXP _malan_count_haplotype_near_matches_individuals(SEXP individualsSEXP, SEXP haplotypeSEXP, SEXP max_distSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List >::type individuals(individualsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector >::type haplotype(haplotypeSEXP);
+    Rcpp::traits::input_parameter< const int >::type max_dist(max_distSEXP);
+    rcpp_result_gen = Rcpp::wrap(count_haplotype_near_matches_individuals(individuals, haplotype, max_dist));
+    return rcpp_result_gen;
+END_RCPP
+}
 // haplotype_matches_individuals
 Rcpp::List haplotype_matches_individuals(const Rcpp::List individuals, const Rcpp::IntegerVector haplotype);
 RcppExport SEXP _malan_haplotype_matches_individuals(SEXP individualsSEXP, SEXP haplotypeSEXP) {
@@ -877,6 +890,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_get_haplotypes_individuals", (DL_FUNC) &_malan_get_haplotypes_individuals, 1},
     {"_malan_get_haplotypes_pids", (DL_FUNC) &_malan_get_haplotypes_pids, 2},
     {"_malan_count_haplotype_occurrences_individuals", (DL_FUNC) &_malan_count_haplotype_occurrences_individuals, 2},
+    {"_malan_count_haplotype_near_matches_individuals", (DL_FUNC) &_malan_count_haplotype_near_matches_individuals, 3},
     {"_malan_haplotype_matches_individuals", (DL_FUNC) &_malan_haplotype_matches_individuals, 2},
     {"_malan_count_haplotype_occurrences_pedigree", (DL_FUNC) &_malan_count_haplotype_occurrences_pedigree, 3},
     {"_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists", (DL_FUNC) &_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists, 2},

@@ -357,7 +357,8 @@ Rcpp::IntegerMatrix get_haplotypes_pids(Rcpp::XPtr<Population> population, Rcpp:
 //' 
 //' @return Number of times that `haplotype` occurred amongst `individuals`.
 //' 
-//' @seealso [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()].
+//' @seealso [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()],
+//' [count_haplotype_near_matches_individuals()].
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -382,6 +383,63 @@ int count_haplotype_occurrences_individuals(const Rcpp::List individuals, const 
     }
     
     if (indv_h == h) {
+      count += 1;
+    }
+  }
+  
+  return count;
+}
+
+
+//' Count near haplotype matches in list of individuals
+//' 
+//' Counts the number of types close to `haplotype` in `individuals`.
+//' 
+//' @param individuals List of individuals to count occurrences in.
+//' @param haplotype Haplotype to count near-matches occurrences of.
+//' @param max_dist Maximum distance (0 = match, 1 = 1 STR allele difference, ...)
+//' 
+//' @return Number of times that a haplotype within a radius of `max_dist` of 
+//' `haplotype` occurred amongst `individuals`.
+//' 
+//' @seealso [count_haplotype_occurrences_individuals()], 
+//' [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()].
+//' 
+//' @export
+// [[Rcpp::export]]
+int count_haplotype_near_matches_individuals(const Rcpp::List individuals, 
+                                             const Rcpp::IntegerVector haplotype, 
+                                             const int max_dist) {
+  int n = individuals.size();
+  int loci = haplotype.size();
+  int count = 0;
+  
+  std::vector<int> h = Rcpp::as< std::vector<int> >(haplotype);
+  
+  for (int i = 0; i < n; ++i) {
+    Rcpp::XPtr<Individual> indv = individuals[i];
+    
+    if (!(indv->is_haplotype_set())) {
+      Rcpp::stop("Haplotype not yet set.");
+    }
+    
+    std::vector<int> indv_h = indv->get_haplotype();
+    
+    if (indv_h.size() != loci) {
+      Rcpp::stop("haplotype and indv_h did not have same number of loci");
+    }
+    
+    int dist = 0;
+    
+    for (int k = 0; k < loci; ++k) {
+      dist += abs(indv_h[k] - h[k]);
+      
+      if (dist > max_dist) {
+        break;
+      }
+    }
+    
+    if (dist <= max_dist) {
       count += 1;
     }
   }
@@ -702,4 +760,8 @@ Rcpp::List split_by_haplotypes(Rcpp::XPtr<Population> population,
   
   return res;
 }
+
+
+
+
 
