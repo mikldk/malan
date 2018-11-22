@@ -664,6 +664,111 @@ Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(cons
   return matches;
 }
 
+
+
+
+//' Information about almost matching individuals
+//' 
+//' Gives information about all individuals in pedigree that almost matches 
+//' an individual.
+//' Just as [count_haplotype_near_matches_individuals()] counts the number of 
+//' occurrences amongst a list of individuals, 
+//' this gives detailed information about almost matching individuals in 
+//' the pedigree: for now, the meiotic distances.
+//' 
+//' @param suspect Individual that others must match the profile of.
+//' @param max_dist Maximum distance (0 = match, 1 = 1 STR allele difference, ...)
+//' @param generation_upper_bound_in_result Only consider matches in 
+//' generation 0, 1, ... generation_upper_bound_in_result.
+//' -1 means disabled, consider all generations.
+//' End generation is generation 0.
+//' Second last generation is 1. 
+//' And so on.
+//' 
+//' @return Matrix with information about matching individuals. 
+//' Columns in order: 1) meioses (meiotic distance to `suspect`), 
+//' 2) haplotype distance, 3) pid (pid of matching individual)
+//' 
+//' @seealso [count_haplotype_near_matches_individuals()].
+//'
+//' @export
+// [[Rcpp::export]]
+Rcpp::IntegerMatrix pedigree_haplotype_near_matches_meiosis(
+    const Rcpp::XPtr<Individual> suspect, 
+    const int max_dist,
+    int generation_upper_bound_in_result = -1) {
+  
+  if (!(suspect->is_haplotype_set())) {
+    Rcpp::stop("Haplotype not yet set for suspect.");
+  }
+  
+  const std::vector<int> h = suspect->get_haplotype();
+  const int loci = h.size();
+  
+  const Pedigree* pedigree = suspect->get_pedigree();
+  const int suspect_pedigree_id = suspect->get_pedigree_id();
+  const std::vector<Individual*>* family = pedigree->get_all_individuals();
+  
+  std::vector<int> meiosis_dists;
+  std::vector<int> hap_dists;
+  std::vector<int> pids;
+  
+  // includes suspect by purpose
+  for (auto dest : *family) { 
+    int generation = dest->get_generation();
+    
+    if (generation_upper_bound_in_result != -1 && generation > generation_upper_bound_in_result) {
+      continue;
+    }
+    
+    // only considering within pedigree matches
+    if (dest->get_pedigree_id() != suspect_pedigree_id) {
+      continue;
+    }
+    
+    if (!(dest->is_haplotype_set())) {
+      Rcpp::stop("Haplotype not yet set for dest.");
+    }
+    
+    std::vector<int> dest_h = dest->get_haplotype();
+    
+    if (dest_h.size() != loci) {
+      Rcpp::stop("haplotype and dest_h did not have same number of loci");
+    }
+    
+    int dist = 0;
+    
+    for (int k = 0; k < loci; ++k) {
+      dist += abs(dest_h[k] - h[k]);
+      
+      if (dist > max_dist) {
+        break;
+      }
+    }
+    
+    if (dist <= max_dist) {
+      int meiosis_dist = suspect->meiosis_dist_tree(dest);
+      
+      meiosis_dists.push_back(meiosis_dist);
+      hap_dists.push_back(dist);
+      pids.push_back(dest->get_pid());
+    }
+  }
+  
+  size_t n = meiosis_dists.size();
+  
+  Rcpp::IntegerMatrix matches(n, 3);
+  colnames(matches) = Rcpp::CharacterVector::create("meioses", "hap_dist", "pid");
+  
+  for (size_t i = 0; i < n; ++i) {
+    matches(i, 0) = meiosis_dists[i];
+    matches(i, 1) = hap_dists[i];
+    matches(i, 2) = pids[i];
+  }
+  
+  return matches;
+}
+
 //' Meiotic distance between two individuals
 //' 
 //' Get the number of meioses between two individuals.

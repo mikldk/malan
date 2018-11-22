@@ -98,6 +98,16 @@ test_that("pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists works", {
 })
 
 
+
+
+
+
+
+
+
+
+
+
 haps_from_ped <- get_haplotypes_in_pedigree(ped)
 haps_from_pids <- get_haplotypes_pids(test_pop, pids)
 haps_from_indvs <- get_haplotypes_individuals(indvs)
@@ -326,3 +336,67 @@ test_that("pedigrees_all_populate_haplotypes_ladder_bounded mut step 2 works", {
 })
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############### 
+# Near matches
+
+set.seed(1)
+pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(0.1, LOCI), progress = FALSE)
+
+indv_pid1 <- get_individual(test_pop, pid = 1L)
+indv_pid1_h <- get_haplotype(indv_pid1)
+
+no0exact <- count_haplotype_occurrences_individuals(
+  individuals = indvs, 
+  haplotype = indv_pid1_h)
+
+no0 <- count_haplotype_near_matches_individuals(
+  individuals = indvs, 
+  haplotype = indv_pid1_h,
+  max_dist = 0)
+no1 <- count_haplotype_near_matches_individuals(
+  individuals = indvs, 
+  haplotype = indv_pid1_h,
+  max_dist = 1)
+no2 <- count_haplotype_near_matches_individuals(
+  individuals = indvs, 
+  haplotype = indv_pid1_h,
+  max_dist = 2)
+
+test_that("count_haplotype_near_matches_individuals works", {
+  expect_equal(no0exact, no0)
+  expect_true(no1 >= no0)
+  expect_true(no2 >= no1)
+})
+
+mei_res_near <- pedigree_haplotype_near_matches_meiosis(
+  suspect = indv_pid1, 
+  max_dist = 2,
+  generation_upper_bound_in_result = -1L)
+
+test_that("count_haplotype_near_matches_individuals works", {
+  expect_true(sum(mei_res_near[, "hap_dist"] == 0) <= no0)
+  expect_true(sum(mei_res_near[, "hap_dist"] <= 1) <= no1)
+  expect_true(sum(mei_res_near[, "hap_dist"] <= 2) <= no2)
+})

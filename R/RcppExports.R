@@ -624,6 +624,35 @@ pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists <- function(suspect, gen
     .Call('_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists', PACKAGE = 'malan', suspect, generation_upper_bound_in_result)
 }
 
+#' Information about almost matching individuals
+#' 
+#' Gives information about all individuals in pedigree that almost matches 
+#' an individual.
+#' Just as [count_haplotype_near_matches_individuals()] counts the number of 
+#' occurrences amongst a list of individuals, 
+#' this gives detailed information about almost matching individuals in 
+#' the pedigree: for now, the meiotic distances.
+#' 
+#' @param suspect Individual that others must match the profile of.
+#' @param max_dist Maximum distance (0 = match, 1 = 1 STR allele difference, ...)
+#' @param generation_upper_bound_in_result Only consider matches in 
+#' generation 0, 1, ... generation_upper_bound_in_result.
+#' -1 means disabled, consider all generations.
+#' End generation is generation 0.
+#' Second last generation is 1. 
+#' And so on.
+#' 
+#' @return Matrix with information about matching individuals. 
+#' Columns in order: 1) meioses (meiotic distance to `suspect`), 
+#' 2) haplotype distance, 3) pid (pid of matching individual)
+#' 
+#' @seealso [count_haplotype_near_matches_individuals()].
+#'
+#' @export
+pedigree_haplotype_near_matches_meiosis <- function(suspect, max_dist, generation_upper_bound_in_result = -1L) {
+    .Call('_malan_pedigree_haplotype_near_matches_meiosis', PACKAGE = 'malan', suspect, max_dist, generation_upper_bound_in_result)
+}
+
 #' Meiotic distance between two individuals
 #' 
 #' Get the number of meioses between two individuals.

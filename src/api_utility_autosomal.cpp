@@ -314,7 +314,7 @@ void population_populate_autosomal_infinite_alleles(
     }
     
     //if (i >= max_generation - 2) {
-    if (true) {
+    if (!true) {
       Rcpp::Rcout << "===========" << std::endl;
       Rcpp::Rcout << i << std::endl;
       Rcpp::Rcout << "===========" << std::endl;
