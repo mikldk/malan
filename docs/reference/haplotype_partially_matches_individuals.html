@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Count haplotypes occurrences in list of individuals — count_haplotype_occurrences_individuals • malan</title>
+<title>Get individuals partially matching from list of individuals — haplotype_partially_matches_individuals • malan</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,9 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Count haplotypes occurrences in list of individuals — count_haplotype_occurrences_individuals" />
+<meta property="og:title" content="Get individuals partially matching from list of individuals — haplotype_partially_matches_individuals" />
 
-<meta property="og:description" content="Counts the number of types haplotype appears in individuals." />
+<meta property="og:description" content="Get the indvididuals that partially matches haplotype in individuals." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -103,16 +103,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Count haplotypes occurrences in list of individuals</h1>
+    <h1>Get individuals partially matching from list of individuals</h1>
     
-    <div class="hidden name"><code>count_haplotype_occurrences_individuals.Rd</code></div>
+    <div class="hidden name"><code>haplotype_partially_matches_individuals.Rd</code></div>
     </div>
 
     
-    <p>Counts the number of types <code>haplotype</code> appears in <code>individuals</code>.</p>
+    <p>Get the indvididuals that partially matches <code>haplotype</code> in <code>individuals</code>.</p>
     
 
-    <pre class="usage"><span class='fu'>count_haplotype_occurrences_individuals</span>(<span class='no'>individuals</span>, <span class='no'>haplotype</span>)</pre>
+    <pre class="usage"><span class='fu'>haplotype_partially_matches_individuals</span>(<span class='no'>individuals</span>, <span class='no'>haplotype</span>,
+  <span class='kw'>ignore_loci</span> <span class='kw'>=</span> <span class='fu'>as.integer</span>(<span class='fu'>c</span>()))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -125,16 +126,15 @@
       <th>haplotype</th>
       <td><p>Haplotype to count occurrences of.</p></td>
     </tr>
+    <tr>
+      <th>ignore_loci</th>
+      <td><p>Vector of loci to ignore (1 = ignore first locus etc.)</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Number of times that <code>haplotype</code> occurred amongst <code>individuals</code>.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists.html'>pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()</a></code>,
-<code><a href='count_haplotype_near_matches_individuals.html'>count_haplotype_near_matches_individuals()</a></code>.</p></div>
+    <p>List of individuals that partially matches <code>haplotype</code> amongst <code>individuals</code>.</p>
     
 
   </div>
@@ -144,8 +144,6 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

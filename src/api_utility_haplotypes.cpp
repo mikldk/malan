@@ -870,3 +870,84 @@ Rcpp::List split_by_haplotypes(Rcpp::XPtr<Population> population,
 
 
 
+
+
+
+//' Get individuals partially matching from list of individuals
+//' 
+//' Get the indvididuals that partially matches `haplotype` in `individuals`.
+//' 
+//' @param individuals List of individuals to count occurrences in.
+//' @param haplotype Haplotype to count occurrences of.
+//' @param ignore_loci Vector of loci to ignore (1 = ignore first locus etc.)
+//' 
+//' @return List of individuals that partially matches `haplotype` amongst `individuals`.
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::List haplotype_partially_matches_individuals(
+    const Rcpp::List individuals, 
+    const Rcpp::IntegerVector haplotype,
+    const Rcpp::IntegerVector ignore_loci = Rcpp::IntegerVector::create()) {
+  
+  int n = individuals.size();
+  int loci = haplotype.size();
+  
+  std::vector<bool> skip_locus(loci);
+  for (int i = 0; i < loci; ++i) {
+    skip_locus[i] = false;
+  }
+  
+  for (auto e : ignore_loci) {
+    if (e <= 0) {
+      Rcpp::stop("ignore_loci must have entries >= 1");
+    }
+    
+    if (e > loci) {
+      Rcpp::stop("ignore_loci gave a locus index larger than the number of loci");
+    }
+    skip_locus[e - 1] = true; // C++-indexing
+  }
+  
+  int no_loci_skipped = std::count(skip_locus.begin(), skip_locus.end(), true);
+  if (no_loci_skipped == loci) {
+    Rcpp::stop("Cannot ignore all loci; avoid computations as this is all individuals");
+  }
+  
+  Rcpp::List partial_matches;
+  
+  std::vector<int> h = Rcpp::as< std::vector<int> >(haplotype);
+  
+  for (int i = 0; i < n; ++i) {
+    Rcpp::XPtr<Individual> indv = individuals[i];
+    
+    if (!(indv->is_haplotype_set())) {
+      Rcpp::stop("Haplotype not yet set.");
+    }
+    
+    std::vector<int> indv_h = indv->get_haplotype();
+
+    if (indv_h.size() != loci) {
+      Rcpp::stop("haplotype and indv_h did not have same number of loci");
+    }
+    
+    bool hs_equal = true;
+    
+    for (int l = 0; l < loci; ++l) {
+      if (skip_locus[l] == true) {
+        continue;
+      }
+      
+      if (h[l] != indv_h[l]) {
+        hs_equal = false;
+        break;
+      }
+    }
+    
+    if (hs_equal == true) {
+      partial_matches.push_back(indv);
+    }
+  }
+  
+  return partial_matches;
+}

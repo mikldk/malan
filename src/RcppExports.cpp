@@ -426,6 +426,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// haplotype_partially_matches_individuals
+Rcpp::List haplotype_partially_matches_individuals(const Rcpp::List individuals, const Rcpp::IntegerVector haplotype, const Rcpp::IntegerVector ignore_loci);
+RcppExport SEXP _malan_haplotype_partially_matches_individuals(SEXP individualsSEXP, SEXP haplotypeSEXP, SEXP ignore_lociSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List >::type individuals(individualsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector >::type haplotype(haplotypeSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector >::type ignore_loci(ignore_lociSEXP);
+    rcpp_result_gen = Rcpp::wrap(haplotype_partially_matches_individuals(individuals, haplotype, ignore_loci));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_individual
 Rcpp::XPtr<Individual> get_individual(Rcpp::XPtr<Population> population, int pid);
 RcppExport SEXP _malan_get_individual(SEXP populationSEXP, SEXP pidSEXP) {
@@ -911,6 +924,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_meiotic_dist", (DL_FUNC) &_malan_meiotic_dist, 2},
     {"_malan_haplotypes_to_hashes", (DL_FUNC) &_malan_haplotypes_to_hashes, 2},
     {"_malan_split_by_haplotypes", (DL_FUNC) &_malan_split_by_haplotypes, 2},
+    {"_malan_haplotype_partially_matches_individuals", (DL_FUNC) &_malan_haplotype_partially_matches_individuals, 3},
     {"_malan_get_individual", (DL_FUNC) &_malan_get_individual, 2},
     {"_malan_get_pid", (DL_FUNC) &_malan_get_pid, 1},
     {"_malan_print_individual", (DL_FUNC) &_malan_print_individual, 1},

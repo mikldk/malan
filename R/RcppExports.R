@@ -702,6 +702,21 @@ split_by_haplotypes <- function(population, pids) {
     .Call('_malan_split_by_haplotypes', PACKAGE = 'malan', population, pids)
 }
 
+#' Get individuals partially matching from list of individuals
+#' 
+#' Get the indvididuals that partially matches `haplotype` in `individuals`.
+#' 
+#' @param individuals List of individuals to count occurrences in.
+#' @param haplotype Haplotype to count occurrences of.
+#' @param ignore_loci Vector of loci to ignore (1 = ignore first locus etc.)
+#' 
+#' @return List of individuals that partially matches `haplotype` amongst `individuals`.
+#' 
+#' @export
+haplotype_partially_matches_individuals <- function(individuals, haplotype, ignore_loci = as.integer( c())) {
+    .Call('_malan_haplotype_partially_matches_individuals', PACKAGE = 'malan', individuals, haplotype, ignore_loci)
+}
+
 #' Get individual by pid
 #' 
 #' @param population Population

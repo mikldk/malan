@@ -400,3 +400,29 @@ test_that("count_haplotype_near_matches_individuals works", {
   expect_true(sum(mei_res_near[, "hap_dist"] <= 1) <= no1)
   expect_true(sum(mei_res_near[, "hap_dist"] <= 2) <= no2)
 })
+
+
+############################################################
+# haplotype_partially_matches_individuals
+############################################################
+
+test_that("haplotype_partially_matches_individuals input check", {
+  expect_error(haplotype_partially_matches_individuals(indvs, indv_pid1_h, -1))
+  expect_error(haplotype_partially_matches_individuals(indvs, indv_pid1_h, LOCI + 1))
+  expect_error(haplotype_partially_matches_individuals(indvs, indv_pid1_h, c(1, LOCI + 1)))
+  expect_error(haplotype_partially_matches_individuals(indvs, indv_pid1_h, 1:LOCI))
+})
+
+test_that("haplotype_partially_matches_individuals", {
+  part_matches_all_loci <- haplotype_partially_matches_individuals(indvs, indv_pid1_h)
+  expect_equal(length(part_matches_all_loci), count_haplotype_occurrences_individuals(indvs, indv_pid1_h))
+  
+  subsets <- lapply(1:LOCI, function(i) setdiff(1:LOCI, 1:i))
+  subset_matches <- unlist(lapply(seq_along(subsets), function(i) {
+    length(haplotype_partially_matches_individuals(indvs, indv_pid1_h, subsets[[i]]))
+  }))
+  
+  expect_equal(subset_matches, sort(subset_matches, decreasing = TRUE))
+})
+
+
