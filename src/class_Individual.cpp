@@ -17,6 +17,11 @@
 Individual
 ==========================================
 */
+Individual::Individual(int pid) {
+  m_pid = pid;
+  m_children = new std::vector<Individual*>();
+}
+
 Individual::Individual(int pid, int generation) {
   m_pid = pid;
   m_generation = generation;
@@ -33,6 +38,10 @@ int Individual::get_pid() const {
 }
 
 int Individual::get_generation() const {
+  if (m_generation == -1) {
+    Rcpp::stop("Generation not set (indviduals created with load_data()). This will (hopefully) be implemented soon.");
+  }
+  
   return m_generation;
 }
 

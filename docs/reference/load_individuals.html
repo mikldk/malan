@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate a function to simulate pedigree founder haplotype based on ladder information — generate_get_founder_haplotype_ladder • malan</title>
+<title>Construct a population from data — load_individuals • malan</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Generate a function to simulate pedigree founder haplotype based on ladder information — generate_get_founder_haplotype_ladder" />
+<meta property="og:title" content="Construct a population from data — load_individuals" />
 
-<meta property="og:description" content="Generate a function to simulate pedigree founder haplotype based on ladder information" />
+<meta property="og:description" content="Construct a population from data" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,29 +109,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate a function to simulate pedigree founder haplotype based on ladder information</h1>
+    <h1>Construct a population from data</h1>
     
-    <div class="hidden name"><code>generate_get_founder_haplotype_ladder.Rd</code></div>
+    <div class="hidden name"><code>load_individuals.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Generate a function to simulate pedigree founder haplotype based on ladder information</p>
+    <p>Construct a population from data</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>generate_get_founder_haplotype_ladder</span>(<span class='no'>ladder_min</span>, <span class='no'>ladder_max</span>)</pre>
+    <pre class="usage"><span class='fu'>load_individuals</span>(<span class='no'>pid</span>, <span class='no'>pid_dad</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>error_on_pid_not_found</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ladder_min</th>
-      <td><p>vector of minimum alleles; <code>ladder_min[i]</code> is the minimum allele at locus i</p></td>
+      <th>pid</th>
+      <td><p>ID of male</p></td>
     </tr>
     <tr>
-      <th>ladder_max</th>
-      <td><p>vector of minimum alleles; <code>ladder_max[i]</code> is the maximum allele at locus i</p></td>
+      <th>pid_dad</th>
+      <td><p>ID of male's father, 0 if not known</p></td>
     </tr>
     </table>
     

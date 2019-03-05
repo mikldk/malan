@@ -33,6 +33,7 @@ private:
   void haplotype_mutate_ladder_bounded(std::vector<double>& mutation_rates, std::vector<int>& ladder_min, std::vector<int>& ladder_max, double prob_two_step = 0.0);
   
 public:
+  Individual(int pid);
   Individual(int pid, int generation);
   ~Individual();
   int get_pid() const;

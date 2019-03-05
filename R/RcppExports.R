@@ -20,6 +20,18 @@ build_pedigrees <- function(population, progress = TRUE) {
     .Call('_malan_build_pedigrees', PACKAGE = 'malan', population, progress)
 }
 
+#' Construct a population from data
+#' 
+#' Note that individuals loaded this way does not have information about generation.
+#' 
+#' @param pid ID of male
+#' @param pid_dad ID of male's father, 0 if not known
+#' 
+#' @export
+load_individuals <- function(pid, pid_dad, progress = TRUE, error_on_pid_not_found = TRUE) {
+    .Call('_malan_load_individuals', PACKAGE = 'malan', pid, pid_dad, progress, error_on_pid_not_found)
+}
+
 #' Simulate a geneology with constant population size.
 #' 
 #' This function simulates a geneology where the last generation has `population_size` individuals. 

@@ -19,6 +19,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// load_individuals
+Rcpp::XPtr<Population> load_individuals(IntegerVector pid, IntegerVector pid_dad, bool progress, bool error_on_pid_not_found);
+RcppExport SEXP _malan_load_individuals(SEXP pidSEXP, SEXP pid_dadSEXP, SEXP progressSEXP, SEXP error_on_pid_not_foundSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type pid(pidSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type pid_dad(pid_dadSEXP);
+    Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
+    Rcpp::traits::input_parameter< bool >::type error_on_pid_not_found(error_on_pid_not_foundSEXP);
+    rcpp_result_gen = Rcpp::wrap(load_individuals(pid, pid_dad, progress, error_on_pid_not_found));
+    return rcpp_result_gen;
+END_RCPP
+}
 // sample_geneology
 List sample_geneology(size_t population_size, int generations, int generations_full, int generations_return, bool enable_gamma_variance_extension, double gamma_parameter_shape, double gamma_parameter_scale, bool progress, bool verbose_result);
 RcppExport SEXP _malan_sample_geneology(SEXP population_sizeSEXP, SEXP generationsSEXP, SEXP generations_fullSEXP, SEXP generations_returnSEXP, SEXP enable_gamma_variance_extensionSEXP, SEXP gamma_parameter_shapeSEXP, SEXP gamma_parameter_scaleSEXP, SEXP progressSEXP, SEXP verbose_resultSEXP) {
@@ -892,6 +906,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_malan_build_pedigrees", (DL_FUNC) &_malan_build_pedigrees, 2},
+    {"_malan_load_individuals", (DL_FUNC) &_malan_load_individuals, 4},
     {"_malan_sample_geneology", (DL_FUNC) &_malan_sample_geneology, 9},
     {"_malan_sample_geneology_varying_size", (DL_FUNC) &_malan_sample_geneology_varying_size, 7},
     {"_malan_calc_autosomal_genotype_probs", (DL_FUNC) &_malan_calc_autosomal_genotype_probs, 2},

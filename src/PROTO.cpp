@@ -210,6 +210,8 @@ std::map<int, std::map<int, int> > meioses_generation_distribution_OLD(Rcpp::XPt
   for (auto dest : *family) {    
     int generation = dest->get_generation();
     
+    NOTE THAT generation is -1 for individuals from load_data(); check it
+    
     if (generation_upper_bound != -1 && generation > generation_upper_bound) {
       continue;
     }
