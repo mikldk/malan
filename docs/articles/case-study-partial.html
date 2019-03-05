@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">malan</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.1</span>
       </span>
     </div>
 
@@ -75,7 +75,7 @@
       <h1>Case study: Partial profiles</h1>
                         <h4 class="author">Mikkel Meyer Andersen</h4>
             
-            <h4 class="date">08 May, 2018</h4>
+            <h4 class="date">29 November, 2018</h4>
       
       
       <div class="hidden name"><code>case-study-partial.Rmd</code></div>
@@ -119,39 +119,39 @@ sim_res_growth &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <p>Until pedigrees are build/infered, there is not much information available (e.g. about children). So let us infer the pedigrees:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pedigrees &lt;-<span class="st"> </span><span class="kw"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(sim_res_growth$population, <span class="dt">progress =</span> <span class="ot">FALSE</span>)
 pedigrees</code></pre></div>
-<pre><code>## List of 11 pedigrees (of size 109, 94, 90, 87, 83, 70, ...)</code></pre>
+<pre><code>## List of 11 pedigrees (of size 217, 96, 95, 56, 51, 47, ...)</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/pedigrees_count.html">pedigrees_count</a></span>(pedigrees)</code></pre></div>
 <pre><code>## [1] 11</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/pedigrees_table.html">pedigrees_table</a></span>(pedigrees)</code></pre></div>
-<pre><code>##  18  63  67  70  83  94  90 109  87 
-##   2   2   1   1   1   1   1   1   1</code></pre>
+<pre><code>##  21  95  51  96  47  39  38  37  56 217  33 
+##   1   1   1   1   1   1   1   1   1   1   1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/pedigree_size.html">pedigree_size</a></span>(pedigrees[[<span class="dv">1</span>]])</code></pre></div>
-<pre><code>## [1] 109</code></pre>
+<pre><code>## [1] 217</code></pre>
 <p>We can look at the population as a (tidy)graph:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">g &lt;-<span class="st"> </span><span class="kw">as_tbl_graph</span>(pedigrees)
 g</code></pre></div>
-<pre><code>## # A tbl_graph: 762 nodes and 751 edges
+<pre><code>## # A tbl_graph: 730 nodes and 719 edges
 ## #
 ## # A rooted forest with 11 trees
 ## #
-## # Node Data: 762 x 4 (active)
+## # Node Data: 730 x 4 (active)
 ##   name  gens_from_final ped_id haplotype
 ##   &lt;chr&gt;           &lt;int&gt;  &lt;int&gt; &lt;list&gt;   
-## 1 756                19      7 &lt;int [0]&gt;
-## 2 747                18      7 &lt;int [0]&gt;
-## 3 730                17      7 &lt;int [0]&gt;
-## 4 725                16      7 &lt;int [0]&gt;
-## 5 712                15      7 &lt;int [0]&gt;
-## 6 695                14      7 &lt;int [0]&gt;
-## # ... with 756 more rows
+## 1 727                19      4 &lt;int [0]&gt;
+## 2 713                18      4 &lt;int [0]&gt;
+## 3 704                17      4 &lt;int [0]&gt;
+## 4 688                16      4 &lt;int [0]&gt;
+## 5 685                15      4 &lt;int [0]&gt;
+## 6 673                14      4 &lt;int [0]&gt;
+## # ... with 724 more rows
 ## #
-## # Edge Data: 751 x 2
+## # Edge Data: 719 x 2
 ##    from    to
 ##   &lt;int&gt; &lt;int&gt;
 ## 1     1     2
 ## 2     2     3
 ## 3     3     4
-## # ... with 748 more rows</code></pre>
+## # ... with 716 more rows</code></pre>
 <p>This can be plotted:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (<span class="kw">requireNamespace</span>(<span class="st">"ggraph"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {
   <span class="kw">library</span>(ggraph)
@@ -206,20 +206,29 @@ if (<span class="kw">requireNamespace</span>(<span class="st">"ggraph"</span>, <
 ## # ... with 19 more rows</code></pre>
 <p>Note, that <code>MutProb</code> is the point estimate given by <code>MutProb = Mutations / Meioses</code>. Information about which markers that are in which kit is also provided:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ystr_kits</code></pre></div>
-<pre><code>## # A tibble: 50 x 2
-##    Marker  Kit          
-##    &lt;fct&gt;   &lt;chr&gt;        
-##  1 DYS438  PowerPlex Y23
-##  2 DYS392  PowerPlex Y23
-##  3 DYS393  PowerPlex Y23
-##  4 DYS437  PowerPlex Y23
-##  5 DYS385a PowerPlex Y23
-##  6 DYS385b PowerPlex Y23
-##  7 DYS643  PowerPlex Y23
-##  8 DYS448  PowerPlex Y23
-##  9 DYS390  PowerPlex Y23
-## 10 DYS19   PowerPlex Y23
-## # ... with 40 more rows</code></pre>
+<pre><code>## # A tibble: 88 x 2
+##    Marker   Kit        
+##    &lt;fct&gt;    &lt;fct&gt;      
+##  1 DYS392   Minimal    
+##  2 DYS393   Minimal    
+##  3 DYS385a  Minimal    
+##  4 DYS385b  Minimal    
+##  5 DYS390   Minimal    
+##  6 DYS19    Minimal    
+##  7 DYS391   Minimal    
+##  8 DYS389I  Minimal    
+##  9 DYS389II Minimal    
+## 10 DYS438   PowerPlex Y
+## # ... with 78 more rows</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ystr_kits %&gt;%<span class="st"> </span><span class="kw">count</span>(Kit)</code></pre></div>
+<pre><code>## # A tibble: 5 x 2
+##   Kit               n
+##   &lt;fct&gt;         &lt;int&gt;
+## 1 Minimal           9
+## 2 PowerPlex Y      12
+## 3 Yfiler           17
+## 4 PowerPlex Y23    23
+## 5 Yfiler Plus      27</code></pre>
 <p>Let us take all PowerPlex Y23 markers and assume that we only have a partial profile where <code>DYS437</code> and <code>DYS448</code> dropped out. At the same time, we also filter out the integer alleles (for generating random founder haplotypes in a minute):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">partial_kit &lt;-<span class="st"> </span>ystr_kits %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(Kit ==<span class="st"> "PowerPlex Y23"</span>) %&gt;%<span class="st"> </span>
@@ -233,18 +242,18 @@ if (<span class="kw">requireNamespace</span>(<span class="st">"ggraph"</span>, <
 <span class="st">  </span><span class="kw">select</span>(-Kit, -Alleles)
 partial_kit</code></pre></div>
 <pre><code>## # A tibble: 21 x 7
-##    Marker  Mutations Meioses  MutProb IntegerAlleles MinIntAllele
-##    &lt;fct&gt;       &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;list&gt;                &lt;dbl&gt;
-##  1 DYS438          4   10673 0.000375 &lt;dbl [14]&gt;                5
-##  2 DYS392          8   15418 0.000519 &lt;dbl [14]&gt;                6
-##  3 DYS393         15   14264 0.00105  &lt;dbl [12]&gt;                7
-##  4 DYS385a        32   26171 0.00122  &lt;dbl [23]&gt;                6
-##  5 DYS385b        32   26171 0.00122  &lt;dbl [23]&gt;                6
-##  6 DYS643          3    2220 0.00135  &lt;dbl [13]&gt;                4
-##  7 DYS390         33   15612 0.00211  &lt;dbl [14]&gt;               17
-##  8 DYS19          36   16090 0.00224  &lt;dbl [12]&gt;                9
-##  9 DYS391         38   15486 0.00245  &lt;dbl [12]&gt;                5
-## 10 DYS389I        42   14339 0.00293  &lt;dbl [9]&gt;                 9
+##    Marker Mutations Meioses MutProb IntegerAlleles MinIntAllele
+##    &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;list&gt;                &lt;dbl&gt;
+##  1 DYS438         4   10673 3.75e-4 &lt;dbl [14]&gt;                5
+##  2 DYS392         8   15418 5.19e-4 &lt;dbl [14]&gt;                6
+##  3 DYS393        15   14264 1.05e-3 &lt;dbl [12]&gt;                7
+##  4 DYS38…        32   26171 1.22e-3 &lt;dbl [23]&gt;                6
+##  5 DYS38…        32   26171 1.22e-3 &lt;dbl [23]&gt;                6
+##  6 DYS643         3    2220 1.35e-3 &lt;dbl [13]&gt;                4
+##  7 DYS390        33   15612 2.11e-3 &lt;dbl [14]&gt;               17
+##  8 DYS19         36   16090 2.24e-3 &lt;dbl [12]&gt;                9
+##  9 DYS391        38   15486 2.45e-3 &lt;dbl [12]&gt;                5
+## 10 DYS38…        42   14339 2.93e-3 &lt;dbl [9]&gt;                 9
 ## # ... with 11 more rows, and 1 more variable: MaxIntAllele &lt;dbl&gt;</code></pre>
 <p>This “partial kit” has the following mutation probabilities:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mu &lt;-<span class="st"> </span>partial_kit %&gt;%<span class="st"> </span><span class="kw">pull</span>(MutProb)
@@ -263,9 +272,9 @@ mu</code></pre></div>
 }</code></pre></div>
 <p>Now, a new haplotype is created everytime the function is called (with no arguments):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">generate_random_haplotype</span>()</code></pre></div>
-<pre><code>##  [1] 19 12 16 26 18  8 23  9  7 14 12  9 10 29 14 22 24  6 20 17 19</code></pre>
+<pre><code>##  [1] 15  7 10  6 15 14 23 18  5 12 15 10 15 36 11 13 19  6 14 23 21</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">generate_random_haplotype</span>()</code></pre></div>
-<pre><code>##  [1]  9 15 11  8 12 13 21 12  8 11 20  9 13 34 18 20 34  8 12 16 21</code></pre>
+<pre><code>##  [1] 14  7 17  9 10  7 17 17 14 12 20  9 10 36 23 29 33 14 20 11 20</code></pre>
 <p>Of course such generator can also be created for a reference database with Y-STR profiles.</p>
 <p>Now, we are ready to assign haplotypes to the genealogy:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
@@ -291,6 +300,7 @@ if (<span class="kw">requireNamespace</span>(<span class="st">"ggraph"</span>, <
 <span class="st">      </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggraph/topics/theme_graph">theme_graph</a></span>() 
   <span class="kw">print</span>(p)
 }</code></pre></div>
+<pre><code>## Ungrouping graph...</code></pre>
 <p><img src="case-study-partial_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
 </div>
 </div>
@@ -308,7 +318,7 @@ Q &lt;-<span class="st"> </span>live_pop[[Q_index]]
 <pre><code>##   pid = 72 with father pid = 178 and no children</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Q_hap &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_haplotype.html">get_haplotype</a></span>(Q)
 Q_hap</code></pre></div>
-<pre><code>##  [1] 15  8 15  8 11  6 20  9 12 16 16 14 10 28 21 24 28  9 14 26 20</code></pre>
+<pre><code>##  [1] 15 13 13 24  6 11 27 17 10 16 11  9  5 24 13 23 28 10 23 14 17</code></pre>
 <p>Now, count matches in live part of pedigree and in live part of population:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Q_ped &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_pedigree_from_individual.html">get_pedigree_from_individual</a></span>(Q)
 ped_live_matches &lt;-<span class="st"> </span><span class="kw"><a href="../reference/count_haplotype_occurrences_pedigree.html">count_haplotype_occurrences_pedigree</a></span>(
@@ -320,23 +330,23 @@ pop_live_matches &lt;-<span class="st"> </span><span class="kw"><a href="../refe
   <span class="dt">haplotype =</span> Q_hap)
 
 ped_live_matches</code></pre></div>
-<pre><code>## [1] 30</code></pre>
+<pre><code>## [1] 41</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pop_live_matches</code></pre></div>
-<pre><code>## [1] 30</code></pre>
+<pre><code>## [1] 41</code></pre>
 <p>We can also inspect pedigree matches information about number of meioses and <span class="math inline">\(L_1\)</span> distances:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path_details &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists.html">pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists</a></span>(
   <span class="dt">suspect =</span> Q, 
   <span class="dt">generation_upper_bound_in_result =</span> <span class="dv">2</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(path_details)</code></pre></div>
-<pre><code>## [1] 30</code></pre>
+<pre><code>## [1] 41</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(path_details)</code></pre></div>
 <pre><code>##      meioses max_L1 pid
-## [1,]      12      0 282
-## [2,]      13      0 216
-## [3,]      13      0 139
-## [4,]      14      0  17
-## [5,]      13      0 126
-## [6,]      14      0   4</code></pre>
+## [1,]       4      0 300
+## [2,]       5      0 181
+## [3,]       6      0  80
+## [4,]       6      0  94
+## [5,]       6      0  98
+## [6,]       6      0 120</code></pre>
 <p>This can of course be repeated to many populations (genealogies, haplotype processes, suspects etc.). Also note that variability can be put on mutation rates, e.g. by a Bayesian approach.</p>
 </div>
 </div>

@@ -2,6 +2,8 @@ context("Autosomal")
 
 ESTIMATION_TOL_DUE_TO_SAMPLING <- 0.01
 
+
+
 set.seed(1)
 sim_res_fixed <- sample_geneology(population_size = 1e3, 
                                   generations = 100, 
@@ -43,8 +45,8 @@ for (i in 1L:L) {
     geno_probs_R_mat[i, j] <- prob
   }
 }
-geno_probs_R <- geno_probs_R_mat[upper.tri(geno_probs_R_mat, diag = TRUE)]
 geno_probs_rcpp <- calc_autosomal_genotype_probs(allele_prob, theta)
+geno_probs_R <- geno_probs_R_mat[upper.tri(geno_probs_R_mat, diag = TRUE)]
 test_that("calc_autosomal_genotype_probs works", {
   expect_equal(geno_probs_R, geno_probs_rcpp)
 })
@@ -92,15 +94,15 @@ get_ols_quantities <- function(y) {
 
 y <- t(x)
 ols_res_genotypes <- get_ols_quantities(y)
-theta_res <- estimate_theta_1subpop_genotypes(y)
-test_that("estimate_theta_1subpop_genotypes works", {
+theta_res <- estimate_autotheta_1subpop_genotypes(y)
+test_that("estimate_autotheta_1subpop_genotypes works", {
   expect_true(theta_res$error == FALSE)
   expect_equal(qr.solve(ols_res_genotypes$x, ols_res_genotypes$y), 
                theta_res$estimate)
 })
 
-theta_res_info <- estimate_theta_1subpop_genotypes(y, return_estimation_info = TRUE)
-test_that("estimate_theta_1subpop_genotypes return_estimation_info works", {
+theta_res_info <- estimate_autotheta_1subpop_genotypes(y, return_estimation_info = TRUE)
+test_that("estimate_autotheta_1subpop_genotypes return_estimation_info works", {
   expect_true(theta_res_info$error == FALSE)
   expect_equal(qr.solve(ols_res_genotypes$x, ols_res_genotypes$y), 
                theta_res_info$estimate)
@@ -110,12 +112,12 @@ test_that("estimate_theta_1subpop_genotypes return_estimation_info works", {
 # bootstrap:
 theta_boot <- replicate(100, {
   yboot <- y[sample(nrow(y), replace = TRUE), ]
-  estimate_theta_1subpop_genotypes(yboot)$estimate
+  estimate_autotheta_1subpop_genotypes(yboot)$estimate
 })
 # Expanding a bit...
 theta_boot_rng <- c(0.9, 1.1) * range(theta_boot)
 #theta_boot_rng
-test_that("estimate_theta_1subpop_genotypes boot contains true", {
+test_that("estimate_autotheta_1subpop_genotypes boot contains true", {
   expect_true(all(theta_boot >= 0 & theta_boot <= 1))
   expect_true(theta >= theta_boot_rng[1L] & theta <= theta_boot_rng[2L])
 })
@@ -139,26 +141,26 @@ livepop <- sim_res_fixed$individuals_generations
 y_livepop <- get_haplotypes_individuals(livepop)
 ols_res_livepop <- get_ols_quantities(y_livepop)
 
-test_that("estimate_theta_1subpop_individuals works", {
+test_that("estimate_autotheta_1subpop_individuals works", {
   expect_equal(qr.solve(ols_res_livepop$x, ols_res_livepop$y),
-               estimate_theta_1subpop_individuals(livepop)$estimate, 
+               estimate_autotheta_1subpop_individuals(livepop)$estimate, 
                tol = 10*ESTIMATION_TOL_DUE_TO_SAMPLING
   )
 })
 
 test_that("livepop: haplotypes/individual same theta", {
-  expect_equal(estimate_theta_1subpop_genotypes(y_livepop)$estimate,
-               estimate_theta_1subpop_individuals(livepop)$estimate)
+  expect_equal(estimate_autotheta_1subpop_genotypes(y_livepop)$estimate,
+               estimate_autotheta_1subpop_individuals(livepop)$estimate)
 })
 
 
 test_that("geneaology independent sample and population same theta", {
-  expect_equal(estimate_theta_1subpop_genotypes(y)$estimate,
-               estimate_theta_1subpop_genotypes(y_livepop)$estimate,
+  expect_equal(estimate_autotheta_1subpop_genotypes(y)$estimate,
+               estimate_autotheta_1subpop_genotypes(y_livepop)$estimate,
                tol = ESTIMATION_TOL_DUE_TO_SAMPLING)
   
-  expect_equal(estimate_theta_1subpop_genotypes(y)$estimate,
-               estimate_theta_1subpop_individuals(livepop)$estimate, 
+  expect_equal(estimate_autotheta_1subpop_genotypes(y)$estimate,
+               estimate_autotheta_1subpop_individuals(livepop)$estimate, 
                tol = ESTIMATION_TOL_DUE_TO_SAMPLING)
 })
 
@@ -170,11 +172,11 @@ if (FALSE) {
   prop.table(table(apply(x, 2, paste0, collapse = ";")))
   prop.table(table(apply(y_livepop, 1, paste0, collapse = ";")))
   
-  estimate_theta_1subpop_genotypes(y)
+  estimate_autotheta_1subpop_genotypes(y)
   qr.solve(ols_res_genotypes$x, ols_res_genotypes$y)
   
-  estimate_theta_1subpop_genotypes(y_livepop)
-  estimate_theta_1subpop_individuals(livepop)
+  estimate_autotheta_1subpop_genotypes(y_livepop)
+  estimate_autotheta_1subpop_individuals(livepop)
   qr.solve(ols_res_livepop$x, ols_res_livepop$y)
 }
 
@@ -184,12 +186,12 @@ if (FALSE) {
 
 
 ##########################################
-# estimate_theta_subpops_individuals
+# estimate_autotheta_subpops_individuals
 ##########################################
 l_nonindv <- list(1:10, 1:20)
 l_nonindv_sizes <- sapply(l_nonindv, length)
-test_that("estimate_theta_subpops_individuals not list of list of individuals", {
-  expect_error(estimate_theta_subpops_individuals(l_nonindv, l_nonindv_sizes))
+test_that("estimate_autotheta_subpops_individuals not list of list of individuals", {
+  expect_error(estimate_autotheta_subpops_individuals(l_nonindv, l_nonindv_sizes))
 })
 
 
@@ -198,13 +200,13 @@ grps <- sample(c(1, 2), length(livepop), replace = TRUE)
 
 subpops <- split(livepop, grps)
 subpops_sizes <- sapply(subpops, length)
-res_indv <- estimate_theta_subpops_individuals(subpops, subpops_sizes)
+res_indv <- estimate_autotheta_subpops_individuals(subpops, subpops_sizes)
 
 subpops_haps <- lapply(split(seq_len(nrow(y_livepop)), grps), function(is) y_livepop[is, ])
 subpops_haps_sizes <- sapply(subpops_haps, nrow)
-res_geno <- estimate_theta_subpops_genotypes(subpops_haps, subpops_haps_sizes)
+res_geno <- estimate_autotheta_subpops_genotypes(subpops_haps, subpops_haps_sizes)
 
-test_that("estimate_theta_subpops_individuals = estimate_theta_subpops_genotypes", {
+test_that("estimate_autotheta_subpops_individuals = estimate_autotheta_subpops_genotypes", {
   expect_equal(res_indv, res_geno)
 })
 
@@ -213,9 +215,9 @@ test_that("estimate_theta_subpops_individuals = estimate_theta_subpops_genotypes
 pids_livepop <- sapply(livepop, get_pid)
 subpops_pids <- split(pids_livepop, grps)
 subpops_pids_sizes <- sapply(subpops_pids, length)
-res_pids <- estimate_theta_subpops_pids(sim_res_fixed$population, subpops_pids, subpops_pids_sizes)
+res_pids <- estimate_autotheta_subpops_pids(sim_res_fixed$population, subpops_pids, subpops_pids_sizes)
 
-test_that("estimate_theta_subpops_pids", {
+test_that("estimate_autotheta_subpops_pids", {
   expect_equal(res_indv, res_pids)
   expect_equal(res_geno, res_pids)
 })
@@ -251,9 +253,9 @@ loc4_allele2_sigmasqP <- loc4_allele1_sigmasqP
 loc4_allele2_sigmasqI <- loc4_allele1_sigmasqI
 loc4_allele2_sigmasqG <- loc4_allele1_sigmasqG
 
-res_loc4 <- estimate_theta_subpops_genotypes(loc4, loc4_ni)
+res_loc4 <- estimate_autotheta_subpops_genotypes(loc4, loc4_ni)
 
-test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 4", {
+test_that("estimate_autotheta_subpops_genotypes GDA2, Exercise 5.4, locus 4", {
   expect_equal(res_loc4$F, loc4_sol_F, tol = 1e-5)
   expect_equal(res_loc4$theta, loc4_sol_theta, tol = 1e-6)
   expect_equal(res_loc4$f, loc4_sol_f, tol = 1e-5)
@@ -302,7 +304,7 @@ test_that("loc4/loc6 length", {
 
 loc6 <- list(two2cols(loc6_g), two2cols(loc6_n))
 loc6_ni <- sapply(loc6, nrow)
-res_loc6 <- estimate_theta_subpops_genotypes(loc6, loc6_ni)
+res_loc6 <- estimate_autotheta_subpops_genotypes(loc6, loc6_ni)
 
 # loc6_sol_F <- 0.2009
 # loc6_sol_theta <- 0.1517
@@ -329,7 +331,7 @@ loc6_allele4_sigmasqI <- -0.026926
 loc6_allele4_sigmasqG <- 0.155556
 
 
-test_that("estimate_theta_subpops_genotypes GDA2, Exercise 5.4, locus 6", {
+test_that("estimate_autotheta_subpops_genotypes GDA2, Exercise 5.4, locus 6", {
   expect_equal(res_loc6$F, loc6_sol_F, tol = 1e-5) 
   expect_equal(res_loc6$theta, loc6_sol_theta, tol = 1e-6) 
   expect_equal(res_loc6$f, loc6_sol_f, tol = 1e-5) 
@@ -601,7 +603,7 @@ test_that("GDA 1.1 diploid.nex ", {
     
     loc_subpops <- diploid_nex_data[[loc]]
     loc_subpops_ni <- sapply(loc_subpops, nrow)
-    res_loc <- estimate_theta_subpops_genotypes(loc_subpops, loc_subpops_ni)
+    res_loc <- estimate_autotheta_subpops_genotypes(loc_subpops, loc_subpops_ni)
     
     expect_equal(res_loc$theta, gda_loc$theta, tol = 1e-5)
     expect_equal(res_loc$F, gda_loc$F, tol = 1e-5)
@@ -638,5 +640,153 @@ test_that("GDA 1.1 diploid.nex ", {
                    with(allele_info, 1 - (S3  / S2)), tol = 1e-5)
     }
   }
+})
+
+######################################
+# Unweighted
+######################################
+
+
+
+set.seed(2000)
+grps <- sample(c(1, 2), length(livepop), replace = TRUE)
+subpops <- split(livepop, grps)
+subpops_haps <- lapply(split(seq_len(nrow(y_livepop)), grps), function(is) y_livepop[is, ])
+pids_livepop <- sapply(livepop, get_pid)
+subpops_pids <- split(pids_livepop, grps)
+
+test_that("get_allele_counts_pids/get_allele_counts_genotypes", {
+  expect_equal(get_allele_counts_pids(sim_res_fixed$population, subpops_pids)[, c("0", "1", "2")],
+               get_allele_counts_genotypes(subpops_haps)[, c("0", "1", "2")])
+})
+
+test_that("Theta unweighted", {
+  expect_equal(estimate_autotheta_subpops_unweighted_pids(sim_res_fixed$population, subpops_pids, assume_HWE = TRUE),
+               estimate_autotheta_subpops_unweighted_genotypes(subpops_haps, assume_HWE = TRUE))
+  # Not yet implemented
+  # expect_equal(estimate_autotheta_subpops_unweighted_pids(sim_res_fixed$population, subpops_pids, assume_HWE = FALSE),
+  #              estimate_autotheta_subpops_unweighted_genotypes(subpops_haps, assume_HWE = FALSE))
+})
+
+
+
+if (requireNamespace("dirmult", quietly = TRUE)) {
+  library(dirmult)
+  
+  dirmult_weir1 <- dirmult::weirMoM(get_allele_counts_pids(sim_res_fixed$population, subpops_pids))
+  dirmult_weir2 <- dirmult::weirMoM(get_allele_counts_genotypes(subpops_haps))
+  
+  test_that("Theta unweighted with dirmult::weirMoM", {
+    expect_equal(dirmult_weir1, dirmult_weir2)
+    
+    expect_equal(estimate_autotheta_subpops_unweighted_pids(sim_res_fixed$population, subpops_pids, assume_HWE = TRUE),
+                 estimate_autotheta_subpops_unweighted_genotypes(subpops_haps, assume_HWE = TRUE))
+  })
+  
+  ralleleprob <- function(n, ps, theta) {
+    #n <- 2; ps <- ALLELE_PROB; theta <- 0.1
+    #n <- 2; ps <- ALLELE_PROB; theta <- 0.001
+    #
+    stopifnot(length(ps) > 1)
+    
+    stopifnot(length(theta) == 1L)
+    stopifnot(theta >= 0)
+    stopifnot(theta <= 1)
+    
+    # FIXME: theta == 0 problematic...
+    alpha <- (1-theta)*ps/theta
+    
+    x <- rdirichlet(n, alpha)
+    return(x)
+  }
+  
+  set.seed(100)
+  for (theta in c(0.01, 0.02)) {
+    #theta <- 0.02
+    subpop_ps <- ralleleprob(10, ps = allele_prob, theta = theta)
+    
+    subpop_geno <- lapply(seq_len(nrow(subpop_ps)), function(i) {
+      geno <- t(replicate(1000, sample_autosomal_genotype(subpop_ps[i, ], 0))) # 0 for HWE
+      return(geno)
+    })
+    
+    # Missing alleles a technical issue, but not here because all are observed in all subpops
+    allele_counts <- do.call(rbind, lapply(subpop_geno, function(x) table(x)))
+    
+    #get_allele_counts_genotypes()
+    
+    if (FALSE) {
+      theta
+      fit <- dirmult(allele_counts, trace = FALSE)
+      fit$theta
+      dirmult::weirMoM(allele_counts)
+      estimate_autotheta_subpops_genotypes(subpop_geno, sapply(subpop_geno, function(x) 1000))$theta
+      estimate_autotheta_subpops_unweighted_genotypes(subpop_geno, assume_HWE = TRUE)
+    }
+    
+    test_that(paste0("Theta unweighted with dirmult: theta = ", theta), {
+      expect_equal(estimate_autotheta_subpops_unweighted_genotypes(subpop_geno, assume_HWE = TRUE), 
+                   dirmult::weirMoM(allele_counts))
+    })
+    
+    test_that(paste0("get_allele_counts_genotypes with dirmult: theta = ", theta), {
+      expect_equal(allele_counts,
+                   get_allele_counts_genotypes(subpop_geno)[, colnames(allele_counts)])
+    })
+  }
+}
+
+############ Others
+
+test_that("hash_colisions", {
+  expect_true(all(unique(as.integer(hash_colisions(20))) == 1L))
+})
+
+
+############################################
+
+# Infinite alleles
+
+
+set.seed(1)
+sim_res_fixed <- sample_geneology(population_size = 1e3, 
+                                  generations = 100, 
+                                  generations_full = 3,
+                                  generations_return = 3, # default value
+                                  progress = FALSE)
+pop <- sim_res_fixed$population
+livepop <- sim_res_fixed$individuals_generations
+#peds <- build_pedigrees(sim_res_fixed$population, progress = FALSE)
+
+get_generation(get_individual(pop, get_pid(livepop[[1]])))
+
+set.seed(1)
+population_populate_autosomal_infinite_alleles(pop, mutation_rate = 0, FALSE)
+
+y_livepop <- get_haplotypes_individuals(livepop)
+
+test_that("infinite alleles -- no mutations", {
+  expect_true(all.equal(unique(c(y_livepop)), 0L))
+})
+
+set.seed(1)
+population_populate_autosomal_infinite_alleles(pop, mutation_rate = 1, FALSE)
+
+y_livepop <- get_haplotypes_individuals(livepop)
+
+test_that("infinite alleles -- always mutations", {
+  expect_equal(length(unique(c(y_livepop))), 2L*length(livepop))
+})
+
+
+set.seed(1)
+population_populate_autosomal_infinite_alleles(pop, mutation_rate = 0.003, FALSE)
+
+y_livepop <- get_haplotypes_individuals(livepop)
+c(y_livepop) %>% table() %>% sort(decreasing = TRUE) %>% head()
+
+test_that("infinite alleles -- sometimes mutations", {
+  expect_true(length(unique(c(y_livepop))) > 1)
+  expect_true(length(unique(c(y_livepop))) < 2L*length(livepop))
 })
 

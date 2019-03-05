@@ -35,8 +35,25 @@ namespace std {
     }
   };
   
+  // hash any pair
+  template<typename T>
+  struct hash_pair {
+    size_t operator()(const T& v) const {
+      size_t lhs = v.first;
+      size_t rhs = v.second;
+      
+      // adapted from boost::hash_combine
+      lhs ^= rhs + 0x9e3779b9 + (lhs << 6) + (lhs >> 2);
+      return lhs;
+    }
+  };
+  
   template<>
   struct hash< std::vector<int> > : hash_container< std::vector<int> > {};
+  
+  template<>
+  struct hash< std::pair<int, int> > : hash_pair< std::pair<int, int> > {};
+  
 }
 
 #endif

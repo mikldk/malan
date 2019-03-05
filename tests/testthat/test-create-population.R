@@ -98,6 +98,16 @@ test_that("pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists works", {
 })
 
 
+
+
+
+
+
+
+
+
+
+
 haps_from_ped <- get_haplotypes_in_pedigree(ped)
 haps_from_pids <- get_haplotypes_pids(test_pop, pids)
 haps_from_indvs <- get_haplotypes_individuals(indvs)
@@ -214,3 +224,205 @@ x <- x[ord_2]
 test_that("split pid by haplotype works", {
   expect_equal(length(hap_fac), length(hashes))
 })
+
+
+
+
+
+
+###################################################
+# Mutate distance 1
+###################################################
+
+
+LOCI <- 5L
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(0.1, LOCI), prob_two_step = 0, progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+}
+test_that("pedigrees_all_populate_haplotypes mut step 1 works", {
+  expect_equal(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))), c(-1L, 0L, 1L))
+})
+
+###################
+
+get_founder_h <- function() rep(-1L, LOCI)
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes_custom_founders(peds, 
+                                                  mutation_rates = rep(0.5, LOCI), 
+                                                  get_founder_haplotype = get_founder_h,
+                                                  prob_two_step = 0, 
+                                                  progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+}
+as <- sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]]))))
+test_that("pedigrees_all_populate_haplotypes_custom_founders mut step 1 works", {
+  expect_equal(as, min(as):max(as))
+})
+
+#-------------
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes_ladder_bounded(peds, 
+                                                 mutation_rates = rep(0.5, LOCI), 
+                                                 ladder_min = rep(-4L, LOCI),
+                                                 ladder_max = rep(4L, LOCI),
+                                                 get_founder_haplotype = get_founder_h,
+                                                 prob_two_step = 0, 
+                                                 progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+  sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]]))))
+}
+as <- sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]]))))
+test_that("pedigrees_all_populate_haplotypes_ladder_bounded mut step 1 works", {
+  expect_equal(as, min(as):max(as))
+})
+
+###################################################
+# Mutate distance 2
+###################################################
+
+LOCI <- 5L
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(0.1, LOCI), prob_two_step = 1, progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+}
+test_that("pedigrees_all_populate_haplotypes mut step 2 works", {
+  expect_equal(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))), c(-2L, 0L, 2L))
+})
+
+###################
+
+get_founder_h <- function() rep(-1L, LOCI)
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes_custom_founders(peds, 
+                                                 mutation_rates = rep(0.5, LOCI), 
+                                                 get_founder_haplotype = get_founder_h,
+                                                 prob_two_step = 1, 
+                                                 progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+}
+# Start at -1, mutate 2, always odd (or == 1 mod 2)
+test_that("pedigrees_all_populate_haplotypes_custom_founders mut step 2 works", {
+  expect_true(all(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))) %% 2 == 1L))
+})
+
+#-------------
+
+set.seed(20180903)
+pedigrees_all_populate_haplotypes_ladder_bounded(peds, 
+                                                 mutation_rates = rep(0.5, LOCI), 
+                                                 ladder_min = rep(-4L, LOCI),
+                                                 ladder_max = rep(4L, LOCI),
+                                                 get_founder_haplotype = get_founder_h,
+                                                 prob_two_step = 1, 
+                                                 progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+  sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]]))))
+}
+# Start at -1, mutate 2, ladder -4 to 4, only -3, -1, 1, 3 possible
+test_that("pedigrees_all_populate_haplotypes_ladder_bounded mut step 2 works", {
+  expect_equal(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))), c(-3L, -1L, 1L, 3L))
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############### 
+# Near matches
+
+set.seed(1)
+pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(0.1, LOCI), progress = FALSE)
+
+indv_pid1 <- get_individual(test_pop, pid = 1L)
+indv_pid1_h <- get_haplotype(indv_pid1)
+
+no0exact <- count_haplotype_occurrences_individuals(
+  individuals = indvs, 
+  haplotype = indv_pid1_h)
+
+no0 <- count_haplotype_near_matches_individuals(
+  individuals = indvs, 
+  haplotype = indv_pid1_h,
+  max_dist = 0)
+no1 <- count_haplotype_near_matches_individuals(
+  individuals = indvs, 
+  haplotype = indv_pid1_h,
+  max_dist = 1)
+no2 <- count_haplotype_near_matches_individuals(
+  individuals = indvs, 
+  haplotype = indv_pid1_h,
+  max_dist = 2)
+
+test_that("count_haplotype_near_matches_individuals works", {
+  expect_equal(no0exact, no0)
+  expect_true(no1 >= no0)
+  expect_true(no2 >= no1)
+})
+
+mei_res_near <- pedigree_haplotype_near_matches_meiosis(
+  suspect = indv_pid1, 
+  max_dist = 2,
+  generation_upper_bound_in_result = -1L)
+
+test_that("count_haplotype_near_matches_individuals works", {
+  expect_true(sum(mei_res_near[, "hap_dist"] == 0) <= no0)
+  expect_true(sum(mei_res_near[, "hap_dist"] <= 1) <= no1)
+  expect_true(sum(mei_res_near[, "hap_dist"] <= 2) <= no2)
+})
+
+
+############################################################
+# haplotype_partially_matches_individuals
+############################################################
+
+test_that("haplotype_partially_matches_individuals input check", {
+  expect_error(haplotype_partially_matches_individuals(indvs, indv_pid1_h, -1))
+  expect_error(haplotype_partially_matches_individuals(indvs, indv_pid1_h, LOCI + 1))
+  expect_error(haplotype_partially_matches_individuals(indvs, indv_pid1_h, c(1, LOCI + 1)))
+  expect_error(haplotype_partially_matches_individuals(indvs, indv_pid1_h, 1:LOCI))
+})
+
+test_that("haplotype_partially_matches_individuals", {
+  part_matches_all_loci <- haplotype_partially_matches_individuals(indvs, indv_pid1_h)
+  expect_equal(length(part_matches_all_loci), count_haplotype_occurrences_individuals(indvs, indv_pid1_h))
+  
+  subsets <- lapply(1:LOCI, function(i) setdiff(1:LOCI, 1:i))
+  subset_matches <- unlist(lapply(seq_along(subsets), function(i) {
+    length(haplotype_partially_matches_individuals(indvs, indv_pid1_h, subsets[[i]]))
+  }))
+  
+  expect_equal(subset_matches, sort(subset_matches, decreasing = TRUE))
+})
+
+

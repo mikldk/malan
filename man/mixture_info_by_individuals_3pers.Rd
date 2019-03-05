@@ -13,7 +13,7 @@ mixture_info_by_individuals_3pers(individuals, donor1, donor2, donor3)
 
 \item{donor2}{Contributor2/donor 2}
 
-\item{donor3}{Contributor2/donor 3}
+\item{donor3}{Contributor3/donor 3}
 }
 \value{
 A list with mixture information about the mixture \code{donor1}+\code{donor2}+\code{donor3} from \code{individuals}
@@ -22,5 +22,7 @@ A list with mixture information about the mixture \code{donor1}+\code{donor2}+\c
 Mixture information about 3 persons' mixture of donor1, donor2 and donor3.
 }
 \seealso{
-\code{\link{mixture_info_by_individuals}}
+\code{\link{mixture_info_by_individuals_2pers}},
+\code{\link{mixture_info_by_individuals_4pers}},
+\code{\link{mixture_info_by_individuals_5pers}}
 }

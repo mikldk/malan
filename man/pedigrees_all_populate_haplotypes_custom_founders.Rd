@@ -4,8 +4,9 @@
 \alias{pedigrees_all_populate_haplotypes_custom_founders}
 \title{Populate haplotypes in pedigrees (custom founder/unbounded).}
 \usage{
-pedigrees_all_populate_haplotypes_custom_founders(pedigrees, mutation_rates,
-  get_founder_haplotype = NULL, progress = TRUE)
+pedigrees_all_populate_haplotypes_custom_founders(pedigrees,
+  mutation_rates, get_founder_haplotype = NULL, prob_two_step = 0,
+  progress = TRUE)
 }
 \arguments{
 \item{pedigrees}{Pedigree list in which to populate haplotypes}
@@ -13,6 +14,8 @@ pedigrees_all_populate_haplotypes_custom_founders(pedigrees, mutation_rates,
 \item{mutation_rates}{Vector with mutation rates}
 
 \item{get_founder_haplotype}{Function taking no arguments returning a haplotype of \code{length(mutation_rates)}}
+
+\item{prob_two_step}{Given a mutation happens, this is the probability that the mutation is a two-step mutation}
 
 \item{progress}{Show progress}
 }

@@ -13,8 +13,6 @@ get_haplotypes_pids(population, pids)
 }
 \value{
 Matrix of haplotypes where row \code{i} is the haplotype of \code{individuals[[i]]}.
-
-[[i]: R:[i
 }
 \description{
 Requires that haplotypes are first populated, e.g.

@@ -3,9 +3,9 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 # Default configuration for use with tic package
 # Usually you shouldn't need to change the first part of the file
-
 # DO NOT CHANGE THE CODE BELOW
-before_install: R -q -e 'install.packages(c("remotes", "curl")); remotes::install_github("ropenscilabs/tic"); tic::prepare_all_stages(); tic::before_install()'
+#before_install: R -q -e 'install.packages(c("remotes", "curl")); remotes::install_github("ropenscilabs/tic"); tic::prepare_all_stages(); tic::before_install()'
+before_install: R -q -e 'install.packages(c("remotes", "curl", "testthat", "knitr", "dplyr", "tidygraph", "ggraph", "RcppProgress", "RcppArmadillo", "igraph", "tibble")); remotes::install_github("ropenscilabs/tic"); tic::prepare_all_stages(); tic::before_install()'
 install: R -q -e 'tic::install()'
 after_install: R -q -e 'tic::after_install()'
 before_script: R -q -e 'tic::before_script()'
@@ -33,21 +33,18 @@ matrix:
   include:
     - os: linux
       dist: trusty
-      r: oldrel
-    - os: linux
-      dist: trusty
       r: release
+      r_check_args: --as-cran --no-build-vignettes --no-vignettes
       env: 
         - BUILD_PKGDOWN: true
     - os: linux
       dist: trusty
       r: devel
-    - os: osx
-      osx_image: xcode8.3
-      r: release
+      r_check_args: --as-cran --no-build-vignettes --no-vignettes
 #    - os: osx
-#      osx_image: xcode8.3
-#      r: devel
+#      osx_image: xcode9.4
+#      r: release
+#      r_check_args: --as-cran --no-build-vignettes --no-vignettes
 
 #env
 env:
@@ -57,4 +54,4 @@ env:
   - TRAVIS_CXXFLAGS="-Wall -Wextra -pedantic -Werror"
 
 #services
-services:
+#services:

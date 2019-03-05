@@ -4,7 +4,8 @@
 \alias{pedigree_size_generation}
 \title{Size of pedigree}
 \usage{
-pedigree_size_generation(pedigree, generation_upper_bound_in_result = -1L)
+pedigree_size_generation(pedigree,
+  generation_upper_bound_in_result = -1L)
 }
 \arguments{
 \item{pedigree}{Pedigree to get size of}

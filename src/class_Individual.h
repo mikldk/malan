@@ -29,8 +29,8 @@ private:
   std::vector<int> m_haplotype; // called haplotype, but is used without order for autosomal (as index of alleles)
   bool m_haplotype_set = false;
   bool m_haplotype_mutated = false;
-  void haplotype_mutate(std::vector<double>& mutation_rates);
-  void haplotype_mutate_ladder_bounded(std::vector<double>& mutation_rates, std::vector<int>& ladder_min, std::vector<int>& ladder_max);
+  void haplotype_mutate(std::vector<double>& mutation_rates, double prob_two_step = 0.0);
+  void haplotype_mutate_ladder_bounded(std::vector<double>& mutation_rates, std::vector<int>& ladder_min, std::vector<int>& ladder_max, double prob_two_step = 0.0);
   
 public:
   Individual(int pid, int generation);
@@ -68,8 +68,18 @@ public:
   bool is_haplotype_set() const;
   void set_haplotype(std::vector<int> h);
   std::vector<int> get_haplotype() const;
-  void pass_haplotype_to_children(bool recursive, std::vector<double>& mutation_rates);
-  void pass_haplotype_to_children_ladder_bounded(bool recursive, std::vector<double>& mutation_rates, std::vector<int>& ladder_min, std::vector<int>& ladder_max);
+  
+  void pass_haplotype_to_children(
+      bool recursive, 
+      std::vector<double>& mutation_rates, 
+      double prob_two_step = 0.0);
+  
+  void pass_haplotype_to_children_ladder_bounded(
+      bool recursive, 
+      std::vector<double>& mutation_rates, 
+      std::vector<int>& ladder_min, 
+      std::vector<int>& ladder_max,
+      double prob_two_step = 0.0);
   
   int get_haplotype_L1(Individual* dest) const;
   

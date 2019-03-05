@@ -6,7 +6,8 @@
 \usage{
 sample_geneology_varying_size(population_sizes, generations_full = 1L,
   generations_return = 3L, enable_gamma_variance_extension = FALSE,
-  gamma_parameter_shape = 5, gamma_parameter_scale = 1/5, progress = TRUE)
+  gamma_parameter_shape = 5, gamma_parameter_scale = 1/5,
+  progress = TRUE)
 }
 \arguments{
 \item{population_sizes}{The size of the population at each generation, \code{g}.

@@ -5,7 +5,8 @@
 \title{Populate haplotypes in pedigrees (custom founder/bounded).}
 \usage{
 pedigrees_all_populate_haplotypes_ladder_bounded(pedigrees, mutation_rates,
-  ladder_min, ladder_max, get_founder_haplotype = NULL, progress = TRUE)
+  ladder_min, ladder_max, get_founder_haplotype = NULL,
+  prob_two_step = 0, progress = TRUE)
 }
 \arguments{
 \item{pedigrees}{Pedigree list in which to populate haplotypes}
@@ -18,6 +19,8 @@ pedigrees_all_populate_haplotypes_ladder_bounded(pedigrees, mutation_rates,
 
 \item{get_founder_haplotype}{Function taking no arguments returning a haplotype of \code{length(mutation_rates)}}
 
+\item{prob_two_step}{Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries}
+
 \item{progress}{Show progress}
 }
 \description{
@@ -27,6 +30,10 @@ All founders get a haplotype from calling the user
 provided function \code{get_founder_haplotype()}.
 }
 \details{
+Given that a two step mutation should happen (probability specified by \code{prob_two_step}):
+With distances >= 2 to ladder bounds, mutations happen as usual.
+At distance = 0 or 1 to a ladder bound, the mutation is forced to move away from the boundary.
+
 Note, that pedigrees must first have been inferred by \code{\link[=build_pedigrees]{build_pedigrees()}}.
 }
 \seealso{

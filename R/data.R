@@ -6,7 +6,7 @@
 #' Note, that loci with duplications (DYS385a/b as well as 
 #' DYF387S1a/b have been split into two loci).
 #' 
-#' @format A data frame with 53,940 rows and 10 variables:
+#' @format A data frame with 29 rows and 5 variables:
 #' \describe{
 #'   \item{Marker}{name of Y-STR marker}
 #'   \item{Meioses}{number of meioses observed}
@@ -22,7 +22,7 @@
 #' A dataset containing information about the 
 #' Y chromosomal short tandem repeat (Y-STR) markers that are present in the kit.
 #' 
-#' @format A data frame with 53940 rows and 10 variables:
+#' @format A data frame with 88 rows and 2 variables:
 #' \describe{
 #'   \item{Marker}{name of Y-STR marker}
 #'   \item{Kit}{name of Y-STR kit}

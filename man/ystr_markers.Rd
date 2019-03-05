@@ -4,7 +4,7 @@
 \name{ystr_markers}
 \alias{ystr_markers}
 \title{Mutational information about Y-STR markers}
-\format{A data frame with 53,940 rows and 10 variables:
+\format{A data frame with 29 rows and 5 variables:
 \describe{
 \item{Marker}{name of Y-STR marker}
 \item{Meioses}{number of meioses observed}

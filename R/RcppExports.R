@@ -181,7 +181,7 @@ sample_autosomal_genotype <- function(allele_dist, theta) {
     .Call('_malan_sample_autosomal_genotype', PACKAGE = 'malan', allele_dist, theta)
 }
 
-#' Populate 1-locus autosomal DNA profile in pedigrees.
+#' Populate 1-locus autosomal DNA profile in pedigrees with single-step mutation model.
 #' 
 #' Populate 1-locus autosomal DNA profile from founder and down in all pedigrees.
 #' Note, that only alleles from ladder is assigned and 
@@ -189,7 +189,7 @@ sample_autosomal_genotype <- function(allele_dist, theta) {
 #' 
 #' Note, that pedigrees must first have been inferred by [build_pedigrees()].
 #' 
-#' @param pedigrees Pedigree list in which to populate haplotypes
+#' @param pedigrees Pedigree list in which to populate genotypes
 #' @param allele_dist Allele distribution (probabilities) -- gets normalised
 #' @param theta Theta correction between 0 and 1 (both included)
 #' @param mutation_rate Mutation rate between 0 and 1 (both included)
@@ -203,13 +203,106 @@ pedigrees_all_populate_autosomal <- function(pedigrees, allele_dist, theta, muta
     invisible(.Call('_malan_pedigrees_all_populate_autosomal', PACKAGE = 'malan', pedigrees, allele_dist, theta, mutation_rate, progress))
 }
 
+#' Populate 1-locus autosomal DNA profile in pedigrees with infinite alleles mutation model.
+#' 
+#' Populate 1-locus autosomal DNA profile from founder and down in all pedigrees.
+#' Note, that all founders have type 0 to begin with.
+#' 
+#' The maternal allele is taken by random from 
+#' the `2*N[g]` alleles in the previous generation consisting of `N[g]` males
+#' with descendants in the live population.
+#' 
+#' This is also why this is not using pedigrees but instead the population.
+#' 
+#' Note, that pedigrees need not be inferred.
+#' 
+#' @param population Population in which to populate genotypes
+#' @param mutation_rate Mutation rate between 0 and 1 (both included)
+#' @param progress Show progress
+#'
+#' @seealso [pedigrees_all_populate_haplotypes_custom_founders()] and 
+#' [pedigrees_all_populate_haplotypes_ladder_bounded()].
+#' 
+#' @export
+population_populate_autosomal_infinite_alleles <- function(population, mutation_rate, progress = TRUE) {
+    invisible(.Call('_malan_population_populate_autosomal_infinite_alleles', PACKAGE = 'malan', population, mutation_rate, progress))
+}
+
+#' Unweighted estimate of autosomal theta from subpopulations of genotypes
+#' 
+#' Estimates unweighted autosomal theta for a number of subpopulations given a list of subpopulations of genotypes.
+#' 
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
+#' 
+#' Based on Weir and Goudet, Genetics 2017: 
+#' http://www.genetics.org/content/early/2017/05/26/genetics.116.198424
+#' 
+#' @param subpops List of individual genotypes
+#' @param assume_HWE if the alleles themselves are used instead of genotypes
+#' 
+#' @return Estimate of autosomal theta
+#' 
+#' @export
+estimate_autotheta_subpops_unweighted_genotypes <- function(subpops, assume_HWE) {
+    .Call('_malan_estimate_autotheta_subpops_unweighted_genotypes', PACKAGE = 'malan', subpops, assume_HWE)
+}
+
+#' Unweighted estimate of autosomal theta from subpopulations of individual ids
+#' 
+#' Estimates unweighted autosomal theta for a number of subpopulations given a list of pids (individual ids).
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
+#' 
+#' Based on Weir and Goudet, Genetics 2017: 
+#' http://www.genetics.org/content/early/2017/05/26/genetics.116.198424
+#' 
+#' @param population Population obtain from simulation
+#' @param subpops List of individual pids
+#' @param assume_HWE if the alleles themselves are used instead of genotypes
+#' 
+#' @return Estimate of autosomal theta
+#' 
+#' @export
+estimate_autotheta_subpops_unweighted_pids <- function(population, subpops, assume_HWE) {
+    .Call('_malan_estimate_autotheta_subpops_unweighted_pids', PACKAGE = 'malan', population, subpops, assume_HWE)
+}
+
+#' Get autosomal allele counts from subpopulations of genotypes
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
+#' 
+#' @param subpops List of individual genotypes
+#' 
+#' @return Matrix with allele counts
+#' 
+#' @export
+get_allele_counts_genotypes <- function(subpops) {
+    .Call('_malan_get_allele_counts_genotypes', PACKAGE = 'malan', subpops)
+}
+
+#' Get autosomal allele counts from subpopulations given by pids
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
+#' 
+#' @param population Population obtain from simulation
+#' @param subpops List of individual pids
+#' 
+#' @return Matrix with allele counts
+#' 
+#' @export
+get_allele_counts_pids <- function(population, subpops) {
+    .Call('_malan_get_allele_counts_pids', PACKAGE = 'malan', population, subpops)
+}
+
 hash_colisions <- function(p) {
     .Call('_malan_hash_colisions', PACKAGE = 'malan', p)
 }
 
-#' Estimate theta from genotypes
+#' Estimate autosomal theta from genotypes
 #' 
-#' Estimate theta for one subpopulation given a sample of genotypes.
+#' Estimate autosomal theta for one subpopulation given a sample of genotypes.
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
 #' @param genotypes Matrix of genotypes: two columns (allele1 and allele2) and a row per individual
 #' @param return_estimation_info Whether to return the quantities used to estimate `theta`
@@ -222,59 +315,69 @@ hash_colisions <- function(p) {
 #'     + `estimation_info`: If `return_estimation_info = true`: a list with information used to estimate `theta`. Else `NULL`.
 #' 
 #' @export
-estimate_theta_1subpop_genotypes <- function(genotypes, return_estimation_info = FALSE) {
-    .Call('_malan_estimate_theta_1subpop_genotypes', PACKAGE = 'malan', genotypes, return_estimation_info)
+estimate_autotheta_1subpop_genotypes <- function(genotypes, return_estimation_info = FALSE) {
+    .Call('_malan_estimate_autotheta_1subpop_genotypes', PACKAGE = 'malan', genotypes, return_estimation_info)
 }
 
-#' Estimate theta from individuals
+#' Estimate autosomal theta from individuals
 #' 
-#' Estimate theta for one subpopulation given a list of individuals.
+#' Estimate autosomal theta for one subpopulation given a list of individuals.
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
-#' @inheritParams estimate_theta_1subpop_genotypes
+#' 
+#' @inheritParams estimate_autotheta_1subpop_genotypes
 #' @param individuals Individuals to get haplotypes for.
 #' 
-#' @inherit estimate_theta_1subpop_genotypes return
+#' @inherit estimate_autotheta_1subpop_genotypes return
 #' 
 #' @export
-estimate_theta_1subpop_individuals <- function(individuals, return_estimation_info = FALSE) {
-    .Call('_malan_estimate_theta_1subpop_individuals', PACKAGE = 'malan', individuals, return_estimation_info)
+estimate_autotheta_1subpop_individuals <- function(individuals, return_estimation_info = FALSE) {
+    .Call('_malan_estimate_autotheta_1subpop_individuals', PACKAGE = 'malan', individuals, return_estimation_info)
 }
 
-#' Estimate F, theta, and f from subpopulations of individuals
+#' Estimate autosomal F, theta, and f from subpopulations of individuals
 #' 
-#' Estimates F, theta, and f for a number of subpopulations given a list of individuals.
+#' Estimates autosomal F, theta, and f for a number of subpopulations given a list of individuals.
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
+#' 
 #' 
 #' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
 #' 
 #' @param subpops List of subpopulations, each a list of individuals
 #' @param subpops_sizes Size of each subpopulation
 #' 
-#' @return Estimates of F, theta, and f as well as additional information
+#' @return Estimates of autosomal F, theta, and f as well as additional information
 #' 
 #' @export
-estimate_theta_subpops_individuals <- function(subpops, subpops_sizes) {
-    .Call('_malan_estimate_theta_subpops_individuals', PACKAGE = 'malan', subpops, subpops_sizes)
+estimate_autotheta_subpops_individuals <- function(subpops, subpops_sizes) {
+    .Call('_malan_estimate_autotheta_subpops_individuals', PACKAGE = 'malan', subpops, subpops_sizes)
 }
 
-#' Estimate F, theta, and f from subpopulations of genotypes
+#' Estimate autosomal F, theta, and f from subpopulations of genotypes
 #' 
-#' Estimates F, theta, and f for a number of subpopulations given a list of genotypes.
+#' Estimates autosomal F, theta, and f for a number of subpopulations given a list of genotypes.
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
 #' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
 #' 
 #' @param subpops List of subpopulations, each a list of individuals
 #' @param subpops_sizes Size of each subpopulation
 #' 
-#' @return Estimates of F, theta, and f as well as additional information
+#' @return Estimates of autosomal F, theta, and f as well as additional information
 #' 
 #' @export
-estimate_theta_subpops_genotypes <- function(subpops, subpops_sizes) {
-    .Call('_malan_estimate_theta_subpops_genotypes', PACKAGE = 'malan', subpops, subpops_sizes)
+estimate_autotheta_subpops_genotypes <- function(subpops, subpops_sizes) {
+    .Call('_malan_estimate_autotheta_subpops_genotypes', PACKAGE = 'malan', subpops, subpops_sizes)
 }
 
-#' Estimate F, theta, and f from subpopulations of individual ids
+#' Estimate autosomal F, theta, and f from subpopulations of individual ids
 #' 
-#' Estimates F, theta, and f for a number of subpopulations given a list of pids (individual ids).
+#' Estimates autosomal F, theta, and f for a number of subpopulations given a list of pids (individual ids).
+#'
+#' Assumes that [pedigrees_all_populate_autosomal()] was used first to populate autosomal genotypes.
 #' 
 #' Based on Bruce S Weir, Genetic Data Analysis 2, 1996. (GDA2).
 #' 
@@ -282,11 +385,11 @@ estimate_theta_subpops_genotypes <- function(subpops, subpops_sizes) {
 #' @param subpops List of individual pids
 #' @param subpops_sizes Size of each subpopulation
 #' 
-#' @return Estimates of F, theta, and f as well as additional information
+#' @return Estimates of autosomal F, theta, and f as well as additional information
 #' 
 #' @export
-estimate_theta_subpops_pids <- function(population, subpops, subpops_sizes) {
-    .Call('_malan_estimate_theta_subpops_pids', PACKAGE = 'malan', population, subpops, subpops_sizes)
+estimate_autotheta_subpops_pids <- function(population, subpops, subpops_sizes) {
+    .Call('_malan_estimate_autotheta_subpops_pids', PACKAGE = 'malan', population, subpops, subpops_sizes)
 }
 
 #' Populate haplotypes in pedigrees (0-founder/unbounded).
@@ -300,14 +403,15 @@ estimate_theta_subpops_pids <- function(population, subpops, subpops_sizes) {
 #' @param pedigrees Pedigree list in which to populate haplotypes
 #' @param loci Number of loci
 #' @param mutation_rates Vector with mutation rates, length `loci`
+#' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
 #' @param progress Show progress
 #'
 #' @seealso [pedigrees_all_populate_haplotypes_custom_founders()] and 
 #' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 #' 
 #' @export
-pedigrees_all_populate_haplotypes <- function(pedigrees, loci, mutation_rates, progress = TRUE) {
-    invisible(.Call('_malan_pedigrees_all_populate_haplotypes', PACKAGE = 'malan', pedigrees, loci, mutation_rates, progress))
+pedigrees_all_populate_haplotypes <- function(pedigrees, loci, mutation_rates, prob_two_step = 0.0, progress = TRUE) {
+    invisible(.Call('_malan_pedigrees_all_populate_haplotypes', PACKAGE = 'malan', pedigrees, loci, mutation_rates, prob_two_step, progress))
 }
 
 #' Populate haplotypes in pedigrees (custom founder/unbounded).
@@ -322,14 +426,15 @@ pedigrees_all_populate_haplotypes <- function(pedigrees, loci, mutation_rates, p
 #' @param pedigrees Pedigree list in which to populate haplotypes
 #' @param mutation_rates Vector with mutation rates
 #' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
+#' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
 #' @param progress Show progress
 #'
 #' @seealso [pedigrees_all_populate_haplotypes()] and 
 #' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 #' 
 #' @export
-pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutation_rates, get_founder_haplotype = NULL, progress = TRUE) {
-    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_custom_founders', PACKAGE = 'malan', pedigrees, mutation_rates, get_founder_haplotype, progress))
+pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutation_rates, get_founder_haplotype = NULL, prob_two_step = 0.0, progress = TRUE) {
+    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_custom_founders', PACKAGE = 'malan', pedigrees, mutation_rates, get_founder_haplotype, prob_two_step, progress))
 }
 
 #' Populate haplotypes in pedigrees (custom founder/bounded).
@@ -339,6 +444,10 @@ pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutatio
 #' All founders get a haplotype from calling the user 
 #' provided function `get_founder_haplotype()`.
 #' 
+#' Given that a two step mutation should happen (probability specified by `prob_two_step`):
+#' With distances >= 2 to ladder bounds, mutations happen as usual.
+#' At distance = 0 or 1 to a ladder bound, the mutation is forced to move away from the boundary.
+#' 
 #' Note, that pedigrees must first have been inferred by [build_pedigrees()].
 #' 
 #' @param pedigrees Pedigree list in which to populate haplotypes
@@ -346,14 +455,15 @@ pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutatio
 #' @param ladder_min Lower bounds for haplotypes, same length as `mutation_rates`
 #' @param ladder_max Upper bounds for haplotypes, same length as `mutation_rates`; all entries must be strictly greater than `ladder_min`
 #' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
+#' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries
 #' @param progress Show progress
 #'
 #' @seealso [pedigrees_all_populate_haplotypes()] and 
 #' [pedigrees_all_populate_haplotypes_custom_founders()].
 #' 
 #' @export
-pedigrees_all_populate_haplotypes_ladder_bounded <- function(pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype = NULL, progress = TRUE) {
-    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_ladder_bounded', PACKAGE = 'malan', pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype, progress))
+pedigrees_all_populate_haplotypes_ladder_bounded <- function(pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype = NULL, prob_two_step = 0.0, progress = TRUE) {
+    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_ladder_bounded', PACKAGE = 'malan', pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype, prob_two_step, progress))
 }
 
 #' Get haplotype from an individual
@@ -418,11 +528,31 @@ get_haplotypes_pids <- function(population, pids) {
 #' 
 #' @return Number of times that `haplotype` occurred amongst `individuals`.
 #' 
-#' @seealso [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()].
+#' @seealso [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()],
+#' [count_haplotype_near_matches_individuals()].
 #' 
 #' @export
 count_haplotype_occurrences_individuals <- function(individuals, haplotype) {
     .Call('_malan_count_haplotype_occurrences_individuals', PACKAGE = 'malan', individuals, haplotype)
+}
+
+#' Count near haplotype matches in list of individuals
+#' 
+#' Counts the number of types close to `haplotype` in `individuals`.
+#' 
+#' @param individuals List of individuals to count occurrences in.
+#' @param haplotype Haplotype to count near-matches occurrences of.
+#' @param max_dist Maximum distance (0 = match, 1 = 1 STR allele difference, ...)
+#' 
+#' @return Number of times that a haplotype within a radius of `max_dist` of 
+#' `haplotype` occurred amongst `individuals`.
+#' 
+#' @seealso [count_haplotype_occurrences_individuals()], 
+#' [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()].
+#' 
+#' @export
+count_haplotype_near_matches_individuals <- function(individuals, haplotype, max_dist) {
+    .Call('_malan_count_haplotype_near_matches_individuals', PACKAGE = 'malan', individuals, haplotype, max_dist)
 }
 
 #' Get individuals matching from list of individuals
@@ -494,6 +624,35 @@ pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists <- function(suspect, gen
     .Call('_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists', PACKAGE = 'malan', suspect, generation_upper_bound_in_result)
 }
 
+#' Information about almost matching individuals
+#' 
+#' Gives information about all individuals in pedigree that almost matches 
+#' an individual.
+#' Just as [count_haplotype_near_matches_individuals()] counts the number of 
+#' occurrences amongst a list of individuals, 
+#' this gives detailed information about almost matching individuals in 
+#' the pedigree: for now, the meiotic distances.
+#' 
+#' @param suspect Individual that others must match the profile of.
+#' @param max_dist Maximum distance (0 = match, 1 = 1 STR allele difference, ...)
+#' @param generation_upper_bound_in_result Only consider matches in 
+#' generation 0, 1, ... generation_upper_bound_in_result.
+#' -1 means disabled, consider all generations.
+#' End generation is generation 0.
+#' Second last generation is 1. 
+#' And so on.
+#' 
+#' @return Matrix with information about matching individuals. 
+#' Columns in order: 1) meioses (meiotic distance to `suspect`), 
+#' 2) haplotype distance, 3) pid (pid of matching individual)
+#' 
+#' @seealso [count_haplotype_near_matches_individuals()].
+#'
+#' @export
+pedigree_haplotype_near_matches_meiosis <- function(suspect, max_dist, generation_upper_bound_in_result = -1L) {
+    .Call('_malan_pedigree_haplotype_near_matches_meiosis', PACKAGE = 'malan', suspect, max_dist, generation_upper_bound_in_result)
+}
+
 #' Meiotic distance between two individuals
 #' 
 #' Get the number of meioses between two individuals.
@@ -541,6 +700,21 @@ haplotypes_to_hashes <- function(population, pids) {
 #' @export
 split_by_haplotypes <- function(population, pids) {
     .Call('_malan_split_by_haplotypes', PACKAGE = 'malan', population, pids)
+}
+
+#' Get individuals partially matching from list of individuals
+#' 
+#' Get the indvididuals that partially matches `haplotype` in `individuals`.
+#' 
+#' @param individuals List of individuals to count occurrences in.
+#' @param haplotype Haplotype to count occurrences of.
+#' @param ignore_loci Vector of loci to ignore (1 = ignore first locus etc.)
+#' 
+#' @return List of individuals that partially matches `haplotype` amongst `individuals`.
+#' 
+#' @export
+haplotype_partially_matches_individuals <- function(individuals, haplotype, ignore_loci = as.integer( c())) {
+    .Call('_malan_haplotype_partially_matches_individuals', PACKAGE = 'malan', individuals, haplotype, ignore_loci)
 }
 
 #' Get individual by pid
@@ -815,23 +989,90 @@ pedigree_size_generation <- function(pedigree, generation_upper_bound_in_result 
 #' @param donor2 Contributor2/donor 2
 #' @return A list with mixture information about the mixture \code{donor1}+\code{donor2}+\code{donor3} from \code{individuals}
 #' 
-#' @seealso \code{\link{mixture_info_by_individuals_3pers}}
+#' @seealso \code{\link{mixture_info_by_individuals_3pers}}, 
+#'          \code{\link{mixture_info_by_individuals_4pers}}, 
+#'          \code{\link{mixture_info_by_individuals_5pers}}
 #' 
 #' @export
-mixture_info_by_individuals <- function(individuals, donor1, donor2) {
-    .Call('_malan_mixture_info_by_individuals', PACKAGE = 'malan', individuals, donor1, donor2)
+mixture_info_by_individuals_2pers <- function(individuals, donor1, donor2) {
+    .Call('_malan_mixture_info_by_individuals_2pers', PACKAGE = 'malan', individuals, donor1, donor2)
 }
 
 #' Mixture information about 3 persons' mixture of donor1, donor2 and donor3.
 #' 
-#' @inherit mixture_info_by_individuals
-#' @param donor3 Contributor2/donor 3
+#' @inherit mixture_info_by_individuals_2pers
+#' @param donor3 Contributor3/donor 3
 #' 
-#' @seealso \code{\link{mixture_info_by_individuals}}
+#' @seealso \code{\link{mixture_info_by_individuals_2pers}}, 
+#'          \code{\link{mixture_info_by_individuals_4pers}}, 
+#'          \code{\link{mixture_info_by_individuals_5pers}}
 #' 
 #' @export
 mixture_info_by_individuals_3pers <- function(individuals, donor1, donor2, donor3) {
     .Call('_malan_mixture_info_by_individuals_3pers', PACKAGE = 'malan', individuals, donor1, donor2, donor3)
+}
+
+#' Mixture information about 4 persons' mixture of donor1, donor2, donor3 and donor4.
+#' 
+#' @inherit mixture_info_by_individuals_3pers
+#' @param donor4 Contributor4/donor 4
+#' 
+#' @seealso \code{\link{mixture_info_by_individuals_2pers}}, 
+#'          \code{\link{mixture_info_by_individuals_3pers}}, 
+#'          \code{\link{mixture_info_by_individuals_5pers}}
+#' 
+#' @export
+mixture_info_by_individuals_4pers <- function(individuals, donor1, donor2, donor3, donor4) {
+    .Call('_malan_mixture_info_by_individuals_4pers', PACKAGE = 'malan', individuals, donor1, donor2, donor3, donor4)
+}
+
+#' Mixture information about 5 persons' mixture of donor1, donor2, donor3, donor4 and donor5.
+#' 
+#' @inherit mixture_info_by_individuals_4pers
+#' @param donor5 Contributor5/donor 5
+#' 
+#' @seealso \code{\link{mixture_info_by_individuals_2pers}}, 
+#'          \code{\link{mixture_info_by_individuals_3pers}}, 
+#'          \code{\link{mixture_info_by_individuals_4pers}}
+#' 
+#' @export
+mixture_info_by_individuals_5pers <- function(individuals, donor1, donor2, donor3, donor4, donor5) {
+    .Call('_malan_mixture_info_by_individuals_5pers', PACKAGE = 'malan', individuals, donor1, donor2, donor3, donor4, donor5)
+}
+
+#' Analyse mixture results
+#' 
+#' Calculate LR-like quantities by haplotype counts.
+#' 
+#' NOTE: Only takes up to 9 contributors!
+#' 
+#' @param mix_res Mixture result from [mixture_info_by_individuals_2pers()], 
+#' [mixture_info_by_individuals_3pers()], [mixture_info_by_individuals_4pers()], 
+#' [mixture_info_by_individuals_5pers()]
+#' @param unique_haps_in_mixture Included unique haplotypes to use as elements in contributor sets.
+#' @param unique_haps_in_mixture_counts Population counts of the included haplotypes
+#' 
+#' @return A list with numeric quantities
+analyse_mixture_result <- function(mix_res, unique_haps_in_mixture, unique_haps_in_mixture_counts) {
+    .Call('_malan_analyse_mixture_result', PACKAGE = 'malan', mix_res, unique_haps_in_mixture, unique_haps_in_mixture_counts)
+}
+
+#' Analyse mixture results in a vectorised fashion
+#' 
+#' Refer to [analyse_mixture_result()] for details. 
+#' Essentially, [analyse_mixture_result()] is run on each element of `mixture_results`.
+#' 
+#' NOTE: Only takes up to 9 contributors!
+#' 
+#' @param mixture_results List of `n` mixture results from [mixture_info_by_individuals_2pers()], 
+#' [mixture_info_by_individuals_3pers()], [mixture_info_by_individuals_4pers()], 
+#' [mixture_info_by_individuals_5pers()]
+#' @param unique_haps_in_mixture_list List of `n` included unique haplotypes, one for each element in `mix_res`
+#' @param unique_haps_in_mixture_counts_list List of `n` population counts of the included unique haplotypes
+#' 
+#' @return A list with lists of numeric quantities
+analyse_mixture_results <- function(mixture_results, unique_haps_in_mixture_list, unique_haps_in_mixture_counts_list) {
+    .Call('_malan_analyse_mixture_results', PACKAGE = 'malan', mixture_results, unique_haps_in_mixture_list, unique_haps_in_mixture_counts_list)
 }
 
 #' Get pedigree id

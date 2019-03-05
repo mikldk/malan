@@ -28,6 +28,7 @@
 //' @param pedigrees Pedigree list in which to populate haplotypes
 //' @param loci Number of loci
 //' @param mutation_rates Vector with mutation rates, length `loci`
+//' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
 //' @param progress Show progress
 //'
 //' @seealso [pedigrees_all_populate_haplotypes_custom_founders()] and 
@@ -38,6 +39,7 @@
 void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, 
                                        int loci, 
                                        Rcpp::NumericVector mutation_rates, 
+                                       double prob_two_step = 0.0,
                                        bool progress = true) {
   std::vector<Pedigree*> peds = (*pedigrees);
   
@@ -51,7 +53,7 @@ void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedi
   Progress p(N, progress);
   
   for (size_t i = 0; i < N; ++i) {
-    peds.at(i)->populate_haplotypes(loci, mut_rates);
+    peds.at(i)->populate_haplotypes(loci, mut_rates, prob_two_step);
     
      if (i % CHECK_ABORT_EVERY == 0 && Progress::check_abort()) {
       Rcpp::stop("Aborted.");
@@ -75,6 +77,7 @@ void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedi
 //' @param pedigrees Pedigree list in which to populate haplotypes
 //' @param mutation_rates Vector with mutation rates
 //' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
+//' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
 //' @param progress Show progress
 //'
 //' @seealso [pedigrees_all_populate_haplotypes()] and 
@@ -85,6 +88,7 @@ void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedi
 void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, 
                                        Rcpp::NumericVector mutation_rates,
                                        Rcpp::Nullable<Rcpp::Function> get_founder_haplotype = R_NilValue,
+                                       double prob_two_step = 0.0,
                                        bool progress = true) {
   std::vector<Pedigree*> peds = (*pedigrees);
   
@@ -100,7 +104,7 @@ void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<P
   Progress p(N, progress);
   
   for (size_t i = 0; i < N; ++i) {
-    peds.at(i)->populate_haplotypes_custom_founders(mut_rates, g_founder_hap);
+    peds.at(i)->populate_haplotypes_custom_founders(mut_rates, g_founder_hap, prob_two_step);
     
      if (i % CHECK_ABORT_EVERY == 0 && Progress::check_abort()) {
       Rcpp::stop("Aborted.");
@@ -119,6 +123,10 @@ void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<P
 //' All founders get a haplotype from calling the user 
 //' provided function `get_founder_haplotype()`.
 //' 
+//' Given that a two step mutation should happen (probability specified by `prob_two_step`):
+//' With distances >= 2 to ladder bounds, mutations happen as usual.
+//' At distance = 0 or 1 to a ladder bound, the mutation is forced to move away from the boundary.
+//' 
 //' Note, that pedigrees must first have been inferred by [build_pedigrees()].
 //' 
 //' @param pedigrees Pedigree list in which to populate haplotypes
@@ -126,6 +134,7 @@ void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<P
 //' @param ladder_min Lower bounds for haplotypes, same length as `mutation_rates`
 //' @param ladder_max Upper bounds for haplotypes, same length as `mutation_rates`; all entries must be strictly greater than `ladder_min`
 //' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
+//' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries
 //' @param progress Show progress
 //'
 //' @seealso [pedigrees_all_populate_haplotypes()] and 
@@ -138,6 +147,7 @@ void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pe
                                                       Rcpp::IntegerVector ladder_min,
                                                       Rcpp::IntegerVector ladder_max,
                                                       Rcpp::Nullable<Rcpp::Function> get_founder_haplotype = R_NilValue,
+                                                      double prob_two_step = 0.0,
                                                       bool progress = true) {
 
   if (ladder_min.size() != ladder_max.size()) {
@@ -147,7 +157,15 @@ void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pe
   if (any((ladder_max - ladder_min) <= 0).is_true()) {
     Rcpp::stop("ladder_max must be at least 1 greater than ladder_min at all loci");
   }
-    
+  
+  if (prob_two_step < 0.0 || prob_two_step > 1.0) {
+    Rcpp::stop("prob_two_step must be between 0.0 and 1.0");
+  }
+  
+  if (any((ladder_max - ladder_min) <= 1).is_true() && prob_two_step > 1e-10) {
+    Rcpp::stop("ladder_max must be at least 2 greater than ladder_min at all loci when prob_two_step > 1e-10.");
+  }
+  
   std::vector<Pedigree*> peds = (*pedigrees);
 
   std::vector<double> mut_rates = Rcpp::as< std::vector<double> >(mutation_rates);
@@ -172,7 +190,7 @@ void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pe
   Progress p(N, progress);
   
   for (size_t i = 0; i < N; ++i) {
-    peds.at(i)->populate_haplotypes_ladder_bounded(mut_rates, lad_min, lad_max, g_founder_hap);
+    peds.at(i)->populate_haplotypes_ladder_bounded(mut_rates, lad_min, lad_max, g_founder_hap, prob_two_step);
     
      if (i % CHECK_ABORT_EVERY == 0 && Progress::check_abort()) {
       Rcpp::stop("Aborted.");
@@ -339,7 +357,8 @@ Rcpp::IntegerMatrix get_haplotypes_pids(Rcpp::XPtr<Population> population, Rcpp:
 //' 
 //' @return Number of times that `haplotype` occurred amongst `individuals`.
 //' 
-//' @seealso [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()].
+//' @seealso [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()],
+//' [count_haplotype_near_matches_individuals()].
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -364,6 +383,63 @@ int count_haplotype_occurrences_individuals(const Rcpp::List individuals, const 
     }
     
     if (indv_h == h) {
+      count += 1;
+    }
+  }
+  
+  return count;
+}
+
+
+//' Count near haplotype matches in list of individuals
+//' 
+//' Counts the number of types close to `haplotype` in `individuals`.
+//' 
+//' @param individuals List of individuals to count occurrences in.
+//' @param haplotype Haplotype to count near-matches occurrences of.
+//' @param max_dist Maximum distance (0 = match, 1 = 1 STR allele difference, ...)
+//' 
+//' @return Number of times that a haplotype within a radius of `max_dist` of 
+//' `haplotype` occurred amongst `individuals`.
+//' 
+//' @seealso [count_haplotype_occurrences_individuals()], 
+//' [pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()].
+//' 
+//' @export
+// [[Rcpp::export]]
+int count_haplotype_near_matches_individuals(const Rcpp::List individuals, 
+                                             const Rcpp::IntegerVector haplotype, 
+                                             const int max_dist) {
+  int n = individuals.size();
+  int loci = haplotype.size();
+  int count = 0;
+  
+  std::vector<int> h = Rcpp::as< std::vector<int> >(haplotype);
+  
+  for (int i = 0; i < n; ++i) {
+    Rcpp::XPtr<Individual> indv = individuals[i];
+    
+    if (!(indv->is_haplotype_set())) {
+      Rcpp::stop("Haplotype not yet set.");
+    }
+    
+    std::vector<int> indv_h = indv->get_haplotype();
+    
+    if (indv_h.size() != loci) {
+      Rcpp::stop("haplotype and indv_h did not have same number of loci");
+    }
+    
+    int dist = 0;
+    
+    for (int k = 0; k < loci; ++k) {
+      dist += abs(indv_h[k] - h[k]);
+      
+      if (dist > max_dist) {
+        break;
+      }
+    }
+    
+    if (dist <= max_dist) {
       count += 1;
     }
   }
@@ -588,6 +664,111 @@ Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(cons
   return matches;
 }
 
+
+
+
+//' Information about almost matching individuals
+//' 
+//' Gives information about all individuals in pedigree that almost matches 
+//' an individual.
+//' Just as [count_haplotype_near_matches_individuals()] counts the number of 
+//' occurrences amongst a list of individuals, 
+//' this gives detailed information about almost matching individuals in 
+//' the pedigree: for now, the meiotic distances.
+//' 
+//' @param suspect Individual that others must match the profile of.
+//' @param max_dist Maximum distance (0 = match, 1 = 1 STR allele difference, ...)
+//' @param generation_upper_bound_in_result Only consider matches in 
+//' generation 0, 1, ... generation_upper_bound_in_result.
+//' -1 means disabled, consider all generations.
+//' End generation is generation 0.
+//' Second last generation is 1. 
+//' And so on.
+//' 
+//' @return Matrix with information about matching individuals. 
+//' Columns in order: 1) meioses (meiotic distance to `suspect`), 
+//' 2) haplotype distance, 3) pid (pid of matching individual)
+//' 
+//' @seealso [count_haplotype_near_matches_individuals()].
+//'
+//' @export
+// [[Rcpp::export]]
+Rcpp::IntegerMatrix pedigree_haplotype_near_matches_meiosis(
+    const Rcpp::XPtr<Individual> suspect, 
+    const int max_dist,
+    int generation_upper_bound_in_result = -1) {
+  
+  if (!(suspect->is_haplotype_set())) {
+    Rcpp::stop("Haplotype not yet set for suspect.");
+  }
+  
+  const std::vector<int> h = suspect->get_haplotype();
+  const int loci = h.size();
+  
+  const Pedigree* pedigree = suspect->get_pedigree();
+  const int suspect_pedigree_id = suspect->get_pedigree_id();
+  const std::vector<Individual*>* family = pedigree->get_all_individuals();
+  
+  std::vector<int> meiosis_dists;
+  std::vector<int> hap_dists;
+  std::vector<int> pids;
+  
+  // includes suspect by purpose
+  for (auto dest : *family) { 
+    int generation = dest->get_generation();
+    
+    if (generation_upper_bound_in_result != -1 && generation > generation_upper_bound_in_result) {
+      continue;
+    }
+    
+    // only considering within pedigree matches
+    if (dest->get_pedigree_id() != suspect_pedigree_id) {
+      continue;
+    }
+    
+    if (!(dest->is_haplotype_set())) {
+      Rcpp::stop("Haplotype not yet set for dest.");
+    }
+    
+    std::vector<int> dest_h = dest->get_haplotype();
+    
+    if (dest_h.size() != loci) {
+      Rcpp::stop("haplotype and dest_h did not have same number of loci");
+    }
+    
+    int dist = 0;
+    
+    for (int k = 0; k < loci; ++k) {
+      dist += abs(dest_h[k] - h[k]);
+      
+      if (dist > max_dist) {
+        break;
+      }
+    }
+    
+    if (dist <= max_dist) {
+      int meiosis_dist = suspect->meiosis_dist_tree(dest);
+      
+      meiosis_dists.push_back(meiosis_dist);
+      hap_dists.push_back(dist);
+      pids.push_back(dest->get_pid());
+    }
+  }
+  
+  size_t n = meiosis_dists.size();
+  
+  Rcpp::IntegerMatrix matches(n, 3);
+  colnames(matches) = Rcpp::CharacterVector::create("meioses", "hap_dist", "pid");
+  
+  for (size_t i = 0; i < n; ++i) {
+    matches(i, 0) = meiosis_dists[i];
+    matches(i, 1) = hap_dists[i];
+    matches(i, 2) = pids[i];
+  }
+  
+  return matches;
+}
+
 //' Meiotic distance between two individuals
 //' 
 //' Get the number of meioses between two individuals.
@@ -685,3 +866,88 @@ Rcpp::List split_by_haplotypes(Rcpp::XPtr<Population> population,
   return res;
 }
 
+
+
+
+
+
+
+
+//' Get individuals partially matching from list of individuals
+//' 
+//' Get the indvididuals that partially matches `haplotype` in `individuals`.
+//' 
+//' @param individuals List of individuals to count occurrences in.
+//' @param haplotype Haplotype to count occurrences of.
+//' @param ignore_loci Vector of loci to ignore (1 = ignore first locus etc.)
+//' 
+//' @return List of individuals that partially matches `haplotype` amongst `individuals`.
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::List haplotype_partially_matches_individuals(
+    const Rcpp::List individuals, 
+    const Rcpp::IntegerVector haplotype,
+    const Rcpp::IntegerVector ignore_loci = Rcpp::IntegerVector::create()) {
+  
+  int n = individuals.size();
+  int loci = haplotype.size();
+  
+  std::vector<bool> skip_locus(loci);
+  for (int i = 0; i < loci; ++i) {
+    skip_locus[i] = false;
+  }
+  
+  for (auto e : ignore_loci) {
+    if (e <= 0) {
+      Rcpp::stop("ignore_loci must have entries >= 1");
+    }
+    
+    if (e > loci) {
+      Rcpp::stop("ignore_loci gave a locus index larger than the number of loci");
+    }
+    skip_locus[e - 1] = true; // C++-indexing
+  }
+  
+  int no_loci_skipped = std::count(skip_locus.begin(), skip_locus.end(), true);
+  if (no_loci_skipped == loci) {
+    Rcpp::stop("Cannot ignore all loci; avoid computations as this is all individuals");
+  }
+  
+  Rcpp::List partial_matches;
+  
+  std::vector<int> h = Rcpp::as< std::vector<int> >(haplotype);
+  
+  for (int i = 0; i < n; ++i) {
+    Rcpp::XPtr<Individual> indv = individuals[i];
+    
+    if (!(indv->is_haplotype_set())) {
+      Rcpp::stop("Haplotype not yet set.");
+    }
+    
+    std::vector<int> indv_h = indv->get_haplotype();
+
+    if (indv_h.size() != loci) {
+      Rcpp::stop("haplotype and indv_h did not have same number of loci");
+    }
+    
+    bool hs_equal = true;
+    
+    for (int l = 0; l < loci; ++l) {
+      if (skip_locus[l] == true) {
+        continue;
+      }
+      
+      if (h[l] != indv_h[l]) {
+        hs_equal = false;
+        break;
+      }
+    }
+    
+    if (hs_equal == true) {
+      partial_matches.push_back(indv);
+    }
+  }
+  
+  return partial_matches;
+}
