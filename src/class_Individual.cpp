@@ -39,7 +39,7 @@ int Individual::get_pid() const {
 
 int Individual::get_generation() const {
   if (m_generation == -1) {
-    Rcpp::stop("Generation not set (indviduals created with load_data()). This will (hopefully) be implemented soon.");
+    Rcpp::stop("Generation not set (indviduals created with load_data()). Unexpected.");
   }
   
   return m_generation;
