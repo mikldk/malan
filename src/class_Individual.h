@@ -38,6 +38,7 @@ public:
   ~Individual();
   int get_pid() const;
   int get_generation() const;
+  void set_generation(int generation);
   void add_child(Individual* child);
   Individual* get_father() const;
   std::vector<Individual*>* get_children() const;

@@ -13,5 +13,5 @@ load_individuals(pid, pid_dad, progress = TRUE,
 \item{pid_dad}{ID of male's father, 0 if not known}
 }
 \description{
-Construct a population from data
+Note that individuals loaded this way does not have information about generation.
 }

@@ -40,6 +40,38 @@ test_that("get_individuals works", {
   expect_equal(length(indvs), 20L)
 })
 
+test_that("generation assignment works", {
+  
+  # 0, last generation:
+  expect_equal(0L, 
+               unique(unlist(lapply(1L:5L, function(pid) get_generation(get_individual(test_pop, pid)))))
+  )
+  expect_equal(0L, 
+               unique(unlist(lapply(31L:35L, function(pid) get_generation(get_individual(test_pop, pid)))))
+  )
+  
+  # 1, second last generation:
+  expect_equal(1L, 
+               unique(unlist(lapply(6L:8L, function(pid) get_generation(get_individual(test_pop, pid)))))
+  )
+  expect_equal(1L, 
+               unique(unlist(lapply(36L:38L, function(pid) get_generation(get_individual(test_pop, pid)))))
+  )
+  
+  # 2, third last generation:
+  expect_equal(2L, 
+               unique(unlist(lapply(9L:10L, function(pid) get_generation(get_individual(test_pop, pid)))))
+  )
+  expect_equal(2L, 
+               unique(unlist(lapply(39L, function(pid) get_generation(get_individual(test_pop, pid)))))
+  )
+  
+  # 3, fourth last generation:
+  expect_equal(3L, 
+               unique(unlist(lapply(11L, function(pid) get_generation(get_individual(test_pop, pid)))))
+  )
+})
+
 peds <- build_pedigrees(test_pop, progress = FALSE)
 test_that("build_pedigrees works", {
   expect_output(print(peds), regexp = "^List of 2 pedigrees \\(of size 11, 9\\)$")
@@ -80,13 +112,4 @@ test_that("haplotype_matches_individuals works", {
   expect_equal(length(indvs), length(haplotype_matches_individuals(indvs, rep(0L, LOCI))))
   expect_equal(lapply(indvs, get_pid), lapply(haplotype_matches_individuals(indvs, rep(0L, LOCI)), get_pid))
 })
-
-
-#################
-
-# Generation currently not implemented for individuals created via load_data():
-test_that("haplotype_matches_individuals works", {
-  expect_error(get_generation(indvs[[1L]]))
-})
-
 

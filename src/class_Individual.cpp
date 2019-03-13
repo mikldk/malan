@@ -45,6 +45,10 @@ int Individual::get_generation() const {
   return m_generation;
 }
 
+void Individual::set_generation(int generation) {
+  m_generation = generation;
+}
+
 void Individual::add_child(Individual* child) {
   m_children->push_back(child);
   child->m_father = this;
