@@ -871,8 +871,6 @@ Rcpp::List split_by_haplotypes(Rcpp::XPtr<Population> population,
 
 
 
-
-
 //' Get individuals partially matching from list of individuals
 //' 
 //' Get the indvididuals that partially matches `haplotype` in `individuals`.
@@ -926,7 +924,7 @@ Rcpp::List haplotype_partially_matches_individuals(
     }
     
     std::vector<int> indv_h = indv->get_haplotype();
-
+    
     if (indv_h.size() != loci) {
       Rcpp::stop("haplotype and indv_h did not have same number of loci");
     }
@@ -951,3 +949,121 @@ Rcpp::List haplotype_partially_matches_individuals(
   
   return partial_matches;
 }
+
+
+
+
+
+
+
+//' Build hashmap of haplotype to individuals
+//' 
+//' Makes it possible to find all individuals' pid with a certain haplotype.
+//' Must be used with e.g. [get_matching_pids_from_hashmap()].
+//' 
+//' @param individuals List of individuals to build hashmap of
+//' @param progress Show progress?
+//' 
+//' @return External pointer to hashmap with haplotype as keys and vector of individuals' pid as value
+//' 
+//' @seealso [get_matching_pids_from_hashmap()].
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > build_haplotype_hashmap(
+    const Rcpp::List& individuals, bool progress = true) {
+  
+  int n = individuals.size();
+  Progress p(n, progress);
+  
+  std::unordered_map< std::vector<int>, std::vector<int>* >* hashtable = new std::unordered_map< std::vector<int>, std::vector<int>* >();
+
+  for (size_t i = 0; i < n; ++i) {
+    Rcpp::XPtr<Individual> indv = individuals[i];
+    std::vector<int> h = indv->get_haplotype();
+    int pid = indv->get_pid();
+    
+    std::unordered_map< std::vector<int>, std::vector<int>* >::iterator got = hashtable->find(h);
+    
+    if (got == hashtable->end()) {
+      std::vector<int>* h_pids = new std::vector<int>({ pid });
+      auto p = std::make_pair(h, h_pids);
+      hashtable->insert(p);
+    } else {
+      got->second->push_back(pid);
+    }
+  }
+  
+  Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > res(hashtable, RCPP_XPTR_2ND_ARG);
+  res.attr("class") = Rcpp::CharacterVector::create("malan_haplotype_hashmap", "externalptr");
+  
+  return res;
+}
+
+
+//' Delete haplotype hashmap
+//' 
+//' Delete hashmap made by [build_haplotype_hashmap()].
+//' 
+//' @param hashmap Hashmap made by [build_haplotype_hashmap()]
+//' 
+//' @seealso [get_matching_pids_from_hashmap()] 
+//' and [build_haplotype_hashmap()].
+//' 
+//' @export
+// [[Rcpp::export]]
+void delete_haplotypeids_hashmap(Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > hashmap) {
+  std::unordered_map< std::vector<int>, std::vector<int>* >* map = hashmap;
+  
+  for (auto const& pair: *map) {
+    delete pair.second;
+  }
+  
+  delete map;
+}
+
+
+
+
+//' Get individuals with a certain haplotype id by hashmap lookup
+//' 
+//' By using hashmap made by [build_haplotypeids_hashmap()], 
+//' it is easy to get all individuals with a certain haplotype id.
+//' 
+//' @param hashmap Hashmap to make lookup in, made by [build_haplotypeids_hashmap()]
+//' @param haplotype_id to get individuals that has this haplotype id
+//' 
+//' @return List of individuals with a given haplotype id
+//' 
+//' @seealso [build_haplotypeids_hashmap()].
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::IntegerVector get_matching_pids_from_hashmap(
+    const Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > >& hashmap,
+    const Rcpp::IntegerVector haplotype) {
+  
+  std::unordered_map< std::vector<int>, std::vector<int>* >* map = hashmap.get();
+  
+  if (map == nullptr) {
+    Rcpp::stop("hashmap was NULL pointer"); 
+  }
+
+  std::vector<int> x = Rcpp::as< std::vector<int> >(haplotype);
+  
+  Rcpp::IntegerVector ret_pids_empty;
+
+  std::unordered_map< std::vector<int>, std::vector<int>* >::const_iterator got = map->find(x);
+
+  if (got == map->end()) {
+    return ret_pids_empty; 
+  } else {
+    std::vector<int>* h = got->second;
+    Rcpp::IntegerVector ret_pids = Rcpp::wrap(*h);
+    return ret_pids;
+  }
+  
+  return ret_pids_empty;  
+}
+
+

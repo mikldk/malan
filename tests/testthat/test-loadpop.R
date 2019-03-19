@@ -107,9 +107,52 @@ test_that("meiotic_dist works", {
 
 LOCI <- 5L
 
-pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(0L, LOCI), progress = FALSE)
+pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(0, LOCI), progress = FALSE)
 test_that("haplotype_matches_individuals works", {
   expect_equal(length(indvs), length(haplotype_matches_individuals(indvs, rep(0L, LOCI))))
   expect_equal(lapply(indvs, get_pid), lapply(haplotype_matches_individuals(indvs, rep(0L, LOCI)), get_pid))
 })
+
+################################################
+
+
+
+indvs <- get_individuals(test_pop)
+
+set.seed(1)
+pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(0.1, LOCI), progress = FALSE)
+
+test_that("count_haplotype_occurrences_individuals works", {
+  expect_true(0L < count_haplotype_occurrences_individuals(indvs, rep(0L, LOCI)))
+})
+
+test_that("get_matching_pids_from_hashmap works for (0, 0, ..., 0)", {
+  hashmap <- build_haplotype_hashmap(indvs, progress = FALSE)
+  pids <- get_matching_pids_from_hashmap(hashmap, rep(0L, LOCI))
+  
+  expect_equal(length(pids), count_haplotype_occurrences_individuals(indvs, rep(0L, LOCI)))
+  
+  delete_haplotypeids_hashmap(hashmap)
+})
+
+
+test_that("get_matching_pids_from_hashmap works for all", {
+  set.seed(1)
+  pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(0.5, LOCI), progress = FALSE)
+  all_hs <- get_haplotypes_individuals(indvs)
+  all_hs <- all_hs[!duplicated(all_hs), ]
+  
+  hashmap <- build_haplotype_hashmap(indvs, progress = FALSE)
+  
+  for (i in seq_len(nrow(all_hs))) {
+    h <- all_hs[i, ]
+    
+    pids <- get_matching_pids_from_hashmap(hashmap, h)
+    
+    expect_equal(length(pids), count_haplotype_occurrences_individuals(indvs, h), info = paste0("i = ", i, "; h = (", paste0(h, collapse = ", "), ")"))
+  }
+
+  delete_haplotypeids_hashmap(hashmap)
+})
+
 

@@ -729,6 +729,54 @@ haplotype_partially_matches_individuals <- function(individuals, haplotype, igno
     .Call('_malan_haplotype_partially_matches_individuals', PACKAGE = 'malan', individuals, haplotype, ignore_loci)
 }
 
+#' Build hashmap of haplotype to individuals
+#' 
+#' Makes it possible to find all individuals' pid with a certain haplotype.
+#' Must be used with e.g. [get_matching_pids_from_hashmap()].
+#' 
+#' @param individuals List of individuals to build hashmap of
+#' @param progress Show progress?
+#' 
+#' @return External pointer to hashmap with haplotype as keys and vector of individuals' pid as value
+#' 
+#' @seealso [get_matching_pids_from_hashmap()].
+#' 
+#' @export
+build_haplotype_hashmap <- function(individuals, progress = TRUE) {
+    .Call('_malan_build_haplotype_hashmap', PACKAGE = 'malan', individuals, progress)
+}
+
+#' Delete haplotype hashmap
+#' 
+#' Delete hashmap made by [build_haplotype_hashmap()].
+#' 
+#' @param hashmap Hashmap made by [build_haplotype_hashmap()]
+#' 
+#' @seealso [get_matching_pids_from_hashmap()] 
+#' and [build_haplotype_hashmap()].
+#' 
+#' @export
+delete_haplotypeids_hashmap <- function(hashmap) {
+    invisible(.Call('_malan_delete_haplotypeids_hashmap', PACKAGE = 'malan', hashmap))
+}
+
+#' Get individuals with a certain haplotype id by hashmap lookup
+#' 
+#' By using hashmap made by [build_haplotypeids_hashmap()], 
+#' it is easy to get all individuals with a certain haplotype id.
+#' 
+#' @param hashmap Hashmap to make lookup in, made by [build_haplotypeids_hashmap()]
+#' @param haplotype_id to get individuals that has this haplotype id
+#' 
+#' @return List of individuals with a given haplotype id
+#' 
+#' @seealso [build_haplotypeids_hashmap()].
+#' 
+#' @export
+get_matching_pids_from_hashmap <- function(hashmap, haplotype) {
+    .Call('_malan_get_matching_pids_from_hashmap', PACKAGE = 'malan', hashmap, haplotype)
+}
+
 #' Get individual by pid
 #' 
 #' @param population Population

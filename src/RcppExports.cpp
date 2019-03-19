@@ -453,6 +453,40 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// build_haplotype_hashmap
+Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > build_haplotype_hashmap(const Rcpp::List& individuals, bool progress);
+RcppExport SEXP _malan_build_haplotype_hashmap(SEXP individualsSEXP, SEXP progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type individuals(individualsSEXP);
+    Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(build_haplotype_hashmap(individuals, progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// delete_haplotypeids_hashmap
+void delete_haplotypeids_hashmap(Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > hashmap);
+RcppExport SEXP _malan_delete_haplotypeids_hashmap(SEXP hashmapSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > >::type hashmap(hashmapSEXP);
+    delete_haplotypeids_hashmap(hashmap);
+    return R_NilValue;
+END_RCPP
+}
+// get_matching_pids_from_hashmap
+Rcpp::IntegerVector get_matching_pids_from_hashmap(const Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > >& hashmap, const Rcpp::IntegerVector haplotype);
+RcppExport SEXP _malan_get_matching_pids_from_hashmap(SEXP hashmapSEXP, SEXP haplotypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > >& >::type hashmap(hashmapSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector >::type haplotype(haplotypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_matching_pids_from_hashmap(hashmap, haplotype));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_individual
 Rcpp::XPtr<Individual> get_individual(Rcpp::XPtr<Population> population, int pid);
 RcppExport SEXP _malan_get_individual(SEXP populationSEXP, SEXP pidSEXP) {
@@ -940,6 +974,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_haplotypes_to_hashes", (DL_FUNC) &_malan_haplotypes_to_hashes, 2},
     {"_malan_split_by_haplotypes", (DL_FUNC) &_malan_split_by_haplotypes, 2},
     {"_malan_haplotype_partially_matches_individuals", (DL_FUNC) &_malan_haplotype_partially_matches_individuals, 3},
+    {"_malan_build_haplotype_hashmap", (DL_FUNC) &_malan_build_haplotype_hashmap, 2},
+    {"_malan_delete_haplotypeids_hashmap", (DL_FUNC) &_malan_delete_haplotypeids_hashmap, 1},
+    {"_malan_get_matching_pids_from_hashmap", (DL_FUNC) &_malan_get_matching_pids_from_hashmap, 2},
     {"_malan_get_individual", (DL_FUNC) &_malan_get_individual, 2},
     {"_malan_get_pid", (DL_FUNC) &_malan_get_pid, 1},
     {"_malan_print_individual", (DL_FUNC) &_malan_print_individual, 1},
