@@ -74,7 +74,7 @@ Individual* Pedigree::get_root() {
     return m_root;
   }
   
-  /* FIXME: Exploits tree */
+  /* NOTE: Exploits tree */
   bool root_set = false;
   
   for (auto &individual : (*m_all_individuals)) {
@@ -99,33 +99,36 @@ Individual* Pedigree::get_root() {
 
 
 void Pedigree::populate_haplotypes(
-    int loci, 
-    std::vector<double>& mutation_rates, 
-    double prob_two_step) {
+    const int loci, 
+    const std::vector<double>& mutation_rates, 
+    const Rcpp::Function& get_founder_hap,
+    const double prob_two_step,
+    const double prob_genealogical_error) {
 
   if (prob_two_step < 0.0 || prob_two_step > 1.0) {
     Rcpp::stop("prob_two_step must be between 0.0 and 1.0");
   }
   
-  /* FIXME: Exploits tree */
+  /* NOTE: Exploits tree */
   Individual* root = this->get_root();
-  
-  std::vector<int> h(loci); // initialises to 0, 0, ..., 0
+
+  std::vector<int> h = Rcpp::as< std::vector<int> >( get_founder_hap() );
 
   root->set_haplotype(h);
-  root->pass_haplotype_to_children(true, mutation_rates, prob_two_step);
+  root->pass_haplotype_to_children(true, mutation_rates, get_founder_hap, prob_two_step, prob_genealogical_error);
 }
 
 void Pedigree::populate_haplotypes_custom_founders(
-    std::vector<double>& mutation_rates, 
-    Rcpp::Function get_founder_hap, 
-    double prob_two_step) {
+    const std::vector<double>& mutation_rates, 
+    const Rcpp::Function& get_founder_hap, 
+    const double prob_two_step,
+    const double prob_genealogical_error) {
   
   if (prob_two_step < 0.0 || prob_two_step > 1.0) {
     Rcpp::stop("prob_two_step must be between 0.0 and 1.0");
   }
   
-  /* FIXME: Exploits tree */
+  /* NOTE: Exploits tree */
   Individual* root = this->get_root();
   
   std::vector<int> h = Rcpp::as< std::vector<int> >( get_founder_hap() );  
@@ -141,16 +144,17 @@ void Pedigree::populate_haplotypes_custom_founders(
   //Rf_PrintValue(Rcpp::wrap(h));
 
   root->set_haplotype(h);
-  root->pass_haplotype_to_children(true, mutation_rates, prob_two_step);
+  root->pass_haplotype_to_children(true, mutation_rates, get_founder_hap, prob_two_step, prob_genealogical_error);
 }
 
 // Assumes ladders are okay, see checks in api_utility_haplotypes.cpp
 void Pedigree::populate_haplotypes_ladder_bounded(
-    std::vector<double>& mutation_rates, 
-    std::vector<int>& ladder_min, 
-    std::vector<int>& ladder_max, 
-    Rcpp::Function get_founder_hap,
-    double prob_two_step) {
+    const std::vector<double>& mutation_rates, 
+    const std::vector<int>& ladder_min, 
+    const std::vector<int>& ladder_max, 
+    const Rcpp::Function& get_founder_hap,
+    const double prob_two_step,
+    const double prob_genealogical_error) {
   
   if (mutation_rates.size() != ladder_min.size()) {
     Rcpp::stop("mutation_rates and ladder_min must have same length");
@@ -171,10 +175,8 @@ void Pedigree::populate_haplotypes_ladder_bounded(
   /* Exploits tree */
   Individual* root = this->get_root();
   
-  //std::vector<int> h(mutation_rates.size()); // initialises to 0, 0, ..., 0
-  
   std::vector<int> h = Rcpp::as< std::vector<int> >( get_founder_hap() );  
-  
+
   //Rcpp::Rcout << "Bounded: " << std::endl;
   //Rcpp::print(Rcpp::wrap(h));
   
@@ -186,7 +188,7 @@ void Pedigree::populate_haplotypes_ladder_bounded(
   //Rf_PrintValue(Rcpp::wrap(h));
   
   root->set_haplotype(h);
-  root->pass_haplotype_to_children_ladder_bounded(true, mutation_rates, ladder_min, ladder_max, prob_two_step);
+  root->pass_haplotype_to_children_ladder_bounded(true, mutation_rates, ladder_min, ladder_max, get_founder_hap, prob_two_step, prob_genealogical_error);
 }
 
 

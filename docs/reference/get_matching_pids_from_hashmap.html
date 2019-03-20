@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Populate haplotypes in pedigrees (custom founder/unbounded). — pedigrees_all_populate_haplotypes_custom_founders • malan</title>
+<title>Get individuals with a certain haplotype id by hashmap lookup — get_matching_pids_from_hashmap • malan</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,10 @@
 
 
 
-<meta property="og:title" content="Populate haplotypes in pedigrees (custom founder/unbounded). — pedigrees_all_populate_haplotypes_custom_founders" />
+<meta property="og:title" content="Get individuals with a certain haplotype id by hashmap lookup — get_matching_pids_from_hashmap" />
 
-<meta property="og:description" content="Populate haplotypes from founder and down in all pedigrees.
-Note, that haplotypes are unbounded.
-All founders get a haplotype from calling the user
-provided function get_founder_haplotype()." />
+<meta property="og:description" content="By using hashmap made by build_haplotypeids_hashmap(),
+it is easy to get all individuals with a certain haplotype id." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -112,61 +110,40 @@ provided function get_founder_haplotype()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Populate haplotypes in pedigrees (custom founder/unbounded).</h1>
+    <h1>Get individuals with a certain haplotype id by hashmap lookup</h1>
     
-    <div class="hidden name"><code>pedigrees_all_populate_haplotypes_custom_founders.Rd</code></div>
+    <div class="hidden name"><code>get_matching_pids_from_hashmap.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Populate haplotypes from founder and down in all pedigrees.
-Note, that haplotypes are unbounded.
-All founders get a haplotype from calling the user
-provided function <code>get_founder_haplotype()</code>.</p>
+    <p>By using hashmap made by <code>build_haplotypeids_hashmap()</code>,
+it is easy to get all individuals with a certain haplotype id.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>pedigrees_all_populate_haplotypes_custom_founders</span>(<span class='no'>pedigrees</span>,
-  <span class='no'>mutation_rates</span>, <span class='kw'>get_founder_haplotype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>prob_two_step</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>prob_genealogical_error</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>get_matching_pids_from_hashmap</span>(<span class='no'>hashmap</span>, <span class='no'>haplotype</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pedigrees</th>
-      <td><p>Pedigree list in which to populate haplotypes</p></td>
+      <th>hashmap</th>
+      <td><p>Hashmap to make lookup in, made by <code>build_haplotypeids_hashmap()</code></p></td>
     </tr>
     <tr>
-      <th>mutation_rates</th>
-      <td><p>Vector with mutation rates</p></td>
-    </tr>
-    <tr>
-      <th>get_founder_haplotype</th>
-      <td><p>Function taking no arguments returning a haplotype of <code><a href='https://www.rdocumentation.org/packages/base/topics/length'>length(mutation_rates)</a></code></p></td>
-    </tr>
-    <tr>
-      <th>prob_two_step</th>
-      <td><p>Given a mutation happens, this is the probability that the mutation is a two-step mutation</p></td>
-    </tr>
-    <tr>
-      <th>prob_genealogical_error</th>
-      <td><p>Probability that a genealogical error happens: if so, give individual haplotype <code>get_founder_haplotype()</code> instead of father's</p></td>
-    </tr>
-    <tr>
-      <th>progress</th>
-      <td><p>Show progress</p></td>
+      <th>haplotype_id</th>
+      <td><p>to get individuals that has this haplotype id</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Note, that pedigrees must first have been inferred by <code><a href='build_pedigrees.html'>build_pedigrees()</a></code>.</p>
+    <p>List of individuals with a given haplotype id</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='pedigrees_all_populate_haplotypes.html'>pedigrees_all_populate_haplotypes()</a></code> and
-<code><a href='pedigrees_all_populate_haplotypes_ladder_bounded.html'>pedigrees_all_populate_haplotypes_ladder_bounded()</a></code>.</p></div>
+    <div class='dont-index'><p><code>build_haplotypeids_hashmap()</code>.</p></div>
     
 
   </div>
@@ -175,7 +152,7 @@ provided function <code>get_founder_haplotype()</code>.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
+      <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

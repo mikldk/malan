@@ -76,7 +76,7 @@
       <h1>Case study: Partial profiles</h1>
                         <h4 class="author">Mikkel Meyer Andersen</h4>
             
-            <h4 class="date">05 marts, 2019</h4>
+            <h4 class="date">20 marts, 2019</h4>
       
       
       <div class="hidden name"><code>case-study-partial.Rmd</code></div>
@@ -331,15 +331,15 @@ pop_live_matches &lt;-<span class="st"> </span><span class="kw"><a href="../refe
   <span class="dt">haplotype =</span> Q_hap)
 
 ped_live_matches</code></pre></div>
-<pre><code>## [1] 41</code></pre>
+<pre><code>## [1] 33</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pop_live_matches</code></pre></div>
-<pre><code>## [1] 41</code></pre>
+<pre><code>## [1] 33</code></pre>
 <p>We can also inspect pedigree matches information about number of meioses and <span class="math inline">\(L_1\)</span> distances:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">path_details &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists.html">pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists</a></span>(
   <span class="dt">suspect =</span> Q, 
   <span class="dt">generation_upper_bound_in_result =</span> <span class="dv">2</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(path_details)</code></pre></div>
-<pre><code>## [1] 41</code></pre>
+<pre><code>## [1] 33</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(path_details)</code></pre></div>
 <pre><code>##      meioses max_L1 pid
 ## [1,]       4      0 300

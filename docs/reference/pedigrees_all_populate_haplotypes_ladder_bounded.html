@@ -128,7 +128,7 @@ provided function <code>get_founder_haplotype()</code>.</p>
 
     <pre class="usage"><span class='fu'>pedigrees_all_populate_haplotypes_ladder_bounded</span>(<span class='no'>pedigrees</span>, <span class='no'>mutation_rates</span>,
   <span class='no'>ladder_min</span>, <span class='no'>ladder_max</span>, <span class='kw'>get_founder_haplotype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>prob_two_step</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>prob_two_step</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>prob_genealogical_error</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,6 +156,10 @@ provided function <code>get_founder_haplotype()</code>.</p>
     <tr>
       <th>prob_two_step</th>
       <td><p>Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries</p></td>
+    </tr>
+    <tr>
+      <th>prob_genealogical_error</th>
+      <td><p>Probability that a genealogical error happens: if so, give individual haplotype <code>get_founder_haplotype()</code> instead of father's</p></td>
     </tr>
     <tr>
       <th>progress</th>
