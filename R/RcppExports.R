@@ -1230,3 +1230,10 @@ test_create_population <- function() {
     .Call('_malan_test_create_population', PACKAGE = 'malan')
 }
 
+#' Generate paternal brothers population
+#' 
+#' @return An external pointer to the population.
+test_case_population_paternal_brothers <- function() {
+    .Call('_malan_test_case_population_paternal_brothers', PACKAGE = 'malan')
+}
+

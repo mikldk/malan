@@ -940,6 +940,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// test_case_population_paternal_brothers
+Rcpp::XPtr<Population> test_case_population_paternal_brothers();
+RcppExport SEXP _malan_test_case_population_paternal_brothers() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(test_case_population_paternal_brothers());
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_malan_build_pedigrees", (DL_FUNC) &_malan_build_pedigrees, 2},
@@ -1019,6 +1029,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_get_pedigree_as_graph", (DL_FUNC) &_malan_get_pedigree_as_graph, 1},
     {"_malan_get_pedigrees_tidy", (DL_FUNC) &_malan_get_pedigrees_tidy, 1},
     {"_malan_test_create_population", (DL_FUNC) &_malan_test_create_population, 0},
+    {"_malan_test_case_population_paternal_brothers", (DL_FUNC) &_malan_test_case_population_paternal_brothers, 0},
     {NULL, NULL, 0}
 };
 
