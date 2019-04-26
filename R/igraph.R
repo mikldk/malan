@@ -18,7 +18,7 @@
 #' get_generation(get_individual(pop, 4))
 #' get_generation(get_individual(pop, 5))
 #' 
-#' @importFrom igraph is_directed girth V get.edgelist
+#' @importFrom igraph is_directed girth V get.edgelist graph_from_literal
 #' @export
 from_igraph <- function(x, ...) {
   if (!is(x, "igraph")) stop("x must be an igraph")

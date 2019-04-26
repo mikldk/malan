@@ -80,8 +80,8 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You first need <code>R</code> (<a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a>). Then you can install <code>malan</code> from GitHub by using the <code>remotes</code> package (<a href="https://CRAN.R-project.org/package=remotes" class="uri">https://CRAN.R-project.org/package=remotes</a>):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("remotes")</span>
-remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"mikldk/malan"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># install.packages("remotes")</span></a>
+<a class="sourceLine" id="cb1-2" title="2">remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"mikldk/malan"</span>)</a></code></pre></div>
 <div id="for-mac-os-users" class="section level3">
 <h3 class="hasAnchor">
 <a href="#for-mac-os-users" class="anchor"></a>For Mac OS users</h3>
@@ -93,19 +93,19 @@ remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocument
 <a href="#getting-started" class="anchor"></a>Getting started</h2>
 <p>See documentation included in package (vignettes and manual) at <a href="https://mikldk.github.io/malan/" class="uri">https://mikldk.github.io/malan/</a>. The introduction vignette is available at <a href="https://mikldk.github.io/malan/articles/introduction.html" class="uri">https://mikldk.github.io/malan/articles/introduction.html</a>.</p>
 <p>You can also get an overview of the included vignettes by the following <code>R</code> command:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="dt">package =</span> <span class="st">"malan"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="dt">package =</span> <span class="st">"malan"</span>)</a></code></pre></div>
 <p>To read a vignette, type:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="st">"introduction"</span>, <span class="dt">package =</span> <span class="st">"malan"</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="st">"introduction"</span>, <span class="dt">package =</span> <span class="st">"malan"</span>)</a></code></pre></div>
 <div id="running-tests" class="section level3">
 <h3 class="hasAnchor">
 <a href="#running-tests" class="anchor"></a>Running tests</h3>
 <p>Note that to also install the tests, you need to install the package as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("remotes")</span>
-remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"mikldk/malan"</span>, <span class="dt">INSTALL_opts=</span><span class="st">"--install-tests"</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># install.packages("remotes")</span></a>
+<a class="sourceLine" id="cb4-2" title="2">remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"mikldk/malan"</span>, <span class="dt">INSTALL_opts=</span><span class="st">"--install-tests"</span>)</a></code></pre></div>
 <p>You can now run the tests:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(malan)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(testthat)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/testthat/topics/test_dir">test_package</a></span>(<span class="st">'malan'</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(malan)</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(testthat)</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/testthat/topics/test_dir">test_package</a></span>(<span class="st">'malan'</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="contribute-issues-and-support" class="section level2">
