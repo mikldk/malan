@@ -19,6 +19,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// from_igraph_rcpp
+Rcpp::XPtr<Population> from_igraph_rcpp(Rcpp::IntegerVector vertices, Rcpp::IntegerMatrix edges);
+RcppExport SEXP _malan_from_igraph_rcpp(SEXP verticesSEXP, SEXP edgesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type edges(edgesSEXP);
+    rcpp_result_gen = Rcpp::wrap(from_igraph_rcpp(vertices, edges));
+    return rcpp_result_gen;
+END_RCPP
+}
+// infer_generations
+void infer_generations(Rcpp::XPtr< std::vector<Pedigree*> > peds);
+RcppExport SEXP _malan_infer_generations(SEXP pedsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Pedigree*> > >::type peds(pedsSEXP);
+    infer_generations(peds);
+    return R_NilValue;
+END_RCPP
+}
 // load_individuals
 Rcpp::XPtr<Population> load_individuals(IntegerVector pid, IntegerVector pid_dad, bool progress, bool error_on_pid_not_found);
 RcppExport SEXP _malan_load_individuals(SEXP pidSEXP, SEXP pid_dadSEXP, SEXP progressSEXP, SEXP error_on_pid_not_foundSEXP) {
@@ -940,19 +962,11 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// test_case_population_paternal_brothers
-Rcpp::XPtr<Population> test_case_population_paternal_brothers();
-RcppExport SEXP _malan_test_case_population_paternal_brothers() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(test_case_population_paternal_brothers());
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_malan_build_pedigrees", (DL_FUNC) &_malan_build_pedigrees, 2},
+    {"_malan_from_igraph_rcpp", (DL_FUNC) &_malan_from_igraph_rcpp, 2},
+    {"_malan_infer_generations", (DL_FUNC) &_malan_infer_generations, 1},
     {"_malan_load_individuals", (DL_FUNC) &_malan_load_individuals, 4},
     {"_malan_sample_geneology", (DL_FUNC) &_malan_sample_geneology, 9},
     {"_malan_sample_geneology_varying_size", (DL_FUNC) &_malan_sample_geneology_varying_size, 7},
@@ -1029,7 +1043,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_get_pedigree_as_graph", (DL_FUNC) &_malan_get_pedigree_as_graph, 1},
     {"_malan_get_pedigrees_tidy", (DL_FUNC) &_malan_get_pedigrees_tidy, 1},
     {"_malan_test_create_population", (DL_FUNC) &_malan_test_create_population, 0},
-    {"_malan_test_case_population_paternal_brothers", (DL_FUNC) &_malan_test_case_population_paternal_brothers, 0},
     {NULL, NULL, 0}
 };
 

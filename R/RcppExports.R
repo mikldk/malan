@@ -20,6 +20,24 @@ build_pedigrees <- function(population, progress = TRUE) {
     .Call('_malan_build_pedigrees', PACKAGE = 'malan', population, progress)
 }
 
+#' Generate paternal brothers population
+#' 
+#' @return An external pointer to the population.
+from_igraph_rcpp <- function(vertices, edges) {
+    .Call('_malan_from_igraph_rcpp', PACKAGE = 'malan', vertices, edges)
+}
+
+#' Infer generation numbers from pedigrees
+#' 
+#' @param peds Pedigrees infered by [build_pedigrees()]
+#' 
+#' @return Nothing
+#' 
+#' @export
+infer_generations <- function(peds) {
+    invisible(.Call('_malan_infer_generations', PACKAGE = 'malan', peds))
+}
+
 #' Construct a population from data
 #' 
 #' Note that individuals loaded this way does not have information about generation.
@@ -1228,12 +1246,5 @@ get_pedigrees_tidy <- function(pedigrees) {
 #' @return An external pointer to the population.
 test_create_population <- function() {
     .Call('_malan_test_create_population', PACKAGE = 'malan')
-}
-
-#' Generate paternal brothers population
-#' 
-#' @return An external pointer to the population.
-test_case_population_paternal_brothers <- function() {
-    .Call('_malan_test_case_population_paternal_brothers', PACKAGE = 'malan')
 }
 
