@@ -26,7 +26,12 @@ from_igraph <- function(x, ...) {
   if (igraph::girth(x, circle = FALSE)$girth != 0L) stop("x must be a tree (or a forest)")
   
   nms_chr <- names(igraph::V(x))
-  nms <- strtoi(nms_chr)
+  nms <- seq_len(length(igraph::V(x)))
+  
+  if (!is.null(nms_chr)) {
+    # Names were given
+    nms <- strtoi(nms_chr)
+  }
   
   if (any(is.na(nms))) stop("x's vertices must have integer names (as they will pid's)")
   if (any(nms <= 0L)) stop("the vertex names must be positive integer")
@@ -36,6 +41,7 @@ from_igraph <- function(x, ...) {
   
   if (any(is.na(el))) stop("x's edges must be between positive integer named variables (as they will pid's)")
   if (any(el <= 0L)) stop("the edges must be between positive integers")
+  if (any(is.na(match(el, nms)))) stop("Edge between unknown vertices found")
   
   pop <- from_igraph_rcpp(nms, el)
     
