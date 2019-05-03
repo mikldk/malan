@@ -6,7 +6,7 @@
  @author Mikkel Meyer Andersen
  */
 
-#include <RcppArmadillo.h> // FIXME: Avoid Rcpp here? Only in api_* files?
+#include <RcppArmadillo.h>
 
 #include "malan_types.h"
 
@@ -31,21 +31,25 @@ public:
   Individual* get_root();
   
   void populate_haplotypes(
-      int loci, 
-      std::vector<double>& mutation_rates,
-      double prob_two_step = 0.0);
+      const int loci, 
+      const std::vector<double>& mutation_rates,
+      const Rcpp::Function& get_founder_hap,
+      const double prob_two_step = 0.0,
+      const double prob_genealogical_error = 0.0);
   
   void populate_haplotypes_custom_founders(
-      std::vector<double>& mutation_rates, 
-      Rcpp::Function get_founder_hap,
-      double prob_two_step = 0.0);
+      const std::vector<double>& mutation_rates, 
+      const Rcpp::Function& get_founder_hap,
+      const double prob_two_step = 0.0,
+      const double prob_genealogical_error = 0.0);
   
   void populate_haplotypes_ladder_bounded(
-      std::vector<double>& mutation_rates, 
-      std::vector<int>& ladder_min, 
-      std::vector<int>& ladder_max, 
-      Rcpp::Function get_founder_hap,
-      double prob_two_step = 0.0);
+      const std::vector<double>& mutation_rates, 
+      const std::vector<int>& ladder_min, 
+      const std::vector<int>& ladder_max, 
+      const Rcpp::Function& get_founder_hap,
+      const double prob_two_step = 0.0,
+      const double prob_genealogical_error = 0.0);
   
   void populate_autosomal(
     const std::vector< std::vector<double> >& allele_conditional_cumdists_theta,

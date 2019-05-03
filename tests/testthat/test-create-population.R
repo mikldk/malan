@@ -338,8 +338,79 @@ test_that("pedigrees_all_populate_haplotypes_ladder_bounded mut step 2 works", {
 
 
 
+###################################################
+# Genealogical error
+###################################################
+
+LOCI <- 5L
+
+if (FALSE) {
+  set.seed(20190320)
+  pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(.2, LOCI), prob_genealogical_error = 0.5, progress = FALSE)
+  plot(peds[[1]], haplotypes = TRUE)
+}
+
+#-------------
+
+set.seed(20190320)
+pedigrees_all_populate_haplotypes(peds, loci = LOCI, mutation_rates = rep(1, LOCI), prob_genealogical_error = 1, progress = FALSE)
+if (FALSE) {
+  plot(peds[[1]], haplotypes = TRUE)
+}
+test_that("pedigrees_all_populate_haplotypes genealogical error", {
+  # Max one mutation at each locus because prob_genealogical_error = 1 so each get 0 haplotype with mutations.
+  expect_equal(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))), c(-1L, 0L, 1L))
+})
+
+#-------------
+
+get_founder_h <- function() rep(-10L, LOCI)
+
+set.seed(20190320)
+pedigrees_all_populate_haplotypes_custom_founders(peds, 
+                                                  mutation_rates = rep(0.5, LOCI), 
+                                                  get_founder_haplotype = get_founder_h,
+                                                  prob_genealogical_error = 1,
+                                                  progress = FALSE)
+test_that("pedigrees_all_populate_haplotypes_custom_founders genealogical error", {
+  # Max one mutation at each locus because prob_genealogical_error = 1 so each get founder haplotype with mutations.
+  expect_equal(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))), c(-11L, -10L, -9L))
+})
 
 
+#-------------
+
+set.seed(20190320)
+pedigrees_all_populate_haplotypes_ladder_bounded(peds, 
+                                                 mutation_rates = rep(0.5, LOCI), 
+                                                 ladder_min = rep(-40L, LOCI),
+                                                 ladder_max = rep(40L, LOCI),
+                                                 get_founder_haplotype = get_founder_h,
+                                                 prob_genealogical_error = 1, 
+                                                 progress = FALSE)
+
+test_that("pedigrees_all_populate_haplotypes_ladder_bounded genealogical error", {
+  # Max one mutation at each locus because prob_genealogical_error = 1 so each get founder haplotype with mutations.
+  expect_equal(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))), c(-11L, -10L, -9L))
+})
+
+
+#-------------
+
+set.seed(20190320)
+pedigrees_all_populate_haplotypes_ladder_bounded(peds, 
+                                                 mutation_rates = rep(0.5, LOCI), 
+                                                 ladder_min = rep(-40L, LOCI),
+                                                 ladder_max = rep(40L, LOCI),
+                                                 get_founder_haplotype = get_founder_h,
+                                                 prob_two_step = 1,
+                                                 prob_genealogical_error = 1, 
+                                                 progress = FALSE)
+
+test_that("pedigrees_all_populate_haplotypes_ladder_bounded genealogical error", {
+  # 0 or 2 mutations at each locus because prob_two_step = prob_genealogical_error = 1 so each get founder haplotype with mutations.
+  expect_equal(sort(unique(unlist(get_haplotypes_in_pedigree(peds[[1]])))), c(-12L, -10L, -8L))
+})
 
 
 

@@ -29,6 +29,7 @@
 //' @param loci Number of loci
 //' @param mutation_rates Vector with mutation rates, length `loci`
 //' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
+//' @param prob_genealogical_error Probability that a genealogical error happens: if so, give individual haplotype `rep(0L, loci)` instead of father's
 //' @param progress Show progress
 //'
 //' @seealso [pedigrees_all_populate_haplotypes_custom_founders()] and 
@@ -37,10 +38,11 @@
 //' @export
 // [[Rcpp::export]]
 void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, 
-                                       int loci, 
-                                       Rcpp::NumericVector mutation_rates, 
-                                       double prob_two_step = 0.0,
-                                       bool progress = true) {
+                                       const int loci, 
+                                       const Rcpp::NumericVector& mutation_rates, 
+                                       const double prob_two_step = 0.0,
+                                       const double prob_genealogical_error = 0.0,
+                                       const bool progress = true) {
   std::vector<Pedigree*> peds = (*pedigrees);
   
   std::vector<double> mut_rates = Rcpp::as< std::vector<double> >(mutation_rates);
@@ -49,11 +51,14 @@ void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedi
     Rcpp::stop("Number of loci specified in haplotype must equal number of mutation rates specified");
   }
   
+  Rcpp::Function get_zero_haplotype_generator("get_zero_haplotype_generator");
+  Rcpp::Function g_founder_hap = get_zero_haplotype_generator(loci);
+  
   size_t N = peds.size();
   Progress p(N, progress);
   
   for (size_t i = 0; i < N; ++i) {
-    peds.at(i)->populate_haplotypes(loci, mut_rates, prob_two_step);
+    peds.at(i)->populate_haplotypes(loci, mut_rates, g_founder_hap, prob_two_step, prob_genealogical_error);
     
      if (i % CHECK_ABORT_EVERY == 0 && Progress::check_abort()) {
       Rcpp::stop("Aborted.");
@@ -78,6 +83,7 @@ void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedi
 //' @param mutation_rates Vector with mutation rates
 //' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
 //' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
+//' @param prob_genealogical_error Probability that a genealogical error happens: if so, give individual haplotype `get_founder_haplotype()` instead of father's
 //' @param progress Show progress
 //'
 //' @seealso [pedigrees_all_populate_haplotypes()] and 
@@ -86,10 +92,11 @@ void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedi
 //' @export
 // [[Rcpp::export]]
 void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, 
-                                       Rcpp::NumericVector mutation_rates,
-                                       Rcpp::Nullable<Rcpp::Function> get_founder_haplotype = R_NilValue,
-                                       double prob_two_step = 0.0,
-                                       bool progress = true) {
+                                                       const Rcpp::NumericVector mutation_rates,
+                                                       const Rcpp::Nullable<Rcpp::Function>& get_founder_haplotype = R_NilValue,
+                                                       const double prob_two_step = 0.0,
+                                                       const double prob_genealogical_error = 0.0,
+                                                       const bool progress = true) {
   std::vector<Pedigree*> peds = (*pedigrees);
   
   std::vector<double> mut_rates = Rcpp::as< std::vector<double> >(mutation_rates);
@@ -104,7 +111,7 @@ void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<P
   Progress p(N, progress);
   
   for (size_t i = 0; i < N; ++i) {
-    peds.at(i)->populate_haplotypes_custom_founders(mut_rates, g_founder_hap, prob_two_step);
+    peds.at(i)->populate_haplotypes_custom_founders(mut_rates, g_founder_hap, prob_two_step, prob_genealogical_error);
     
      if (i % CHECK_ABORT_EVERY == 0 && Progress::check_abort()) {
       Rcpp::stop("Aborted.");
@@ -135,6 +142,7 @@ void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<P
 //' @param ladder_max Upper bounds for haplotypes, same length as `mutation_rates`; all entries must be strictly greater than `ladder_min`
 //' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
 //' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries
+//' @param prob_genealogical_error Probability that a genealogical error happens: if so, give individual haplotype `get_founder_haplotype()` instead of father's
 //' @param progress Show progress
 //'
 //' @seealso [pedigrees_all_populate_haplotypes()] and 
@@ -143,12 +151,13 @@ void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<P
 //' @export
 // [[Rcpp::export]]
 void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, 
-                                                      Rcpp::NumericVector mutation_rates, 
-                                                      Rcpp::IntegerVector ladder_min,
-                                                      Rcpp::IntegerVector ladder_max,
-                                                      Rcpp::Nullable<Rcpp::Function> get_founder_haplotype = R_NilValue,
-                                                      double prob_two_step = 0.0,
-                                                      bool progress = true) {
+                                                      const Rcpp::NumericVector& mutation_rates, 
+                                                      const Rcpp::IntegerVector& ladder_min,
+                                                      const Rcpp::IntegerVector& ladder_max,
+                                                      const Rcpp::Nullable<Rcpp::Function>& get_founder_haplotype = R_NilValue,
+                                                      const double prob_two_step = 0.0,
+                                                      const double prob_genealogical_error = 0.0,
+                                                      const bool progress = true) {
 
   if (ladder_min.size() != ladder_max.size()) {
     Rcpp::stop("ladder_min and ladder_max must have same length");
@@ -190,7 +199,7 @@ void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pe
   Progress p(N, progress);
   
   for (size_t i = 0; i < N; ++i) {
-    peds.at(i)->populate_haplotypes_ladder_bounded(mut_rates, lad_min, lad_max, g_founder_hap, prob_two_step);
+    peds.at(i)->populate_haplotypes_ladder_bounded(mut_rates, lad_min, lad_max, g_founder_hap, prob_two_step, prob_genealogical_error);
     
      if (i % CHECK_ABORT_EVERY == 0 && Progress::check_abort()) {
       Rcpp::stop("Aborted.");
@@ -871,8 +880,6 @@ Rcpp::List split_by_haplotypes(Rcpp::XPtr<Population> population,
 
 
 
-
-
 //' Get individuals partially matching from list of individuals
 //' 
 //' Get the indvididuals that partially matches `haplotype` in `individuals`.
@@ -926,7 +933,7 @@ Rcpp::List haplotype_partially_matches_individuals(
     }
     
     std::vector<int> indv_h = indv->get_haplotype();
-
+    
     if (indv_h.size() != loci) {
       Rcpp::stop("haplotype and indv_h did not have same number of loci");
     }
@@ -951,3 +958,121 @@ Rcpp::List haplotype_partially_matches_individuals(
   
   return partial_matches;
 }
+
+
+
+
+
+
+
+//' Build hashmap of haplotype to individuals
+//' 
+//' Makes it possible to find all individuals' pid with a certain haplotype.
+//' Must be used with e.g. [get_matching_pids_from_hashmap()].
+//' 
+//' @param individuals List of individuals to build hashmap of
+//' @param progress Show progress?
+//' 
+//' @return External pointer to hashmap with haplotype as keys and vector of individuals' pid as value
+//' 
+//' @seealso [get_matching_pids_from_hashmap()].
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > build_haplotype_hashmap(
+    const Rcpp::List& individuals, bool progress = true) {
+  
+  int n = individuals.size();
+  Progress p(n, progress);
+  
+  std::unordered_map< std::vector<int>, std::vector<int>* >* hashtable = new std::unordered_map< std::vector<int>, std::vector<int>* >();
+
+  for (size_t i = 0; i < n; ++i) {
+    Rcpp::XPtr<Individual> indv = individuals[i];
+    std::vector<int> h = indv->get_haplotype();
+    int pid = indv->get_pid();
+    
+    std::unordered_map< std::vector<int>, std::vector<int>* >::iterator got = hashtable->find(h);
+    
+    if (got == hashtable->end()) {
+      std::vector<int>* h_pids = new std::vector<int>({ pid });
+      auto p = std::make_pair(h, h_pids);
+      hashtable->insert(p);
+    } else {
+      got->second->push_back(pid);
+    }
+  }
+  
+  Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > res(hashtable, RCPP_XPTR_2ND_ARG);
+  res.attr("class") = Rcpp::CharacterVector::create("malan_haplotype_hashmap", "externalptr");
+  
+  return res;
+}
+
+
+//' Delete haplotype hashmap
+//' 
+//' Delete hashmap made by [build_haplotype_hashmap()].
+//' 
+//' @param hashmap Hashmap made by [build_haplotype_hashmap()]
+//' 
+//' @seealso [get_matching_pids_from_hashmap()] 
+//' and [build_haplotype_hashmap()].
+//' 
+//' @export
+// [[Rcpp::export]]
+void delete_haplotypeids_hashmap(Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > hashmap) {
+  std::unordered_map< std::vector<int>, std::vector<int>* >* map = hashmap;
+  
+  for (auto const& pair: *map) {
+    delete pair.second;
+  }
+  
+  delete map;
+}
+
+
+
+
+//' Get individuals with a certain haplotype id by hashmap lookup
+//' 
+//' By using hashmap made by [build_haplotypeids_hashmap()], 
+//' it is easy to get all individuals with a certain haplotype id.
+//' 
+//' @param hashmap Hashmap to make lookup in, made by [build_haplotypeids_hashmap()]
+//' @param haplotype_id to get individuals that has this haplotype id
+//' 
+//' @return List of individuals with a given haplotype id
+//' 
+//' @seealso [build_haplotypeids_hashmap()].
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::IntegerVector get_matching_pids_from_hashmap(
+    const Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > >& hashmap,
+    const Rcpp::IntegerVector haplotype) {
+  
+  std::unordered_map< std::vector<int>, std::vector<int>* >* map = hashmap.get();
+  
+  if (map == nullptr) {
+    Rcpp::stop("hashmap was NULL pointer"); 
+  }
+
+  std::vector<int> x = Rcpp::as< std::vector<int> >(haplotype);
+  
+  Rcpp::IntegerVector ret_pids_empty;
+
+  std::unordered_map< std::vector<int>, std::vector<int>* >::const_iterator got = map->find(x);
+
+  if (got == map->end()) {
+    return ret_pids_empty; 
+  } else {
+    std::vector<int>* h = got->second;
+    Rcpp::IntegerVector ret_pids = Rcpp::wrap(*h);
+    return ret_pids;
+  }
+  
+  return ret_pids_empty;  
+}
+
+

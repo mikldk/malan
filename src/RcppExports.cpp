@@ -19,6 +19,42 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// from_igraph_rcpp
+Rcpp::XPtr<Population> from_igraph_rcpp(Rcpp::IntegerVector vertices, Rcpp::IntegerMatrix edges);
+RcppExport SEXP _malan_from_igraph_rcpp(SEXP verticesSEXP, SEXP edgesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type vertices(verticesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type edges(edgesSEXP);
+    rcpp_result_gen = Rcpp::wrap(from_igraph_rcpp(vertices, edges));
+    return rcpp_result_gen;
+END_RCPP
+}
+// infer_generations
+void infer_generations(Rcpp::XPtr< std::vector<Pedigree*> > peds);
+RcppExport SEXP _malan_infer_generations(SEXP pedsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Pedigree*> > >::type peds(pedsSEXP);
+    infer_generations(peds);
+    return R_NilValue;
+END_RCPP
+}
+// load_individuals
+Rcpp::XPtr<Population> load_individuals(IntegerVector pid, IntegerVector pid_dad, bool progress, bool error_on_pid_not_found);
+RcppExport SEXP _malan_load_individuals(SEXP pidSEXP, SEXP pid_dadSEXP, SEXP progressSEXP, SEXP error_on_pid_not_foundSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type pid(pidSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type pid_dad(pid_dadSEXP);
+    Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
+    Rcpp::traits::input_parameter< bool >::type error_on_pid_not_found(error_on_pid_not_foundSEXP);
+    rcpp_result_gen = Rcpp::wrap(load_individuals(pid, pid_dad, progress, error_on_pid_not_found));
+    return rcpp_result_gen;
+END_RCPP
+}
 // sample_geneology
 List sample_geneology(size_t population_size, int generations, int generations_full, int generations_return, bool enable_gamma_variance_extension, double gamma_parameter_shape, double gamma_parameter_scale, bool progress, bool verbose_result);
 RcppExport SEXP _malan_sample_geneology(SEXP population_sizeSEXP, SEXP generationsSEXP, SEXP generations_fullSEXP, SEXP generations_returnSEXP, SEXP enable_gamma_variance_extensionSEXP, SEXP gamma_parameter_shapeSEXP, SEXP gamma_parameter_scaleSEXP, SEXP progressSEXP, SEXP verbose_resultSEXP) {
@@ -238,46 +274,49 @@ BEGIN_RCPP
 END_RCPP
 }
 // pedigrees_all_populate_haplotypes
-void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, int loci, Rcpp::NumericVector mutation_rates, double prob_two_step, bool progress);
-RcppExport SEXP _malan_pedigrees_all_populate_haplotypes(SEXP pedigreesSEXP, SEXP lociSEXP, SEXP mutation_ratesSEXP, SEXP prob_two_stepSEXP, SEXP progressSEXP) {
+void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, const int loci, const Rcpp::NumericVector& mutation_rates, const double prob_two_step, const double prob_genealogical_error, const bool progress);
+RcppExport SEXP _malan_pedigrees_all_populate_haplotypes(SEXP pedigreesSEXP, SEXP lociSEXP, SEXP mutation_ratesSEXP, SEXP prob_two_stepSEXP, SEXP prob_genealogical_errorSEXP, SEXP progressSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Pedigree*> > >::type pedigrees(pedigreesSEXP);
-    Rcpp::traits::input_parameter< int >::type loci(lociSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mutation_rates(mutation_ratesSEXP);
-    Rcpp::traits::input_parameter< double >::type prob_two_step(prob_two_stepSEXP);
-    Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
-    pedigrees_all_populate_haplotypes(pedigrees, loci, mutation_rates, prob_two_step, progress);
+    Rcpp::traits::input_parameter< const int >::type loci(lociSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type mutation_rates(mutation_ratesSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob_two_step(prob_two_stepSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob_genealogical_error(prob_genealogical_errorSEXP);
+    Rcpp::traits::input_parameter< const bool >::type progress(progressSEXP);
+    pedigrees_all_populate_haplotypes(pedigrees, loci, mutation_rates, prob_two_step, prob_genealogical_error, progress);
     return R_NilValue;
 END_RCPP
 }
 // pedigrees_all_populate_haplotypes_custom_founders
-void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, Rcpp::NumericVector mutation_rates, Rcpp::Nullable<Rcpp::Function> get_founder_haplotype, double prob_two_step, bool progress);
-RcppExport SEXP _malan_pedigrees_all_populate_haplotypes_custom_founders(SEXP pedigreesSEXP, SEXP mutation_ratesSEXP, SEXP get_founder_haplotypeSEXP, SEXP prob_two_stepSEXP, SEXP progressSEXP) {
+void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, const Rcpp::NumericVector mutation_rates, const Rcpp::Nullable<Rcpp::Function>& get_founder_haplotype, const double prob_two_step, const double prob_genealogical_error, const bool progress);
+RcppExport SEXP _malan_pedigrees_all_populate_haplotypes_custom_founders(SEXP pedigreesSEXP, SEXP mutation_ratesSEXP, SEXP get_founder_haplotypeSEXP, SEXP prob_two_stepSEXP, SEXP prob_genealogical_errorSEXP, SEXP progressSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Pedigree*> > >::type pedigrees(pedigreesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mutation_rates(mutation_ratesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::Function> >::type get_founder_haplotype(get_founder_haplotypeSEXP);
-    Rcpp::traits::input_parameter< double >::type prob_two_step(prob_two_stepSEXP);
-    Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
-    pedigrees_all_populate_haplotypes_custom_founders(pedigrees, mutation_rates, get_founder_haplotype, prob_two_step, progress);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector >::type mutation_rates(mutation_ratesSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<Rcpp::Function>& >::type get_founder_haplotype(get_founder_haplotypeSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob_two_step(prob_two_stepSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob_genealogical_error(prob_genealogical_errorSEXP);
+    Rcpp::traits::input_parameter< const bool >::type progress(progressSEXP);
+    pedigrees_all_populate_haplotypes_custom_founders(pedigrees, mutation_rates, get_founder_haplotype, prob_two_step, prob_genealogical_error, progress);
     return R_NilValue;
 END_RCPP
 }
 // pedigrees_all_populate_haplotypes_ladder_bounded
-void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, Rcpp::NumericVector mutation_rates, Rcpp::IntegerVector ladder_min, Rcpp::IntegerVector ladder_max, Rcpp::Nullable<Rcpp::Function> get_founder_haplotype, double prob_two_step, bool progress);
-RcppExport SEXP _malan_pedigrees_all_populate_haplotypes_ladder_bounded(SEXP pedigreesSEXP, SEXP mutation_ratesSEXP, SEXP ladder_minSEXP, SEXP ladder_maxSEXP, SEXP get_founder_haplotypeSEXP, SEXP prob_two_stepSEXP, SEXP progressSEXP) {
+void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees, const Rcpp::NumericVector& mutation_rates, const Rcpp::IntegerVector& ladder_min, const Rcpp::IntegerVector& ladder_max, const Rcpp::Nullable<Rcpp::Function>& get_founder_haplotype, const double prob_two_step, const double prob_genealogical_error, const bool progress);
+RcppExport SEXP _malan_pedigrees_all_populate_haplotypes_ladder_bounded(SEXP pedigreesSEXP, SEXP mutation_ratesSEXP, SEXP ladder_minSEXP, SEXP ladder_maxSEXP, SEXP get_founder_haplotypeSEXP, SEXP prob_two_stepSEXP, SEXP prob_genealogical_errorSEXP, SEXP progressSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr< std::vector<Pedigree*> > >::type pedigrees(pedigreesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mutation_rates(mutation_ratesSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type ladder_min(ladder_minSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type ladder_max(ladder_maxSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::Function> >::type get_founder_haplotype(get_founder_haplotypeSEXP);
-    Rcpp::traits::input_parameter< double >::type prob_two_step(prob_two_stepSEXP);
-    Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
-    pedigrees_all_populate_haplotypes_ladder_bounded(pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype, prob_two_step, progress);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type mutation_rates(mutation_ratesSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type ladder_min(ladder_minSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector& >::type ladder_max(ladder_maxSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::Nullable<Rcpp::Function>& >::type get_founder_haplotype(get_founder_haplotypeSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob_two_step(prob_two_stepSEXP);
+    Rcpp::traits::input_parameter< const double >::type prob_genealogical_error(prob_genealogical_errorSEXP);
+    Rcpp::traits::input_parameter< const bool >::type progress(progressSEXP);
+    pedigrees_all_populate_haplotypes_ladder_bounded(pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype, prob_two_step, prob_genealogical_error, progress);
     return R_NilValue;
 END_RCPP
 }
@@ -436,6 +475,40 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const Rcpp::IntegerVector >::type haplotype(haplotypeSEXP);
     Rcpp::traits::input_parameter< const Rcpp::IntegerVector >::type ignore_loci(ignore_lociSEXP);
     rcpp_result_gen = Rcpp::wrap(haplotype_partially_matches_individuals(individuals, haplotype, ignore_loci));
+    return rcpp_result_gen;
+END_RCPP
+}
+// build_haplotype_hashmap
+Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > build_haplotype_hashmap(const Rcpp::List& individuals, bool progress);
+RcppExport SEXP _malan_build_haplotype_hashmap(SEXP individualsSEXP, SEXP progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type individuals(individualsSEXP);
+    Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(build_haplotype_hashmap(individuals, progress));
+    return rcpp_result_gen;
+END_RCPP
+}
+// delete_haplotypeids_hashmap
+void delete_haplotypeids_hashmap(Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > hashmap);
+RcppExport SEXP _malan_delete_haplotypeids_hashmap(SEXP hashmapSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > > >::type hashmap(hashmapSEXP);
+    delete_haplotypeids_hashmap(hashmap);
+    return R_NilValue;
+END_RCPP
+}
+// get_matching_pids_from_hashmap
+Rcpp::IntegerVector get_matching_pids_from_hashmap(const Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > >& hashmap, const Rcpp::IntegerVector haplotype);
+RcppExport SEXP _malan_get_matching_pids_from_hashmap(SEXP hashmapSEXP, SEXP haplotypeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::XPtr< std::unordered_map< std::vector<int>, std::vector<int>* > >& >::type hashmap(hashmapSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::IntegerVector >::type haplotype(haplotypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_matching_pids_from_hashmap(hashmap, haplotype));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -892,6 +965,9 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_malan_build_pedigrees", (DL_FUNC) &_malan_build_pedigrees, 2},
+    {"_malan_from_igraph_rcpp", (DL_FUNC) &_malan_from_igraph_rcpp, 2},
+    {"_malan_infer_generations", (DL_FUNC) &_malan_infer_generations, 1},
+    {"_malan_load_individuals", (DL_FUNC) &_malan_load_individuals, 4},
     {"_malan_sample_geneology", (DL_FUNC) &_malan_sample_geneology, 9},
     {"_malan_sample_geneology_varying_size", (DL_FUNC) &_malan_sample_geneology_varying_size, 7},
     {"_malan_calc_autosomal_genotype_probs", (DL_FUNC) &_malan_calc_autosomal_genotype_probs, 2},
@@ -909,9 +985,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_estimate_autotheta_subpops_individuals", (DL_FUNC) &_malan_estimate_autotheta_subpops_individuals, 2},
     {"_malan_estimate_autotheta_subpops_genotypes", (DL_FUNC) &_malan_estimate_autotheta_subpops_genotypes, 2},
     {"_malan_estimate_autotheta_subpops_pids", (DL_FUNC) &_malan_estimate_autotheta_subpops_pids, 3},
-    {"_malan_pedigrees_all_populate_haplotypes", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes, 5},
-    {"_malan_pedigrees_all_populate_haplotypes_custom_founders", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes_custom_founders, 5},
-    {"_malan_pedigrees_all_populate_haplotypes_ladder_bounded", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes_ladder_bounded, 7},
+    {"_malan_pedigrees_all_populate_haplotypes", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes, 6},
+    {"_malan_pedigrees_all_populate_haplotypes_custom_founders", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes_custom_founders, 6},
+    {"_malan_pedigrees_all_populate_haplotypes_ladder_bounded", (DL_FUNC) &_malan_pedigrees_all_populate_haplotypes_ladder_bounded, 8},
     {"_malan_get_haplotype", (DL_FUNC) &_malan_get_haplotype, 1},
     {"_malan_get_haplotypes_individuals", (DL_FUNC) &_malan_get_haplotypes_individuals, 1},
     {"_malan_get_haplotypes_pids", (DL_FUNC) &_malan_get_haplotypes_pids, 2},
@@ -925,6 +1001,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_haplotypes_to_hashes", (DL_FUNC) &_malan_haplotypes_to_hashes, 2},
     {"_malan_split_by_haplotypes", (DL_FUNC) &_malan_split_by_haplotypes, 2},
     {"_malan_haplotype_partially_matches_individuals", (DL_FUNC) &_malan_haplotype_partially_matches_individuals, 3},
+    {"_malan_build_haplotype_hashmap", (DL_FUNC) &_malan_build_haplotype_hashmap, 2},
+    {"_malan_delete_haplotypeids_hashmap", (DL_FUNC) &_malan_delete_haplotypeids_hashmap, 1},
+    {"_malan_get_matching_pids_from_hashmap", (DL_FUNC) &_malan_get_matching_pids_from_hashmap, 2},
     {"_malan_get_individual", (DL_FUNC) &_malan_get_individual, 2},
     {"_malan_get_pid", (DL_FUNC) &_malan_get_pid, 1},
     {"_malan_print_individual", (DL_FUNC) &_malan_print_individual, 1},

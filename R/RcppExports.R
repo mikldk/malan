@@ -20,6 +20,36 @@ build_pedigrees <- function(population, progress = TRUE) {
     .Call('_malan_build_pedigrees', PACKAGE = 'malan', population, progress)
 }
 
+#' Generate paternal brothers population
+#' 
+#' @return An external pointer to the population.
+from_igraph_rcpp <- function(vertices, edges) {
+    .Call('_malan_from_igraph_rcpp', PACKAGE = 'malan', vertices, edges)
+}
+
+#' Infer generation numbers from pedigrees
+#' 
+#' @param peds Pedigrees infered by [build_pedigrees()]
+#' 
+#' @return Nothing
+#' 
+#' @export
+infer_generations <- function(peds) {
+    invisible(.Call('_malan_infer_generations', PACKAGE = 'malan', peds))
+}
+
+#' Construct a population from data
+#' 
+#' Note that individuals loaded this way does not have information about generation.
+#' 
+#' @param pid ID of male
+#' @param pid_dad ID of male's father, 0 if not known
+#' 
+#' @export
+load_individuals <- function(pid, pid_dad, progress = TRUE, error_on_pid_not_found = TRUE) {
+    .Call('_malan_load_individuals', PACKAGE = 'malan', pid, pid_dad, progress, error_on_pid_not_found)
+}
+
 #' Simulate a geneology with constant population size.
 #' 
 #' This function simulates a geneology where the last generation has `population_size` individuals. 
@@ -404,14 +434,15 @@ estimate_autotheta_subpops_pids <- function(population, subpops, subpops_sizes) 
 #' @param loci Number of loci
 #' @param mutation_rates Vector with mutation rates, length `loci`
 #' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
+#' @param prob_genealogical_error Probability that a genealogical error happens: if so, give individual haplotype `rep(0L, loci)` instead of father's
 #' @param progress Show progress
 #'
 #' @seealso [pedigrees_all_populate_haplotypes_custom_founders()] and 
 #' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 #' 
 #' @export
-pedigrees_all_populate_haplotypes <- function(pedigrees, loci, mutation_rates, prob_two_step = 0.0, progress = TRUE) {
-    invisible(.Call('_malan_pedigrees_all_populate_haplotypes', PACKAGE = 'malan', pedigrees, loci, mutation_rates, prob_two_step, progress))
+pedigrees_all_populate_haplotypes <- function(pedigrees, loci, mutation_rates, prob_two_step = 0.0, prob_genealogical_error = 0.0, progress = TRUE) {
+    invisible(.Call('_malan_pedigrees_all_populate_haplotypes', PACKAGE = 'malan', pedigrees, loci, mutation_rates, prob_two_step, prob_genealogical_error, progress))
 }
 
 #' Populate haplotypes in pedigrees (custom founder/unbounded).
@@ -427,14 +458,15 @@ pedigrees_all_populate_haplotypes <- function(pedigrees, loci, mutation_rates, p
 #' @param mutation_rates Vector with mutation rates
 #' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
 #' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
+#' @param prob_genealogical_error Probability that a genealogical error happens: if so, give individual haplotype `get_founder_haplotype()` instead of father's
 #' @param progress Show progress
 #'
 #' @seealso [pedigrees_all_populate_haplotypes()] and 
 #' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 #' 
 #' @export
-pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutation_rates, get_founder_haplotype = NULL, prob_two_step = 0.0, progress = TRUE) {
-    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_custom_founders', PACKAGE = 'malan', pedigrees, mutation_rates, get_founder_haplotype, prob_two_step, progress))
+pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutation_rates, get_founder_haplotype = NULL, prob_two_step = 0.0, prob_genealogical_error = 0.0, progress = TRUE) {
+    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_custom_founders', PACKAGE = 'malan', pedigrees, mutation_rates, get_founder_haplotype, prob_two_step, prob_genealogical_error, progress))
 }
 
 #' Populate haplotypes in pedigrees (custom founder/bounded).
@@ -456,14 +488,15 @@ pedigrees_all_populate_haplotypes_custom_founders <- function(pedigrees, mutatio
 #' @param ladder_max Upper bounds for haplotypes, same length as `mutation_rates`; all entries must be strictly greater than `ladder_min`
 #' @param get_founder_haplotype Function taking no arguments returning a haplotype of `length(mutation_rates)`
 #' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries
+#' @param prob_genealogical_error Probability that a genealogical error happens: if so, give individual haplotype `get_founder_haplotype()` instead of father's
 #' @param progress Show progress
 #'
 #' @seealso [pedigrees_all_populate_haplotypes()] and 
 #' [pedigrees_all_populate_haplotypes_custom_founders()].
 #' 
 #' @export
-pedigrees_all_populate_haplotypes_ladder_bounded <- function(pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype = NULL, prob_two_step = 0.0, progress = TRUE) {
-    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_ladder_bounded', PACKAGE = 'malan', pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype, prob_two_step, progress))
+pedigrees_all_populate_haplotypes_ladder_bounded <- function(pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype = NULL, prob_two_step = 0.0, prob_genealogical_error = 0.0, progress = TRUE) {
+    invisible(.Call('_malan_pedigrees_all_populate_haplotypes_ladder_bounded', PACKAGE = 'malan', pedigrees, mutation_rates, ladder_min, ladder_max, get_founder_haplotype, prob_two_step, prob_genealogical_error, progress))
 }
 
 #' Get haplotype from an individual
@@ -715,6 +748,54 @@ split_by_haplotypes <- function(population, pids) {
 #' @export
 haplotype_partially_matches_individuals <- function(individuals, haplotype, ignore_loci = as.integer( c())) {
     .Call('_malan_haplotype_partially_matches_individuals', PACKAGE = 'malan', individuals, haplotype, ignore_loci)
+}
+
+#' Build hashmap of haplotype to individuals
+#' 
+#' Makes it possible to find all individuals' pid with a certain haplotype.
+#' Must be used with e.g. [get_matching_pids_from_hashmap()].
+#' 
+#' @param individuals List of individuals to build hashmap of
+#' @param progress Show progress?
+#' 
+#' @return External pointer to hashmap with haplotype as keys and vector of individuals' pid as value
+#' 
+#' @seealso [get_matching_pids_from_hashmap()].
+#' 
+#' @export
+build_haplotype_hashmap <- function(individuals, progress = TRUE) {
+    .Call('_malan_build_haplotype_hashmap', PACKAGE = 'malan', individuals, progress)
+}
+
+#' Delete haplotype hashmap
+#' 
+#' Delete hashmap made by [build_haplotype_hashmap()].
+#' 
+#' @param hashmap Hashmap made by [build_haplotype_hashmap()]
+#' 
+#' @seealso [get_matching_pids_from_hashmap()] 
+#' and [build_haplotype_hashmap()].
+#' 
+#' @export
+delete_haplotypeids_hashmap <- function(hashmap) {
+    invisible(.Call('_malan_delete_haplotypeids_hashmap', PACKAGE = 'malan', hashmap))
+}
+
+#' Get individuals with a certain haplotype id by hashmap lookup
+#' 
+#' By using hashmap made by [build_haplotypeids_hashmap()], 
+#' it is easy to get all individuals with a certain haplotype id.
+#' 
+#' @param hashmap Hashmap to make lookup in, made by [build_haplotypeids_hashmap()]
+#' @param haplotype_id to get individuals that has this haplotype id
+#' 
+#' @return List of individuals with a given haplotype id
+#' 
+#' @seealso [build_haplotypeids_hashmap()].
+#' 
+#' @export
+get_matching_pids_from_hashmap <- function(hashmap, haplotype) {
+    .Call('_malan_get_matching_pids_from_hashmap', PACKAGE = 'malan', hashmap, haplotype)
 }
 
 #' Get individual by pid

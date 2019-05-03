@@ -27,3 +27,13 @@ generate_get_founder_haplotype_db <- function(db) {
   }
 }
 
+#' Generate a function to generate the zero haplotype
+#' 
+#' @param loci Number of loci
+#' @export
+get_zero_haplotype_generator <- function(loci) {
+  f <- function() {
+    rep(0L, loci)
+  }
+  return(f)
+}

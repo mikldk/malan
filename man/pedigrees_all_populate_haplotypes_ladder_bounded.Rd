@@ -6,7 +6,7 @@
 \usage{
 pedigrees_all_populate_haplotypes_ladder_bounded(pedigrees, mutation_rates,
   ladder_min, ladder_max, get_founder_haplotype = NULL,
-  prob_two_step = 0, progress = TRUE)
+  prob_two_step = 0, prob_genealogical_error = 0, progress = TRUE)
 }
 \arguments{
 \item{pedigrees}{Pedigree list in which to populate haplotypes}
@@ -20,6 +20,8 @@ pedigrees_all_populate_haplotypes_ladder_bounded(pedigrees, mutation_rates,
 \item{get_founder_haplotype}{Function taking no arguments returning a haplotype of \code{length(mutation_rates)}}
 
 \item{prob_two_step}{Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries}
+
+\item{prob_genealogical_error}{Probability that a genealogical error happens: if so, give individual haplotype \code{get_founder_haplotype()} instead of father's}
 
 \item{progress}{Show progress}
 }

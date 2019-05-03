@@ -210,6 +210,8 @@ std::map<int, std::map<int, int> > meioses_generation_distribution_OLD(Rcpp::XPt
   for (auto dest : *family) {    
     int generation = dest->get_generation();
     
+    NOTE THAT generation is -1 for individuals from load_data(); check it
+    
     if (generation_upper_bound != -1 && generation > generation_upper_bound) {
       continue;
     }
@@ -314,3 +316,46 @@ IntegerMatrix meiosis_dist_tree_matrix(Rcpp::XPtr<Pedigree> ped) {
 
 */
 
+
+
+/*
+
+//' Generate paternal brothers population
+//' 
+//' @return An external pointer to the population.
+// [[Rcpp::export]]
+Rcpp::XPtr<Population> test_case_population_paternal_brothers() {
+  
+  // pid's are garanteed to be unique
+  std::unordered_map<int, Individual*>* population_map = 
+    new std::unordered_map<int, Individual*>(); 
+  
+  Population* population = new Population(population_map);
+  Rcpp::XPtr<Population> population_xptr(population, RCPP_XPTR_2ND_ARG);
+  population_xptr.attr("class") = CharacterVector::create("malan_population", "externalptr");
+  
+  //////////
+  
+  std::vector<Individual*> indvs;
+  
+  Individual* i1 = new Individual(1, 0); indvs.push_back(i1);
+  Individual* i2 = new Individual(2, 0); indvs.push_back(i2);
+  Individual* i3 = new Individual(3, 0); indvs.push_back(i3);
+  
+  
+  * G1     1
+  *       / \
+  * G0   2   3
+  *
+  i1->add_child(i2);
+  i1->add_child(i3);
+  
+  for (auto i : indvs) {
+    (*population_map)[i->get_pid()] = i;
+  }
+  
+  return population_xptr;
+}
+
+*/
+  

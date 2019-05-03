@@ -17,6 +17,11 @@
 Individual
 ==========================================
 */
+Individual::Individual(int pid) {
+  m_pid = pid;
+  m_children = new std::vector<Individual*>();
+}
+
 Individual::Individual(int pid, int generation) {
   m_pid = pid;
   m_generation = generation;
@@ -33,7 +38,15 @@ int Individual::get_pid() const {
 }
 
 int Individual::get_generation() const {
+  if (m_generation == -1) {
+    Rcpp::stop("Generation not set (indviduals created with load_data()). Unexpected.");
+  }
+  
   return m_generation;
+}
+
+void Individual::set_generation(int generation) {
+  m_generation = generation;
 }
 
 void Individual::add_child(Individual* child) {
@@ -188,8 +201,8 @@ Father haplotype
 FIXME mutation_model?
 */
 void Individual::haplotype_mutate(
-    std::vector<double>& mutation_rates, 
-    double prob_two_step) {
+    const std::vector<double>& mutation_rates, 
+    const double prob_two_step) {
   
   if (!m_haplotype_set) {
     throw std::invalid_argument("Father haplotype not set yet, so cannot mutate");
@@ -223,10 +236,10 @@ void Individual::haplotype_mutate(
 // Two-step mutations in ladder boundary direction not allowed at distance 1 to ladder boundaries.
 // Convention: If two-step mutation happens at allele in distance 1 to a boundary, then mutate away.
 void Individual::haplotype_mutate_ladder_bounded(
-    std::vector<double>& mutation_rates, 
-    std::vector<int>& ladder_min, 
-    std::vector<int>& ladder_max,
-    double prob_two_step) {
+    const std::vector<double>& mutation_rates, 
+    const std::vector<int>& ladder_min, 
+    const std::vector<int>& ladder_max,
+    const double prob_two_step) {
   
   if (!m_haplotype_set) {
     throw std::invalid_argument("Father haplotype not set yet, so cannot mutate");
@@ -322,33 +335,51 @@ std::vector<int> Individual::get_haplotype() const {
 }
 
 void Individual::pass_haplotype_to_children(
-    bool recursive, 
-    std::vector<double>& mutation_rates, 
-    double prob_two_step) {
+    const bool recursive, 
+    const std::vector<double>& mutation_rates, 
+    const Rcpp::Function& get_founder_hap,
+    const double prob_two_step,
+    const double prob_genealogical_error) {
   
   for (auto &child : (*m_children)) {
-    child->set_haplotype(m_haplotype);
+    if (R::runif(0.0, 1.0) < prob_genealogical_error) {
+      std::vector<int> h = Rcpp::as< std::vector<int> >( get_founder_hap() );
+      child->set_haplotype(h);
+    } else {
+      child->set_haplotype(m_haplotype);
+    }
+
     child->haplotype_mutate(mutation_rates, prob_two_step);
     
     if (recursive) {
-      child->pass_haplotype_to_children(recursive, mutation_rates, prob_two_step);
+      child->pass_haplotype_to_children(recursive, mutation_rates, 
+                                        get_founder_hap, prob_two_step, prob_genealogical_error);
     }
   }
 }
 
 void Individual::pass_haplotype_to_children_ladder_bounded(
-    bool recursive, 
-    std::vector<double>& mutation_rates, 
-    std::vector<int>& ladder_min, 
-    std::vector<int>& ladder_max,
-    double prob_two_step) {
+    const bool recursive, 
+    const std::vector<double>& mutation_rates, 
+    const std::vector<int>& ladder_min, 
+    const std::vector<int>& ladder_max,
+    const Rcpp::Function& get_founder_hap,
+    const double prob_two_step,
+    const double prob_genealogical_error) {
   
   for (auto &child : (*m_children)) {
-    child->set_haplotype(m_haplotype);
+    if (R::runif(0.0, 1.0) < prob_genealogical_error) {
+      std::vector<int> h = Rcpp::as< std::vector<int> >( get_founder_hap() );
+      child->set_haplotype(h);
+    } else {
+      child->set_haplotype(m_haplotype);
+    }
+    
     child->haplotype_mutate_ladder_bounded(mutation_rates, ladder_min, ladder_max, prob_two_step);
     
     if (recursive) {
-      child->pass_haplotype_to_children_ladder_bounded(recursive, mutation_rates, ladder_min, ladder_max, prob_two_step);
+      child->pass_haplotype_to_children_ladder_bounded(recursive, mutation_rates, ladder_min, ladder_max, 
+                                                       get_founder_hap, prob_two_step, prob_genealogical_error);
     }
   }
 }
