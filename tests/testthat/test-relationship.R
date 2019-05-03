@@ -24,4 +24,12 @@ test_that("relationship_allele_diff_dist()", {
   
   expect_equal(relationship_allele_diff_dist(2, mu/2, mu/2), 
                data.frame(d = (-2):2, p = c(p_2, p_1, p_0, p_1, p_2)))
+  
+  
+  # Verify non-symmetry for mu_dw != mu_up:
+  mu <- 3e-3
+  p_100 <- relationship_allele_diff_dist(100, mu/4, 3*mu/4)
+  p_100_1s <- subset(p_100, d == -1L | d == 1L)
+  p_100_1s
+  expect_true(!isTRUE(all.equal(p_100_1s$p[1], p_100_1s$p[2])))
 })

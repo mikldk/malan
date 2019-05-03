@@ -20,7 +20,7 @@ construct_M <- function(meioses, mu_dw, mu_up) {
   stopifnot(mu_dw + mu_up <= 1)
   
   
-  M <- diag(x = 1-(mu_up + mu_dw), nrow = 2*meioses + 1)
+  M <- diag(x = 1 - (mu_up + mu_dw), nrow = 2*meioses + 1)
   
   for (i in seq_len(2*meioses)) {
     M[i, i+1] <- mu_dw
@@ -44,20 +44,31 @@ relationship_allele_diff_dist <- function(meioses, mu_dw, mu_up) {
   M <- construct_M(meioses, mu_dw, mu_up)
   
   # NOTE: Exploit tridiaginal Toepliz matrix insted
-  M_eig <- eigen(M, symmetric = TRUE)
+  M_eig <- eigen(M)
   
   # M^k = P D^k P^-
   D <- diag(M_eig$values^meioses)
   P <- M_eig$vectors
-  #Pinv <- solve(P)
-  # P is orthogonal because all eigenvalues are distinct and then symmetric matrices have orthogonal eigenvectors
-  Pinv <- t(P) 
+  Pinv <- solve(P)
+  # Pinv <- t(P) if mu_dw = mu_up because then is P orthogonal 
+  # as all eigenvalues are distinct and then symmetric matrices 
+  # have orthogonal eigenvectors
   
   M_m <- P %*% D %*% Pinv
   p_0 <- matrix(0, 2*meioses + 1, 1)
   p_0[meioses+1] <- 1
   
   p_m <- M_m %*% p_0
+  
+  if (max(abs(Im(p_m))) > 10e-9) {
+    stop("Imaginary probability occured.")
+  }
+  
+  p_m <- Re(p_m)
+  
+  if (!isTRUE(all.equal(sum(p_m), 1))) {
+    stop("Probabilities summed to ", sum(p_m), " instead of 1")
+  }
   
   res <- data.frame(d = (-meioses):meioses, p = p_m)
   return(res)
