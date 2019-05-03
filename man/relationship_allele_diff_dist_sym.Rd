@@ -4,12 +4,14 @@
 \alias{relationship_allele_diff_dist_sym}
 \title{Calculate distribution of allele difference for symmetric mutation rates}
 \usage{
-relationship_allele_diff_dist_sym(meioses, mu_updw)
+relationship_allele_diff_dist_sym(meioses, mu_updw, use_R_eigen = FALSE)
 }
 \arguments{
 \item{meioses}{number of meioses separating the two individuals}
 
 \item{mu_updw}{mutation rate for 1-step down- and up-mutations, i.e. total mutation rate is \code{2*mu_updw}}
+
+\item{use_R_eigen}{Use \code{R}'s \code{\link[=eigen]{eigen()}} function or explicit calculation. Mostly for debugging.}
 }
 \value{
 \code{data.frame} with columns \code{d} (allele difference) and \code{p} (prob)

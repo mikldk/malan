@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Split pids by haplotype — split_by_haplotypes • malan</title>
+<title>Calculate distribution of allele difference for symmetric mutation rates — relationship_allele_diff_dist_sym • malan</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="Split pids by haplotype — split_by_haplotypes" />
+<meta property="og:title" content="Calculate distribution of allele difference for symmetric mutation rates — relationship_allele_diff_dist_sym" />
 
-<meta property="og:description" content="Individuals with the same haplotype will be in the same group
-and individuals with different haplotypes will be in different groups." />
+<meta property="og:description" content="Calculate distribution of allele difference after m meioses." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,37 +109,39 @@ and individuals with different haplotypes will be in different groups." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Split pids by haplotype</h1>
+    <h1>Calculate distribution of allele difference for symmetric mutation rates</h1>
     
-    <div class="hidden name"><code>split_by_haplotypes.Rd</code></div>
+    <div class="hidden name"><code>relationship_allele_diff_dist_sym.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Individuals with the same haplotype will be in the same group
-and individuals with different haplotypes will be in different groups.</p>
+    <p>Calculate distribution of allele difference after <code>m</code> meioses.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>split_by_haplotypes</span>(<span class='no'>population</span>, <span class='no'>pids</span>)</pre>
+    <pre class="usage"><span class='fu'>relationship_allele_diff_dist_sym</span>(<span class='no'>meioses</span>, <span class='no'>mu_updw</span>, <span class='kw'>use_R_eigen</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>population</th>
-      <td><p>Population obtained from simulation</p></td>
+      <th>meioses</th>
+      <td><p>number of meioses separating the two individuals</p></td>
     </tr>
     <tr>
-      <th>pids</th>
-      <td><p>Vector of individual pids</p></td>
+      <th>mu_updw</th>
+      <td><p>mutation rate for 1-step down- and up-mutations, i.e. total mutation rate is <code>2*mu_updw</code></p></td>
+    </tr>
+    <tr>
+      <th>use_R_eigen</th>
+      <td><p>Use <code>R</code>'s <code><a href='https://www.rdocumentation.org/packages/base/topics/eigen'>eigen()</a></code> function or explicit calculation. Mostly for debugging.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>List of integer vector, element i is an IntegerVector
-with all pids from <code>pids</code> with the same haplotype</p>
+    <p><code>data.frame</code> with columns <code>d</code> (allele difference) and <code>p</code> (prob)</p>
     
 
   </div>

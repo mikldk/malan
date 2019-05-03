@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">malan</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9010</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>relationship_allele_diff_dist</span>(<span class='no'>meioses</span>, <span class='no'>mu_dw</span>, <span class='no'>mu_up</span>)</pre>
+    <pre class="usage"><span class='fu'>relationship_allele_diff_dist</span>(<span class='no'>meioses</span>, <span class='no'>mu_dw</span>, <span class='no'>mu_up</span>, <span class='kw'>use_R_eigen</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -136,6 +136,10 @@
     <tr>
       <th>mu_up</th>
       <td><p>mutation rate for 1-step up-mutation</p></td>
+    </tr>
+    <tr>
+      <th>use_R_eigen</th>
+      <td><p>Use <code>R</code>'s <code><a href='https://www.rdocumentation.org/packages/base/topics/eigen'>eigen()</a></code> function or explicit calculation. Mostly for debugging.</p></td>
     </tr>
     </table>
     

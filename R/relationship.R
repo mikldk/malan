@@ -12,10 +12,10 @@ construct_M <- function(meioses, mu_dw, mu_up) {
   stopifnot(meioses >= 0L)
   
   stopifnot(length(mu_dw) == 1L)
-  stopifnot(mu_dw >= 0 && mu_dw <= 1)
+  stopifnot(mu_dw > 0 && mu_dw <= 1)
   
   stopifnot(length(mu_up) == 1L)
-  stopifnot(mu_up >= 0 && mu_up <= 1)
+  stopifnot(mu_up > 0 && mu_up <= 1)
   
   stopifnot(mu_dw + mu_up <= 1)
   
@@ -30,7 +30,7 @@ construct_M <- function(meioses, mu_dw, mu_up) {
   return(M)
 }
 
-relationship_allele_diff_dist_sym_worker <- function(meioses, P, D, Pinv) {
+relationship_allele_diff_dist_worker <- function(meioses, P, D, Pinv) {
   M_m <- P %*% D %*% Pinv
   p_0 <- matrix(0, 2*meioses + 1, 1)
   p_0[meioses + 1] <- 1
@@ -64,17 +64,15 @@ relationship_allele_diff_dist_sym_worker <- function(meioses, P, D, Pinv) {
 #' 
 #' @inheritParams construct_M
 #' @param mu_updw mutation rate for 1-step down- and up-mutations, i.e. total mutation rate is `2*mu_updw`
+#' @param use_R_eigen Use `R`'s [eigen()] function or explicit calculation. Mostly for debugging.  
 #' 
 #' @return `data.frame` with columns `d` (allele difference) and `p` (prob)
 #' 
 #' @export
-relationship_allele_diff_dist_sym <- function(meioses, mu_updw) {
+relationship_allele_diff_dist_sym <- function(meioses, mu_updw, use_R_eigen = FALSE) {
   # parameters are validated in construct_M:
   M <- construct_M(meioses, mu_updw, mu_updw)
 
-  # @param use_R_eigen Use `R`'s [eigen()] function or explicit calculation. Mostly for debugging.  
-  use_R_eigen <- TRUE
-  
   eigvals <- NULL
   P <- NULL
   
@@ -84,12 +82,10 @@ relationship_allele_diff_dist_sym <- function(meioses, mu_updw) {
     P <- M_eig$vectors
   } else {
     delta <- 1 - (mu_updw + mu_updw)
-    sigma <- mu_updw
-    tau <- mu_updw
     n <- 2*meioses + 1
     
-    # (4) in http://www.math.kent.edu/~reichel/publications/toep3.pdf
-    eigvals <- delta + 2*sqrt(sigma*tau)*cos(pi*seq_len(n)/(n+1))
+    # (4)/(7) in http://www.math.kent.edu/~reichel/publications/toep3.pdf
+    eigvals <- delta + 2*mu_updw*cos(pi*seq_len(n)/(n+1))
     
     if (FALSE) {
       max(abs(eigvals - eigen(M, symmetric = TRUE)$values))
@@ -97,19 +93,23 @@ relationship_allele_diff_dist_sym <- function(meioses, mu_updw) {
     
     # Eigen vectors
     n <- 2*meioses + 1
-    x <- seq_len(n)
-    A <- outer(x, x, FUN = "*")
-    B <- sin(pi*A / (n + 1))
-    D <- apply(B, 2, function(x) x / norm(x, type = "2"))
-    #D
+    D <- matrix(0, n, n)
+    for (h in seq_len(n)) {
+      for (k in seq_len(n)) {
+        D[k, h] <- sin(h*k*pi / (n + 1))
+      }
+      D[, h] <- D[, h] / norm(D[, h], type = "2")
+    }
     
     if (FALSE) {
-      apply(B, 2, function(x) norm(x, type = "2"))
-      max(abs(D - eigen(M, symmetric = TRUE)$vectors))
+      diffs <- unlist(lapply(seq_len(n), function(i) {
+        M %*% D[, i] - eigvals[i] * D[, i]
+      }))
+      max(abs(diffs))
     }
+    
     P <- D
   }
-  # NOTE: Exploit tridiaginal Toepliz matrix instead
   
   D <- diag(eigvals^meioses)
   
@@ -118,7 +118,7 @@ relationship_allele_diff_dist_sym <- function(meioses, mu_updw) {
   # as all eigenvalues are distinct and then symmetric matrices 
   # have orthogonal eigenvectors
   
-  res <- relationship_allele_diff_dist_sym_worker(meioses, P, D, Pinv)
+  res <- relationship_allele_diff_dist_worker(meioses, P, D, Pinv)
   
   return(res)
 }
@@ -129,18 +129,15 @@ relationship_allele_diff_dist_sym <- function(meioses, mu_updw) {
 #' Calculate distribution of allele difference after `m` meioses.
 #' 
 #' @inheritParams construct_M
+#' @param use_R_eigen Use `R`'s [eigen()] function or explicit calculation. Mostly for debugging.  
 #' 
 #' @return `data.frame` with columns `d` (allele difference) and `p` (prob)
 #' 
 #' @export
-relationship_allele_diff_dist <- function(meioses, mu_dw, mu_up) {
+relationship_allele_diff_dist <- function(meioses, mu_dw, mu_up, use_R_eigen = FALSE) {
   # parameters are validated in construct_M:
   M <- construct_M(meioses, mu_dw, mu_up)
 
-  # @param use_R_eigen Use `R`'s [eigen()] function or explicit calculation. Mostly for debugging.  
-  use_R_eigen <- TRUE
-
-    
   eigvals <- NULL
   P <- NULL
   
@@ -150,17 +147,39 @@ relationship_allele_diff_dist <- function(meioses, mu_dw, mu_up) {
     P <- M_eig$vectors
   } else {
     delta <- 1 - (mu_dw + mu_up)
-    sigma <- mu_up
     tau <- mu_dw
+    sigma <- mu_up
     n <- 2*meioses + 1
     
-    # (4) in http://www.math.kent.edu/~reichel/publications/toep3.pdf
+    # (4)/(7) in http://www.math.kent.edu/~reichel/publications/toep3.pdf
     eigvals <- delta + 2*sqrt(sigma*tau)*cos(pi*seq_len(n)/(n+1))
     
-    # Eigen vectors?
+    if (FALSE) {
+      eigvals
+      eigen(M)$values
+      max(abs(eigvals - eigen(M)$values))
+    }
+    
+    # Eigen vectors
+    n <- 2*meioses + 1
+    D <- matrix(0, n, n)
+    for (h in seq_len(n)) {
+      for (k in seq_len(n)) {
+        D[k, h] <- ((sigma / tau)^(k/2)) * sin(h*k*pi / (n + 1))
+      }
+      D[, h] <- D[, h] / norm(D[, h], type = "2")
+    }
+    
+    if (FALSE) {
+      diffs <- unlist(lapply(seq_len(n), function(i) {
+        M %*% D[, i] - eigvals[i] * D[, i]
+      }))
+      max(abs(diffs))
+    }
+    
+    P <- D
   }
-  # NOTE: Exploit tridiaginal Toepliz matrix instead
-  
+
   D <- diag(eigvals^meioses)
   
   Pinv <- solve(P)
@@ -168,7 +187,7 @@ relationship_allele_diff_dist <- function(meioses, mu_dw, mu_up) {
   # as all eigenvalues are distinct and then symmetric matrices 
   # have orthogonal eigenvectors
   
-  res <- relationship_allele_diff_dist_sym_worker(meioses, P, D, Pinv)
+  res <- relationship_allele_diff_dist_worker(meioses, P, D, Pinv)
 
   return(res)
 }

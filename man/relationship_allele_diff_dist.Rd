@@ -4,7 +4,7 @@
 \alias{relationship_allele_diff_dist}
 \title{Calculate distribution of allele difference}
 \usage{
-relationship_allele_diff_dist(meioses, mu_dw, mu_up)
+relationship_allele_diff_dist(meioses, mu_dw, mu_up, use_R_eigen = FALSE)
 }
 \arguments{
 \item{meioses}{number of meioses separating the two individuals}
@@ -12,6 +12,8 @@ relationship_allele_diff_dist(meioses, mu_dw, mu_up)
 \item{mu_dw}{mutation rate for 1-step down-mutation}
 
 \item{mu_up}{mutation rate for 1-step up-mutation}
+
+\item{use_R_eigen}{Use \code{R}'s \code{\link[=eigen]{eigen()}} function or explicit calculation. Mostly for debugging.}
 }
 \value{
 \code{data.frame} with columns \code{d} (allele difference) and \code{p} (prob)
