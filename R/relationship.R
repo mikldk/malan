@@ -245,6 +245,9 @@ relationship_allele_diff_dist_sym <- function(meioses, mu_updw,
 #' @export
 relationship_allele_diff_dist <- function(meioses, mu_dw, mu_up,
                                           method = "explicit") {
+  
+  # TODO: Rmpfr: sparse matrix multiplication?
+  
   if (!(method %in% c("explicit", "matmult", "matmult_mpfr", "r_eigen"))) {
     stop("Invalid method")
   }
