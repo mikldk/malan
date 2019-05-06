@@ -23,7 +23,7 @@ Depends:
   dplyr (>= 0.7.3),
   tidygraph (>= 1.0.0.9999)
 LinkingTo: Rcpp, RcppArmadillo, RcppProgress
-Suggests: knitr, rmarkdown, testthat, ggraph, dirmult
+Suggests: knitr, rmarkdown, testthat, ggraph, dirmult, Rmpfr
 BugReports: https://github.com/mikldk/malan/issues
 VignetteBuilder: knitr
 Encoding: UTF-8

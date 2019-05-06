@@ -24,6 +24,8 @@ void update_generation(Individual* indv,
 //' 
 //' @param pid ID of male
 //' @param pid_dad ID of male's father, 0 if not known
+//' @param progress Show progress.
+//' @param error_on_pid_not_found Error if pid not found
 //' 
 //' @export
 // [[Rcpp::export]]

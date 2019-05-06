@@ -1036,15 +1036,15 @@ void delete_haplotypeids_hashmap(Rcpp::XPtr< std::unordered_map< std::vector<int
 
 //' Get individuals with a certain haplotype id by hashmap lookup
 //' 
-//' By using hashmap made by [build_haplotypeids_hashmap()], 
+//' By using hashmap made by [build_haplotype_hashmap()], 
 //' it is easy to get all individuals with a certain haplotype id.
 //' 
-//' @param hashmap Hashmap to make lookup in, made by [build_haplotypeids_hashmap()]
-//' @param haplotype_id to get individuals that has this haplotype id
+//' @param hashmap Hashmap to make lookup in, made by [build_haplotype_hashmap()]
+//' @param haplotype to get individuals that has this haplotype id
 //' 
 //' @return List of individuals with a given haplotype id
 //' 
-//' @seealso [build_haplotypeids_hashmap()].
+//' @seealso [build_haplotype_hashmap()].
 //' 
 //' @export
 // [[Rcpp::export]]

@@ -18,7 +18,7 @@ A population
 Convert igraph to population
 }
 \examples{
-g <- graph_from_literal( 2 +- 1 -+ 3, 4 -+ 5 )
+g <- igraph::graph_from_literal( 2 +- 1 -+ 3, 4 -+ 5 )
 plot(g)
 pop <- from_igraph(g)
 peds <- build_pedigrees(pop, progress = FALSE)

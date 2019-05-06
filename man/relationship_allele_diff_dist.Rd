@@ -4,7 +4,7 @@
 \alias{relationship_allele_diff_dist}
 \title{Calculate distribution of allele difference}
 \usage{
-relationship_allele_diff_dist(meioses, mu_dw, mu_up, use_R_eigen = FALSE)
+relationship_allele_diff_dist(meioses, mu_dw, mu_up, method = "explicit")
 }
 \arguments{
 \item{meioses}{number of meioses separating the two individuals}
@@ -13,7 +13,11 @@ relationship_allele_diff_dist(meioses, mu_dw, mu_up, use_R_eigen = FALSE)
 
 \item{mu_up}{mutation rate for 1-step up-mutation}
 
-\item{use_R_eigen}{Use \code{R}'s \code{\link[=eigen]{eigen()}} function or explicit calculation. Mostly for debugging.}
+\item{method}{\code{"explicit"} (default): use known formulas for eigenvalues and eigenvectors.
+Can cause numerical problems.
+\code{"matmult"}: do matrix multiplication instead of diagonalisation.
+\code{"matmult_mpfr"}: as \code{"matmult"} but with the \code{Rmpfr} library (note that this returns \code{list} instead of \code{data.frame}).
+\code{"r_eigen"}: use \code{R}'s \code{\link[=eigen]{eigen()}} function to find eigen values. Mostly for debugging.}
 }
 \value{
 \code{data.frame} with columns \code{d} (allele difference) and \code{p} (prob)

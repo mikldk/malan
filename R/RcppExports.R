@@ -22,6 +22,9 @@ build_pedigrees <- function(population, progress = TRUE) {
 
 #' Generate paternal brothers population
 #' 
+#' @param vertices vector of vertices
+#' @param edges matrix with edges
+#' 
 #' @return An external pointer to the population.
 from_igraph_rcpp <- function(vertices, edges) {
     .Call('_malan_from_igraph_rcpp', PACKAGE = 'malan', vertices, edges)
@@ -44,6 +47,8 @@ infer_generations <- function(peds) {
 #' 
 #' @param pid ID of male
 #' @param pid_dad ID of male's father, 0 if not known
+#' @param progress Show progress.
+#' @param error_on_pid_not_found Error if pid not found
 #' 
 #' @export
 load_individuals <- function(pid, pid_dad, progress = TRUE, error_on_pid_not_found = TRUE) {
@@ -783,15 +788,15 @@ delete_haplotypeids_hashmap <- function(hashmap) {
 
 #' Get individuals with a certain haplotype id by hashmap lookup
 #' 
-#' By using hashmap made by [build_haplotypeids_hashmap()], 
+#' By using hashmap made by [build_haplotype_hashmap()], 
 #' it is easy to get all individuals with a certain haplotype id.
 #' 
-#' @param hashmap Hashmap to make lookup in, made by [build_haplotypeids_hashmap()]
-#' @param haplotype_id to get individuals that has this haplotype id
+#' @param hashmap Hashmap to make lookup in, made by [build_haplotype_hashmap()]
+#' @param haplotype to get individuals that has this haplotype id
 #' 
 #' @return List of individuals with a given haplotype id
 #' 
-#' @seealso [build_haplotypeids_hashmap()].
+#' @seealso [build_haplotype_hashmap()].
 #' 
 #' @export
 get_matching_pids_from_hashmap <- function(hashmap, haplotype) {

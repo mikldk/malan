@@ -6,6 +6,11 @@
 \usage{
 from_igraph_rcpp(vertices, edges)
 }
+\arguments{
+\item{vertices}{vector of vertices}
+
+\item{edges}{matrix with edges}
+}
 \value{
 An external pointer to the population.
 }

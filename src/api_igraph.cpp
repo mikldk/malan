@@ -15,6 +15,9 @@ using namespace Rcpp;
 
 //' Generate paternal brothers population
 //' 
+//' @param vertices vector of vertices
+//' @param edges matrix with edges
+//' 
 //' @return An external pointer to the population.
 // [[Rcpp::export]]
 Rcpp::XPtr<Population> from_igraph_rcpp(Rcpp::IntegerVector vertices, 
