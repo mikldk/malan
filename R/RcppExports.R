@@ -1246,6 +1246,26 @@ get_pedigrees_tidy <- function(pedigrees) {
     .Call('_malan_get_pedigrees_tidy', PACKAGE = 'malan', pedigrees)
 }
 
+#' Find meiotic dist to all other individuals in pedigree
+#' 
+#' @param individual Individual
+#' 
+#' @export
+meiotis_dist_all <- function(individual) {
+    .Call('_malan_meiotis_dist_all', PACKAGE = 'malan', individual)
+}
+
+#' Find meiotic dist to all other individuals in pedigree
+#' 
+#' Return an efficient look-up container
+#' 
+#' @param individual Individual
+#' 
+#' @export
+meiotis_dist_all_lookup <- function(individual) {
+    .Call('_malan_meiotis_dist_all_lookup', PACKAGE = 'malan', individual)
+}
+
 #' Generate test population
 #' 
 #' @return An external pointer to the population.

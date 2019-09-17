@@ -952,6 +952,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// meiotis_dist_all
+std::unordered_map<int, int> meiotis_dist_all(Rcpp::XPtr<Individual> individual);
+RcppExport SEXP _malan_meiotis_dist_all(SEXP individualSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
+    rcpp_result_gen = Rcpp::wrap(meiotis_dist_all(individual));
+    return rcpp_result_gen;
+END_RCPP
+}
+// meiotis_dist_all_lookup
+std::unordered_map<int, int> meiotis_dist_all_lookup(Rcpp::XPtr<Individual> individual);
+RcppExport SEXP _malan_meiotis_dist_all_lookup(SEXP individualSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
+    rcpp_result_gen = Rcpp::wrap(meiotis_dist_all_lookup(individual));
+    return rcpp_result_gen;
+END_RCPP
+}
 // test_create_population
 Rcpp::XPtr<Population> test_create_population();
 RcppExport SEXP _malan_test_create_population() {
@@ -1042,6 +1064,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_get_pedigree_edgelist", (DL_FUNC) &_malan_get_pedigree_edgelist, 1},
     {"_malan_get_pedigree_as_graph", (DL_FUNC) &_malan_get_pedigree_as_graph, 1},
     {"_malan_get_pedigrees_tidy", (DL_FUNC) &_malan_get_pedigrees_tidy, 1},
+    {"_malan_meiotis_dist_all", (DL_FUNC) &_malan_meiotis_dist_all, 1},
+    {"_malan_meiotis_dist_all_lookup", (DL_FUNC) &_malan_meiotis_dist_all_lookup, 1},
     {"_malan_test_create_population", (DL_FUNC) &_malan_test_create_population, 0},
     {NULL, NULL, 0}
 };

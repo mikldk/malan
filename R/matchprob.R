@@ -55,5 +55,6 @@ matchprob <- function(meiotic_dist, mut_rate) {
 }
 
 
-# FIXME: Speed up multiple? Distance matrix instead?
+# FIXME: Speed up multiple? Distance matrix instead? 
+#        Can be made faster than simply taking all pairs if nodes?
 
