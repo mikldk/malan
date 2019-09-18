@@ -113,6 +113,27 @@ Rcpp::IntegerVector get_pids_in_pedigree(Rcpp::XPtr<Pedigree> ped) {
   return res;
 }
 
+//' Get individuals in pedigree
+//' 
+//' @param ped Pedigree
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::List get_individuals_in_pedigree(Rcpp::XPtr<Pedigree> ped) {  
+  Pedigree* p = ped;
+  
+  std::vector<Individual*>* inds = p->get_all_individuals();
+  
+  Rcpp::List res(inds->size());
+  int i = 0;
+  for (auto ind : *inds) {   
+    res(i) = Rcpp::XPtr<Individual>(ind, RCPP_XPTR_2ND_ARG);
+    ++i;
+  } 
+  
+  return res;
+}
+
 //' Get haplotypes in pedigree
 //' 
 //' @param ped Pedigree

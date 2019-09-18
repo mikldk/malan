@@ -1214,6 +1214,15 @@ get_pids_in_pedigree <- function(ped) {
     .Call('_malan_get_pids_in_pedigree', PACKAGE = 'malan', ped)
 }
 
+#' Get individuals in pedigree
+#' 
+#' @param ped Pedigree
+#' 
+#' @export
+get_individuals_in_pedigree <- function(ped) {
+    .Call('_malan_get_individuals_in_pedigree', PACKAGE = 'malan', ped)
+}
+
 #' Get haplotypes in pedigree
 #' 
 #' @param ped Pedigree
@@ -1248,11 +1257,23 @@ get_pedigrees_tidy <- function(pedigrees) {
 
 #' Find meiotic dist to all other individuals in pedigree
 #' 
-#' @param individual Individual
+#' @param individual Individual to get distances from
 #' 
 #' @export
-meiotis_dist_all <- function(individual) {
-    .Call('_malan_meiotis_dist_all', PACKAGE = 'malan', individual)
+meiotic_dist_all <- function(individual) {
+    .Call('_malan_meiotic_dist_all', PACKAGE = 'malan', individual)
+}
+
+#' Find meiotic dist to all other individuals in pedigree
+#' 
+#' Return an efficient look-up container
+#' 
+#' @param individual Individual to get distances from
+#' @param pids Only return distance to individuals with these pids
+#' 
+#' @export
+meiotic_dist_pids <- function(individual, pids) {
+    .Call('_malan_meiotic_dist_pids', PACKAGE = 'malan', individual, pids)
 }
 
 #' Find meiotic dist to all other individuals in pedigree
@@ -1260,10 +1281,11 @@ meiotis_dist_all <- function(individual) {
 #' Return an efficient look-up container
 #' 
 #' @param individual Individual
+#' @param individuals Only return distance to these individuals
 #' 
 #' @export
-meiotis_dist_all_lookup <- function(individual) {
-    .Call('_malan_meiotis_dist_all_lookup', PACKAGE = 'malan', individual)
+meiotic_dist_individuals <- function(individual, individuals) {
+    .Call('_malan_meiotic_dist_individuals', PACKAGE = 'malan', individual, individuals)
 }
 
 #' Generate test population

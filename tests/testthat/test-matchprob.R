@@ -91,7 +91,7 @@ test_that("Test multiple", {
 ###############################################
 # 
 
-test_that("meiotis_dist_all", {
+test_that("meiotic_dist_all", {
   set.seed(1)
   sim_res_growth <- sample_geneology_varying_size(population_sizes = rep(100, 100),
                                                   generations_return = 100,
@@ -103,8 +103,8 @@ test_that("meiotis_dist_all", {
   all_individuals <- sim_res_growth$individuals_generations
   indv_poi <- all_individuals[[sample.int(n = length(all_individuals), size = 1)]]
   
-  indv_poi_dists_all <- meiotis_dist_all(indv_poi)
-  mdist_all <- as.data.frame(table(as.numeric(indv_poi_dists_all)))
+  indv_poi_dists_all <- meiotic_dist_all(indv_poi)
+  mdist_all <- as.data.frame(table(indv_poi_dists_all[, 2]))
   colnames(mdist_all) <- c("m", "n")
   mdist_all$m <- as.integer(as.character(mdist_all$m))
   expect_equal(1, as.numeric(subset(mdist_all, m == 0, n)))
@@ -118,18 +118,52 @@ test_that("meiotis_dist_all", {
   
   if (FALSE) {
     microbenchmark::microbenchmark(
-      meiotis_dist_all(indv_poi),
+      meiotic_dist_all(indv_poi),
       meiotic_distribution(poi = indv_poi, indvs = all_individuals),
       times = 10
     )
   }
-  
-  if (FALSE) {
-    # meiotis_dist_all_lookup
-    # FIXME
-    # TODO
-  }
 })
 
 
+
+test_that("meiotic_dist_pids/individuals", {
+  set.seed(1)
+  sim_res_growth <- sample_geneology_varying_size(population_sizes = rep(1000, 200),
+                                                  generations_return = 3,
+                                                  generations_full = 3,
+                                                  progress = FALSE)
+  
+  peds <- build_pedigrees(sim_res_growth$population, progress = FALSE)
+  #pedigrees_count(peds)
+  
+  live_individuals <- sim_res_growth$individuals_generations
+  indv_poi <- live_individuals[[sample.int(n = length(live_individuals), size = 1)]]
+  
+  # Get to all live individuals:
+  live_pids <- unlist(lapply(live_individuals, get_pid))
+  
+  mdist_pids <- meiotic_dist_pids(indv_poi, live_pids)
+  mdist_indvs <- meiotic_dist_individuals(indv_poi, live_individuals)
+  expect_equal(mdist_pids, mdist_indvs)
+  
+  # Get to all live individuals IN PEDIGREE:
+  poi_ped <- get_pedigree_from_individual(indv_poi)
+  poi_ped_pids <- get_pids_in_pedigree(poi_ped)
+  poi_ped_pids_live <- intersect(poi_ped_pids, live_pids)
+  ped_live_indvs <- lapply(poi_ped_pids_live, function(pid) get_individual(sim_res_growth$population, pid))
+  
+  mdist_pids <- meiotic_dist_pids(indv_poi, poi_ped_pids_live)
+  mdist_indvs <- meiotic_dist_individuals(indv_poi, ped_live_indvs)
+  expect_equal(mdist_pids, mdist_indvs)
+  
+  mdist_single <- meiotic_distribution(poi = indv_poi, indvs = ped_live_indvs)
+  mdist_single_vec <- sort(rep(mdist_single$m, mdist_single$n))
+  mdist_pids <- sort(mdist_pids[mdist_pids != 0]) # remove indv_poi at dist 0
+  mdist_indvs <- sort(mdist_indvs[mdist_indvs != 0]) # remove indv_poi at dist 0
+  
+  expect_equal(mdist_pids, mdist_indvs)
+  expect_equal(mdist_single_vec, mdist_pids)
+  expect_equal(mdist_single_vec, mdist_indvs)
+})
 

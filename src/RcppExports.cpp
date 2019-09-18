@@ -908,6 +908,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_individuals_in_pedigree
+Rcpp::List get_individuals_in_pedigree(Rcpp::XPtr<Pedigree> ped);
+RcppExport SEXP _malan_get_individuals_in_pedigree(SEXP pedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Pedigree> >::type ped(pedSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_individuals_in_pedigree(ped));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_haplotypes_in_pedigree
 Rcpp::List get_haplotypes_in_pedigree(Rcpp::XPtr<Pedigree> ped);
 RcppExport SEXP _malan_get_haplotypes_in_pedigree(SEXP pedSEXP) {
@@ -952,25 +963,38 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// meiotis_dist_all
-std::unordered_map<int, int> meiotis_dist_all(Rcpp::XPtr<Individual> individual);
-RcppExport SEXP _malan_meiotis_dist_all(SEXP individualSEXP) {
+// meiotic_dist_all
+Rcpp::IntegerMatrix meiotic_dist_all(Rcpp::XPtr<Individual> individual);
+RcppExport SEXP _malan_meiotic_dist_all(SEXP individualSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
-    rcpp_result_gen = Rcpp::wrap(meiotis_dist_all(individual));
+    rcpp_result_gen = Rcpp::wrap(meiotic_dist_all(individual));
     return rcpp_result_gen;
 END_RCPP
 }
-// meiotis_dist_all_lookup
-std::unordered_map<int, int> meiotis_dist_all_lookup(Rcpp::XPtr<Individual> individual);
-RcppExport SEXP _malan_meiotis_dist_all_lookup(SEXP individualSEXP) {
+// meiotic_dist_pids
+Rcpp::IntegerVector meiotic_dist_pids(Rcpp::XPtr<Individual> individual, Rcpp::IntegerVector pids);
+RcppExport SEXP _malan_meiotic_dist_pids(SEXP individualSEXP, SEXP pidsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
-    rcpp_result_gen = Rcpp::wrap(meiotis_dist_all_lookup(individual));
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type pids(pidsSEXP);
+    rcpp_result_gen = Rcpp::wrap(meiotic_dist_pids(individual, pids));
+    return rcpp_result_gen;
+END_RCPP
+}
+// meiotic_dist_individuals
+Rcpp::IntegerVector meiotic_dist_individuals(Rcpp::XPtr<Individual> individual, Rcpp::List individuals);
+RcppExport SEXP _malan_meiotic_dist_individuals(SEXP individualSEXP, SEXP individualsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type individuals(individualsSEXP);
+    rcpp_result_gen = Rcpp::wrap(meiotic_dist_individuals(individual, individuals));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1060,12 +1084,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_get_pedigree", (DL_FUNC) &_malan_get_pedigree, 2},
     {"_malan_print_pedigree", (DL_FUNC) &_malan_print_pedigree, 1},
     {"_malan_get_pids_in_pedigree", (DL_FUNC) &_malan_get_pids_in_pedigree, 1},
+    {"_malan_get_individuals_in_pedigree", (DL_FUNC) &_malan_get_individuals_in_pedigree, 1},
     {"_malan_get_haplotypes_in_pedigree", (DL_FUNC) &_malan_get_haplotypes_in_pedigree, 1},
     {"_malan_get_pedigree_edgelist", (DL_FUNC) &_malan_get_pedigree_edgelist, 1},
     {"_malan_get_pedigree_as_graph", (DL_FUNC) &_malan_get_pedigree_as_graph, 1},
     {"_malan_get_pedigrees_tidy", (DL_FUNC) &_malan_get_pedigrees_tidy, 1},
-    {"_malan_meiotis_dist_all", (DL_FUNC) &_malan_meiotis_dist_all, 1},
-    {"_malan_meiotis_dist_all_lookup", (DL_FUNC) &_malan_meiotis_dist_all_lookup, 1},
+    {"_malan_meiotic_dist_all", (DL_FUNC) &_malan_meiotic_dist_all, 1},
+    {"_malan_meiotic_dist_pids", (DL_FUNC) &_malan_meiotic_dist_pids, 2},
+    {"_malan_meiotic_dist_individuals", (DL_FUNC) &_malan_meiotic_dist_individuals, 2},
     {"_malan_test_create_population", (DL_FUNC) &_malan_test_create_population, 0},
     {NULL, NULL, 0}
 };
