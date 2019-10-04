@@ -883,6 +883,21 @@ get_family_info <- function(individual) {
     .Call('_malan_get_family_info', PACKAGE = 'malan', individual)
 }
 
+#' Get father
+#' 
+#' Get individual's father
+#'
+#' @param individual individual
+#' 
+#' @return Father
+#' 
+#' @seealso [get_brothers()], [get_uncles()], [get_children()], [get_cousins()]
+#' 
+#' @export
+get_father <- function(individual) {
+    .Call('_malan_get_father', PACKAGE = 'malan', individual)
+}
+
 #' Get children
 #' 
 #' Get individual's children
@@ -891,7 +906,7 @@ get_family_info <- function(individual) {
 #' 
 #' @return List with children
 #' 
-#' @seealso [get_brothers()], [get_uncles()], [get_cousins()]
+#' @seealso [get_father()], [get_brothers()], [get_uncles()], [get_cousins()]
 #' 
 #' @export
 get_children <- function(individual) {
@@ -921,7 +936,7 @@ count_brothers <- function(individual) {
 #' 
 #' @return List with brothers
 #' 
-#' @seealso [get_uncles()], [get_children()], [get_cousins()]
+#' @seealso [get_father()], [get_uncles()], [get_children()], [get_cousins()]
 #' 
 #' @export
 get_brothers <- function(individual) {

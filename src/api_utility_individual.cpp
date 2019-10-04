@@ -144,6 +144,33 @@ Rcpp::List get_family_info(Rcpp::XPtr<Individual> individual) {
 
 }
 
+
+//' Get father
+//' 
+//' Get individual's father
+//'
+//' @param individual individual
+//' 
+//' @return Father
+//' 
+//' @seealso [get_brothers()], [get_uncles()], [get_children()], [get_cousins()]
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::XPtr<Individual> get_father(Rcpp::XPtr<Individual> individual) {  
+  Individual* i = individual;
+  
+  if (i->get_father() == nullptr) {
+    Rcpp::stop("Individual did not have a father");
+  }
+  
+  Individual* father = i->get_father();
+  Rcpp::XPtr<Individual> father_xptr(father, RCPP_XPTR_2ND_ARG); // do NOT delete individual when not used any more, it still exists in pedigree and population etc.!
+  father_xptr.attr("class") = Rcpp::CharacterVector::create("malan_individual", "externalptr");
+
+  return father_xptr;
+}
+
 //' Get children
 //' 
 //' Get individual's children
@@ -152,7 +179,7 @@ Rcpp::List get_family_info(Rcpp::XPtr<Individual> individual) {
 //' 
 //' @return List with children
 //' 
-//' @seealso [get_brothers()], [get_uncles()], [get_cousins()]
+//' @seealso [get_father()], [get_brothers()], [get_uncles()], [get_cousins()]
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -205,7 +232,7 @@ int count_brothers(Rcpp::XPtr<Individual> individual) {
 //' 
 //' @return List with brothers
 //' 
-//' @seealso [get_uncles()], [get_children()], [get_cousins()]
+//' @seealso [get_father()], [get_uncles()], [get_children()], [get_cousins()]
 //' 
 //' @export
 // [[Rcpp::export]]

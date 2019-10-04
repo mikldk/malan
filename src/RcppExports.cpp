@@ -590,6 +590,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_father
+Rcpp::XPtr<Individual> get_father(Rcpp::XPtr<Individual> individual);
+RcppExport SEXP _malan_get_father(SEXP individualSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_father(individual));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_children
 Rcpp::List get_children(Rcpp::XPtr<Individual> individual);
 RcppExport SEXP _malan_get_children(SEXP individualSEXP) {
@@ -1011,6 +1022,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_get_pedigree_from_individual", (DL_FUNC) &_malan_get_pedigree_from_individual, 1},
     {"_malan_get_pedigree_id_from_pid", (DL_FUNC) &_malan_get_pedigree_id_from_pid, 2},
     {"_malan_get_family_info", (DL_FUNC) &_malan_get_family_info, 1},
+    {"_malan_get_father", (DL_FUNC) &_malan_get_father, 1},
     {"_malan_get_children", (DL_FUNC) &_malan_get_children, 1},
     {"_malan_count_brothers", (DL_FUNC) &_malan_count_brothers, 1},
     {"_malan_get_brothers", (DL_FUNC) &_malan_get_brothers, 1},

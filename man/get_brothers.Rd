@@ -16,5 +16,5 @@ List with brothers
 Get individual's brothers
 }
 \seealso{
-\code{\link[=get_uncles]{get_uncles()}}, \code{\link[=get_children]{get_children()}}, \code{\link[=get_cousins]{get_cousins()}}
+\code{\link[=get_father]{get_father()}}, \code{\link[=get_uncles]{get_uncles()}}, \code{\link[=get_children]{get_children()}}, \code{\link[=get_cousins]{get_cousins()}}
 }
