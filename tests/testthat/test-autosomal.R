@@ -670,6 +670,8 @@ test_that("Theta unweighted", {
 
 
 
+##########################
+
 if (requireNamespace("dirmult", quietly = TRUE)) {
   library(dirmult)
   
@@ -735,6 +737,72 @@ if (requireNamespace("dirmult", quietly = TRUE)) {
     })
   }
 }
+
+####################################
+# Weighted vs unweighted
+####################################
+
+if (requireNamespace("dirmult", quietly = TRUE)) {
+  library(dirmult)
+  
+  ralleleprob <- function(n, ps, theta) {
+    #n <- 2; ps <- ALLELE_PROB; theta <- 0.1
+    #n <- 2; ps <- ALLELE_PROB; theta <- 0.001
+    #
+    stopifnot(length(ps) > 1)
+    
+    stopifnot(length(theta) == 1L)
+    stopifnot(theta >= 0)
+    stopifnot(theta <= 1)
+    
+    # FIXME: theta == 0 problematic...
+    alpha <- (1-theta)*ps/theta
+    
+    x <- rdirichlet(n, alpha)
+    return(x)
+  }
+  
+  set.seed(100)
+  for (theta in c(0.01, 0.02)) {
+    #theta <- 0.02
+    subpop_ps <- ralleleprob(10, ps = allele_prob, theta = theta)
+    
+    subpop_geno_equal <- lapply(seq_len(nrow(subpop_ps)), function(i) {
+      geno <- t(replicate(1000, sample_autosomal_genotype(subpop_ps[i, ], 0))) # 0 for HWE
+      return(geno)
+    })
+    
+    test_that(paste0("Theta unweighted vs weighted for equal sizes: theta = ", theta), {
+      expect_equal(
+        estimate_autotheta_subpops_unweighted_genotypes(
+          subpops = subpop_geno_equal, 
+          assume_HWE = TRUE), 
+        estimate_autotheta_subpops_genotypes(
+          subpops = subpop_geno_equal, 
+          subpops_sizes = sapply(subpop_geno_equal, nrow))$theta, 
+        tol = 1e-4
+        )
+    })
+
+    subpop_geno_unequal <- lapply(seq_len(nrow(subpop_ps)), function(i) {
+      geno <- t(replicate(i*100, sample_autosomal_genotype(subpop_ps[i, ], 0))) # 0 for HWE
+      return(geno)
+    })
+    
+    theta_unw <- estimate_autotheta_subpops_unweighted_genotypes(
+      subpops = subpop_geno_unequal, 
+      assume_HWE = TRUE)
+    theta_w <- estimate_autotheta_subpops_genotypes(
+      subpops = subpop_geno_unequal, 
+      subpops_sizes = sapply(subpop_geno_unequal, nrow))$theta
+    
+    test_that(paste0("Theta unweighted vs weighted for equal sizes: theta = ", theta), {
+      expect_true(!isTRUE(all.equal(theta_unw, theta_w)))
+    })
+  }
+}
+########################################
+
 
 ############ Others
 
