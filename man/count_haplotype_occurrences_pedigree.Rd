@@ -4,8 +4,11 @@
 \alias{count_haplotype_occurrences_pedigree}
 \title{Count haplotypes occurrences in pedigree}
 \usage{
-count_haplotype_occurrences_pedigree(pedigree, haplotype,
-  generation_upper_bound_in_result = -1L)
+count_haplotype_occurrences_pedigree(
+  pedigree,
+  haplotype,
+  generation_upper_bound_in_result = -1L
+)
 }
 \arguments{
 \item{pedigree}{Pedigree to count occurrences in.}

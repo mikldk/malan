@@ -4,8 +4,11 @@
 \alias{pedigree_haplotype_near_matches_meiosis}
 \title{Information about almost matching individuals}
 \usage{
-pedigree_haplotype_near_matches_meiosis(suspect, max_dist,
-  generation_upper_bound_in_result = -1L)
+pedigree_haplotype_near_matches_meiosis(
+  suspect,
+  max_dist,
+  generation_upper_bound_in_result = -1L
+)
 }
 \arguments{
 \item{suspect}{Individual that others must match the profile of.}

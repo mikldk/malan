@@ -20,6 +20,14 @@ Using this information, this function builds pedigrees.
 This makes it easier to e.g. population haplotypes, find path between two individuals
 (if they are not in the same pedigree, they are not connected).
 }
+\examples{
+sim <- sample_geneology(100, 10)
+str(sim, 1)
+sim$population
+peds <- build_pedigrees(sim$population)
+peds
+
+}
 \seealso{
 \code{\link[=sample_geneology]{sample_geneology()}} and \code{\link[=sample_geneology_varying_size]{sample_geneology_varying_size()}} for simulating populations.
 }

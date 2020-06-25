@@ -5,7 +5,7 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 author: Mikkel Meyer Andersen
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Introduction}
+  %\VignetteIndexEntry{Case study: Partial profiles}
   %\VignetteEncoding{UTF-8}
 ---
 

@@ -8,6 +8,7 @@
 
 //#define ARMA_DONT_PRINT_ERRORS
 #include <RcppArmadillo.h>
+//#include <Rcpp.h>
 
 // [[Rcpp::plugins(cpp11)]]
 // [[Rcpp::depends(RcppProgress)]]

@@ -7,6 +7,8 @@
  */
  
 #include <RcppArmadillo.h>
+//#include <Rcpp.h>
+
 #include "malan_types.h"
 
 bool find_path_from_root_to_dest(Individual* root, std::vector<Individual*>& path, const Individual* dest) {

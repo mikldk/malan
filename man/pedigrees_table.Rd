@@ -12,3 +12,9 @@ pedigrees_table(pedigrees)
 \description{
 Get distribution of pedigree sizes
 }
+\examples{
+sim <- sample_geneology(100, 10)
+peds <- build_pedigrees(sim$population)
+pedigrees_table(peds)
+
+}

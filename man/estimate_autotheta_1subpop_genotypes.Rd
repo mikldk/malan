@@ -4,8 +4,7 @@
 \alias{estimate_autotheta_1subpop_genotypes}
 \title{Estimate autosomal theta from genotypes}
 \usage{
-estimate_autotheta_1subpop_genotypes(genotypes,
-  return_estimation_info = FALSE)
+estimate_autotheta_1subpop_genotypes(genotypes, return_estimation_info = FALSE)
 }
 \arguments{
 \item{genotypes}{Matrix of genotypes: two columns (allele1 and allele2) and a row per individual}

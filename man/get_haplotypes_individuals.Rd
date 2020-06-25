@@ -18,6 +18,13 @@ with \code{\link[=pedigrees_all_populate_haplotypes]{pedigrees_all_populate_hapl
 \code{\link[=pedigrees_all_populate_haplotypes_custom_founders]{pedigrees_all_populate_haplotypes_custom_founders()}}, or
 \code{\link[=pedigrees_all_populate_haplotypes_ladder_bounded]{pedigrees_all_populate_haplotypes_ladder_bounded()}}.
 }
+\examples{
+sim <- sample_geneology(100, 10)
+peds <- build_pedigrees(sim$population)
+pedigrees_all_populate_haplotypes(peds, 2, c(1, 1))
+get_haplotypes_individuals(sim$end_generation_individuals)
+
+}
 \seealso{
 \code{\link[=get_haplotypes_pids]{get_haplotypes_pids()}}.
 }

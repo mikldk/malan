@@ -4,8 +4,10 @@
 \alias{pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists}
 \title{Information about matching individuals}
 \usage{
-pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(suspect,
-  generation_upper_bound_in_result = -1L)
+pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(
+  suspect,
+  generation_upper_bound_in_result = -1L
+)
 }
 \arguments{
 \item{suspect}{Individual that others must match the profile of.}

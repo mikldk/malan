@@ -4,9 +4,17 @@
 \alias{plot.malan_pedigree}
 \title{Plot pedigree}
 \usage{
-\method{plot}{malan_pedigree}(x, ids = TRUE, haplotypes = FALSE,
-  locus_sep = " ", mark_pids = NULL, label_color = "black",
-  node_color = "lightgray", mark_color = "orange", ...)
+\method{plot}{malan_pedigree}(
+  x,
+  ids = TRUE,
+  haplotypes = FALSE,
+  locus_sep = " ",
+  mark_pids = NULL,
+  label_color = "black",
+  node_color = "lightgray",
+  mark_color = "orange",
+  ...
+)
 }
 \arguments{
 \item{x}{Pedigree}

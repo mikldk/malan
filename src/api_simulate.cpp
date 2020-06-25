@@ -7,6 +7,7 @@
  */
 
 #include <RcppArmadillo.h>
+//#include <Rcpp.h>
 
 // [[Rcpp::depends(RcppProgress)]]
 // [[Rcpp::depends(RcppArmadillo)]]
@@ -76,6 +77,13 @@ using namespace Rcpp;
 //'   \item `father_pids`. A matrix with pid (person id) for each individual's father.
 //'   \item `father_indices`. A matrix with indices for fathers.
 //' }
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' str(sim, 1)
+//' sim$population
+//' peds <- build_pedigrees(sim$population)
+//' peds
 //' 
 //' @seealso [sample_geneology_varying_size()].
 //' 

@@ -4,8 +4,7 @@
 \alias{load_individuals}
 \title{Construct a population from data}
 \usage{
-load_individuals(pid, pid_dad, progress = TRUE,
-  error_on_pid_not_found = TRUE)
+load_individuals(pid, pid_dad, progress = TRUE, error_on_pid_not_found = TRUE)
 }
 \arguments{
 \item{pid}{ID of male}

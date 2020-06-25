@@ -193,10 +193,11 @@ plot.malan_pedigreelist <-
     }
     
     ## Plot everything
-    old_mar <- par("mar")
+    opar <- par(no.readonly = TRUE)
+    on.exit(par(opar))
+    
     par(mar = c(0, 0, 0, 0))
     igraph::plot.igraph(big_graph, layout = lay, ...)
-    par(mar = old_mar)
         
     return(invisible(NULL))
     #eturn(g)
@@ -272,16 +273,17 @@ plot.malan_pedigree <-
     igraph::V(g)$color <- vertex_colors
     
     
-    old_mar <- par("mar")
-    par(mar = c(0, 0, 0, 0))        
+    opar <- par(no.readonly = TRUE)
+    on.exit(par(opar))
+    
+    par(mar = c(0, 0, 0, 0))
     igraph::plot.igraph(g, 
                         vertex.label = vertex_label, 
                         vertex.label.cex = 0.75, 
                         vertex.label.color = label_color, 
                         layout = igraph::layout_as_tree(graph = g),
                         ...)
-    par(mar = old_mar)
-    
+
     return(invisible(NULL))
     #eturn(g)
   }

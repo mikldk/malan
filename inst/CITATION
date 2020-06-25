@@ -4,12 +4,24 @@ bibentry(bibtype = "article",
   volume = "13",
   number = "11",
   author = c(person("MM", "Andersen"), person("DJ", "Balding")),          
+  doi = "10.1371/journal.pgen.1007028", 
   year = "2017")
-
-bibentry(bibtype = "manual", 
-  title = "{{malan: MAle Lineage ANalysis}}",
-  url = "https://github.com/mikldk/malan",
+  
+bibentry(bibtype = "article", 
+  title = "{malan: MAle Lineage ANalysis}", 
+  journal = "Journal of Open Source Software", 
+  volume = "3",
+  number = "25",
   author = person("MM", "Andersen"),
+  doi = "10.21105/joss.00684",
   year = "2018")
+  
+bibentry(bibtype = "article", 
+  title = "{Y-profile evidence: Close paternal relatives and mixtures}", 
+  journal = "Forensic Science International: Genetics", 
+  volume = "38",
+  author = c(person("MM", "Andersen"), person("DJ", "Balding")),          
+  doi = "10.1016/j.fsigen.2018.10.004",
+  year = "2017")
   
 citHeader("To cite the R package 'malan' in publications use:")

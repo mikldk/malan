@@ -17,6 +17,13 @@ Number of times that \code{haplotype} occurred amongst \code{individuals}.
 \description{
 Counts the number of types \code{haplotype} appears in \code{individuals}.
 }
+\examples{
+sim <- sample_geneology(100, 10)
+peds <- build_pedigrees(sim$population)
+pedigrees_all_populate_haplotypes(peds, 2, c(0, 0))
+count_haplotype_occurrences_individuals(sim$end_generation_individuals, c(0, 0))
+
+}
 \seealso{
 \code{\link[=pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists]{pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()}},
 \code{\link[=count_haplotype_near_matches_individuals]{count_haplotype_near_matches_individuals()}}.

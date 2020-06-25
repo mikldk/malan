@@ -7,6 +7,7 @@
  */
  
 #include <RcppArmadillo.h>
+//#include <Rcpp.h>
 
 #include "malan_types.h"
 

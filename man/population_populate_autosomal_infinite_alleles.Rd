@@ -4,8 +4,11 @@
 \alias{population_populate_autosomal_infinite_alleles}
 \title{Populate 1-locus autosomal DNA profile in pedigrees with infinite alleles mutation model.}
 \usage{
-population_populate_autosomal_infinite_alleles(population, mutation_rate,
-  progress = TRUE)
+population_populate_autosomal_infinite_alleles(
+  population,
+  mutation_rate,
+  progress = TRUE
+)
 }
 \arguments{
 \item{population}{Population in which to populate genotypes}

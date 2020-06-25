@@ -12,3 +12,9 @@ pedigrees_count(pedigrees)
 \description{
 Get number of pedigrees
 }
+\examples{
+sim <- sample_geneology(100, 10)
+peds <- build_pedigrees(sim$population)
+pedigrees_count(peds)
+
+}

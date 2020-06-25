@@ -14,6 +14,11 @@
 //' @param population Population
 //' @param pid pid
 //' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' indv <- get_individual(sim$population, 1)
+//' get_pid(indv)
+//' 
 //' @return Individual
 //' 
 //' @export
@@ -33,6 +38,11 @@ Rcpp::XPtr<Individual> get_individual(Rcpp::XPtr<Population> population, int pid
 //' 
 //' @return pid
 //' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' indv <- get_individual(sim$population, 1)
+//' get_pid(indv)
+//' 
 //' @export
 // [[Rcpp::export]]
 int get_pid(Rcpp::XPtr<Individual> individual) {  
@@ -42,6 +52,11 @@ int get_pid(Rcpp::XPtr<Individual> individual) {
 //' Print individual
 //' 
 //' @param individual Individual
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' indv <- get_individual(sim$population, 1)
+//' print_individual(indv)
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -74,6 +89,11 @@ void print_individual(Rcpp::XPtr<Individual> individual) {
 //' @param individual Individual
 //' 
 //' @return generation
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' indv <- get_individual(sim$population, 1)
+//' get_generation(indv)
 //' 
 //' @export
 // [[Rcpp::export]]

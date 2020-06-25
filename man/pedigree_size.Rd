@@ -12,3 +12,9 @@ pedigree_size(ped)
 \description{
 Get pedigree size
 }
+\examples{
+sim <- sample_geneology(100, 10)
+peds <- build_pedigrees(sim$population)
+pedigree_size(peds[[1]])
+
+}

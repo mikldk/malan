@@ -12,3 +12,9 @@ get_pedigree_id(ped)
 \description{
 Get pedigree id
 }
+\examples{
+sim <- sample_geneology(100, 10)
+peds <- build_pedigrees(sim$population)
+get_pedigree_id(peds[[1]])
+
+}

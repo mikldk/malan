@@ -4,8 +4,11 @@
 \alias{haplotype_partially_matches_individuals}
 \title{Get individuals partially matching from list of individuals}
 \usage{
-haplotype_partially_matches_individuals(individuals, haplotype,
-  ignore_loci = as.integer(c()))
+haplotype_partially_matches_individuals(
+  individuals,
+  haplotype,
+  ignore_loci = as.integer(c())
+)
 }
 \arguments{
 \item{individuals}{List of individuals to count occurrences in.}

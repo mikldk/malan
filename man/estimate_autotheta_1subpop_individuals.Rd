@@ -4,8 +4,10 @@
 \alias{estimate_autotheta_1subpop_individuals}
 \title{Estimate autosomal theta from individuals}
 \usage{
-estimate_autotheta_1subpop_individuals(individuals,
-  return_estimation_info = FALSE)
+estimate_autotheta_1subpop_individuals(
+  individuals,
+  return_estimation_info = FALSE
+)
 }
 \arguments{
 \item{individuals}{Individuals to get haplotypes for.}

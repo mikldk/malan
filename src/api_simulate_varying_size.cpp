@@ -7,6 +7,7 @@
  */
 
 #include <RcppArmadillo.h>
+//#include <Rcpp.h>
 
 // [[Rcpp::depends(RcppProgress)]]
 // [[Rcpp::depends(RcppArmadillo)]]
@@ -69,6 +70,13 @@ using namespace Rcpp;
 //'   \item `individuals_generations`. Pointers to individuals in last `generations_return` generation (if `generations_return = 3`, then individuals in the last three generations are returned).
 //' }
 //'
+//' @examples
+//' sim <- sample_geneology_varying_size(10*(1:10))
+//' str(sim, 1)
+//' sim$population
+//' peds <- build_pedigrees(sim$population)
+//' peds
+//' 
 //' @seealso [sample_geneology()].
 //' 
 //' @import Rcpp

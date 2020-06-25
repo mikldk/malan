@@ -12,3 +12,9 @@ print_individual(individual)
 \description{
 Print individual
 }
+\examples{
+sim <- sample_geneology(100, 10)
+indv <- get_individual(sim$population, 1)
+print_individual(indv)
+
+}

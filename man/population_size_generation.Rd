@@ -4,8 +4,7 @@
 \alias{population_size_generation}
 \title{Size of population}
 \usage{
-population_size_generation(population,
-  generation_upper_bound_in_result = -1L)
+population_size_generation(population, generation_upper_bound_in_result = -1L)
 }
 \arguments{
 \item{population}{Population to get size of}

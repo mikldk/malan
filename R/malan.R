@@ -17,3 +17,13 @@
 #'  Andersen MM, Balding DJ (2017) How convincing is a matching Y-chromosome profile? 
 #'  PLoS Genet 13(11): e1007028. \url{https://doi.org/10.1371/journal.pgen.1007028}.
 "_PACKAGE"
+
+
+# To get RcppArmadillo fastLm imported into NAMESPACE such 
+# that arma:: etc. can be used in C++.
+#' @importFrom RcppArmadillo fastLm
+RcppArmadilloFastLm <- function(...) {
+  a <- RcppArmadillo::fastLm(...)
+  return(a)
+}
+

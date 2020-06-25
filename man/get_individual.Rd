@@ -17,3 +17,9 @@ Individual
 \description{
 Get individual by pid
 }
+\examples{
+sim <- sample_geneology(100, 10)
+indv <- get_individual(sim$population, 1)
+get_pid(indv)
+
+}

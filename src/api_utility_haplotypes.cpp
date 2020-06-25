@@ -7,6 +7,7 @@
  */
 
 #include <RcppArmadillo.h>
+//#include <Rcpp.h>
 
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>
@@ -31,7 +32,13 @@
 //' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation
 //' @param prob_genealogical_error Probability that a genealogical error happens: if so, give individual haplotype `rep(0L, loci)` instead of father's
 //' @param progress Show progress
-//'
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' pedigrees_all_populate_haplotypes(peds, 2, c(1, 1))
+//' get_haplotype(sim$end_generation_individuals[[1]])
+//' 
 //' @seealso [pedigrees_all_populate_haplotypes_custom_founders()] and 
 //' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 //' 
@@ -86,6 +93,14 @@ void pedigrees_all_populate_haplotypes(Rcpp::XPtr< std::vector<Pedigree*> > pedi
 //' @param prob_genealogical_error Probability that a genealogical error happens: if so, give individual haplotype `get_founder_haplotype()` instead of father's
 //' @param progress Show progress
 //'
+//'
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' pedigrees_all_populate_haplotypes_custom_founders(
+//'   peds, c(1, 1), function(x) c(10, 10))
+//' get_haplotype(sim$end_generation_individuals[[1]])
+//' 
 //' @seealso [pedigrees_all_populate_haplotypes()] and 
 //' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 //' 
@@ -144,7 +159,15 @@ void pedigrees_all_populate_haplotypes_custom_founders(Rcpp::XPtr< std::vector<P
 //' @param prob_two_step Given a mutation happens, this is the probability that the mutation is a two-step mutation; refer to details for information about behaviour around ladder boundaries
 //' @param prob_genealogical_error Probability that a genealogical error happens: if so, give individual haplotype `get_founder_haplotype()` instead of father's
 //' @param progress Show progress
-//'
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' pedigrees_all_populate_haplotypes_ladder_bounded(
+//'   peds, c(1, 1), c(0L, 0L), c(10L, 10L), 
+//'   function(x) c(10, 10))
+//' get_haplotype(sim$end_generation_individuals[[1]])
+//' 
 //' @seealso [pedigrees_all_populate_haplotypes()] and 
 //' [pedigrees_all_populate_haplotypes_custom_founders()].
 //' 
@@ -220,6 +243,13 @@ void pedigrees_all_populate_haplotypes_ladder_bounded(Rcpp::XPtr< std::vector<Pe
 //' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 //' 
 //' @param individual Individual to get haplotypes for.
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' pedigrees_all_populate_haplotypes(peds, 2, c(1, 1))
+//' get_haplotype(sim$end_generation_individuals[[1]])
+//' 
 //' @return Haplotype for `individual`.
 //' 
 //' @seealso [get_haplotypes_individuals()] and [get_haplotypes_pids()].
@@ -244,6 +274,13 @@ std::vector<int> get_haplotype(Rcpp::XPtr<Individual> individual) {
 //' [pedigrees_all_populate_haplotypes_ladder_bounded()].
 //' 
 //' @param individuals Individuals to get haplotypes for.
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' pedigrees_all_populate_haplotypes(peds, 2, c(1, 1))
+//' get_haplotypes_individuals(sim$end_generation_individuals)
+//' 
 //' @return Matrix of haplotypes where row `i` is the haplotype of `individuals[[i]]`.
 //' 
 //' @seealso [get_haplotypes_pids()].
@@ -363,6 +400,12 @@ Rcpp::IntegerMatrix get_haplotypes_pids(Rcpp::XPtr<Population> population, Rcpp:
 //' 
 //' @param individuals List of individuals to count occurrences in.
 //' @param haplotype Haplotype to count occurrences of.
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' pedigrees_all_populate_haplotypes(peds, 2, c(0, 0))
+//' count_haplotype_occurrences_individuals(sim$end_generation_individuals, c(0, 0))
 //' 
 //' @return Number of times that `haplotype` occurred amongst `individuals`.
 //' 

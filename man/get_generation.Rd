@@ -16,3 +16,9 @@ generation
 Note that generation 0 is final, end generation.
 1 is second last generation etc.
 }
+\examples{
+sim <- sample_geneology(100, 10)
+indv <- get_individual(sim$population, 1)
+get_generation(indv)
+
+}

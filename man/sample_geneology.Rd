@@ -4,10 +4,17 @@
 \alias{sample_geneology}
 \title{Simulate a geneology with constant population size.}
 \usage{
-sample_geneology(population_size, generations, generations_full = 1L,
-  generations_return = 3L, enable_gamma_variance_extension = FALSE,
-  gamma_parameter_shape = 5, gamma_parameter_scale = 1/5,
-  progress = TRUE, verbose_result = FALSE)
+sample_geneology(
+  population_size,
+  generations,
+  generations_full = 1L,
+  generations_return = 3L,
+  enable_gamma_variance_extension = FALSE,
+  gamma_parameter_shape = 5,
+  gamma_parameter_scale = 1/5,
+  progress = TRUE,
+  verbose_result = FALSE
+)
 }
 \arguments{
 \item{population_size}{The size of the population.}
@@ -64,7 +71,7 @@ final 3 generations although some of these may not get (male) children.
 Let \eqn{\alpha} be the parameter of a symmetric Dirichlet distribution
 specifying each man's probability to be the father of an arbitrary
 male in the next generation. When \eqn{\alpha = 5}, a man's relative probability
-to be the father has 95\% probability to lie between 0.32 and 2.05, compared with a
+to be the father has 95\\% probability to lie between 0.32 and 2.05, compared with a
 constant 1 under the standard Wright-Fisher model and the standard deviation in
 the number of male offspring per man is 1.10 (standard Wright-Fisher = 1).
 
@@ -77,6 +84,14 @@ the following must be used:
 \eqn{`gamma_parameter_shape` = \alpha}
 and
 \eqn{`gamma_parameter_scale` = 1/\alpha}.
+}
+\examples{
+sim <- sample_geneology(100, 10)
+str(sim, 1)
+sim$population
+peds <- build_pedigrees(sim$population)
+peds
+
 }
 \seealso{
 \code{\link[=sample_geneology_varying_size]{sample_geneology_varying_size()}}.

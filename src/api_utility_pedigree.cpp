@@ -7,6 +7,7 @@
  */
 
 #include <RcppArmadillo.h>
+//#include <Rcpp.h>
 
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>
@@ -19,6 +20,11 @@
 //' 
 //' @param ped Pedigree
 //' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' get_pedigree_id(peds[[1]])
+//' 
 //' @export
 // [[Rcpp::export]]
 int get_pedigree_id(Rcpp::XPtr<Pedigree> ped) { 
@@ -28,6 +34,11 @@ int get_pedigree_id(Rcpp::XPtr<Pedigree> ped) {
 //' Get number of pedigrees
 //' 
 //' @param pedigrees Pedigrees
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' pedigrees_count(peds)
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -39,6 +50,11 @@ int pedigrees_count(Rcpp::XPtr< std::vector<Pedigree*> > pedigrees) {
 //' 
 //' @param ped Pedigree
 //' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' pedigree_size(peds[[1]])
+//' 
 //' @export
 // [[Rcpp::export]]
 int pedigree_size(Rcpp::XPtr<Pedigree> ped) {  
@@ -48,6 +64,11 @@ int pedigree_size(Rcpp::XPtr<Pedigree> ped) {
 //' Get distribution of pedigree sizes
 //' 
 //' @param pedigrees Pedigrees
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' pedigrees_table(peds)
 //' 
 //' @export
 //[[Rcpp::export]]
@@ -96,6 +117,11 @@ void print_pedigree(Rcpp::XPtr<Pedigree> ped) {
 //' 
 //' @param ped Pedigree
 //' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' get_pids_in_pedigree(peds[[1]])
+//' 
 //' @export
 // [[Rcpp::export]]
 Rcpp::IntegerVector get_pids_in_pedigree(Rcpp::XPtr<Pedigree> ped) {  
@@ -116,6 +142,12 @@ Rcpp::IntegerVector get_pids_in_pedigree(Rcpp::XPtr<Pedigree> ped) {
 //' Get haplotypes in pedigree
 //' 
 //' @param ped Pedigree
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' peds <- build_pedigrees(sim$population)
+//' pedigrees_all_populate_haplotypes(peds, 2, c(1, 1))
+//' get_haplotypes_in_pedigree(peds[[1]])
 //' 
 //' @return List with haplotypes
 //' 

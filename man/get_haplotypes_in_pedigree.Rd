@@ -15,3 +15,10 @@ List with haplotypes
 \description{
 Get haplotypes in pedigree
 }
+\examples{
+sim <- sample_geneology(100, 10)
+peds <- build_pedigrees(sim$population)
+pedigrees_all_populate_haplotypes(peds, 2, c(1, 1))
+get_haplotypes_in_pedigree(peds[[1]])
+
+}

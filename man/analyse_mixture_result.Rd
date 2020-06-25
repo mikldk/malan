@@ -4,8 +4,11 @@
 \alias{analyse_mixture_result}
 \title{Analyse mixture results}
 \usage{
-analyse_mixture_result(mix_res, unique_haps_in_mixture,
-  unique_haps_in_mixture_counts)
+analyse_mixture_result(
+  mix_res,
+  unique_haps_in_mixture,
+  unique_haps_in_mixture_counts
+)
 }
 \arguments{
 \item{mix_res}{Mixture result from \code{\link[=mixture_info_by_individuals_2pers]{mixture_info_by_individuals_2pers()}},

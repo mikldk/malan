@@ -6,6 +6,11 @@ imposing short tandem repeats (STR) mutations forwards.
 Intended for forensic Y chromosomal STR (Y-STR) haplotype analyses. 
 Numerous analyses are possible, e.g. number of matches and meiotic distance to matches.
 
+Refer to papers mentioned in `citation("malan")` 
+(DOI's: <https://doi.org/10.1371/journal.pgen.1007028>, 
+<https://doi.org/10.21105/joss.00684> and 
+<https://doi.org/10.1016/j.fsigen.2018.10.004>).
+    
 ## Installation
 
 You first need `R` (<https://www.r-project.org/>). 

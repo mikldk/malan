@@ -4,8 +4,14 @@
 \alias{pedigrees_all_populate_haplotypes}
 \title{Populate haplotypes in pedigrees (0-founder/unbounded).}
 \usage{
-pedigrees_all_populate_haplotypes(pedigrees, loci, mutation_rates,
-  prob_two_step = 0, prob_genealogical_error = 0, progress = TRUE)
+pedigrees_all_populate_haplotypes(
+  pedigrees,
+  loci,
+  mutation_rates,
+  prob_two_step = 0,
+  prob_genealogical_error = 0,
+  progress = TRUE
+)
 }
 \arguments{
 \item{pedigrees}{Pedigree list in which to populate haplotypes}
@@ -27,6 +33,13 @@ that all founders get haplotype \code{rep(0L, loci)}.
 }
 \details{
 Note, that pedigrees must first have been inferred by \code{\link[=build_pedigrees]{build_pedigrees()}}.
+}
+\examples{
+sim <- sample_geneology(100, 10)
+peds <- build_pedigrees(sim$population)
+pedigrees_all_populate_haplotypes(peds, 2, c(1, 1))
+get_haplotype(sim$end_generation_individuals[[1]])
+
 }
 \seealso{
 \code{\link[=pedigrees_all_populate_haplotypes_custom_founders]{pedigrees_all_populate_haplotypes_custom_founders()}} and

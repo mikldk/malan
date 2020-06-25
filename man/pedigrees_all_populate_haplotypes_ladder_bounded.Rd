@@ -4,9 +4,16 @@
 \alias{pedigrees_all_populate_haplotypes_ladder_bounded}
 \title{Populate haplotypes in pedigrees (custom founder/bounded).}
 \usage{
-pedigrees_all_populate_haplotypes_ladder_bounded(pedigrees, mutation_rates,
-  ladder_min, ladder_max, get_founder_haplotype = NULL,
-  prob_two_step = 0, prob_genealogical_error = 0, progress = TRUE)
+pedigrees_all_populate_haplotypes_ladder_bounded(
+  pedigrees,
+  mutation_rates,
+  ladder_min,
+  ladder_max,
+  get_founder_haplotype = NULL,
+  prob_two_step = 0,
+  prob_genealogical_error = 0,
+  progress = TRUE
+)
 }
 \arguments{
 \item{pedigrees}{Pedigree list in which to populate haplotypes}
@@ -37,6 +44,15 @@ With distances >= 2 to ladder bounds, mutations happen as usual.
 At distance = 0 or 1 to a ladder bound, the mutation is forced to move away from the boundary.
 
 Note, that pedigrees must first have been inferred by \code{\link[=build_pedigrees]{build_pedigrees()}}.
+}
+\examples{
+sim <- sample_geneology(100, 10)
+peds <- build_pedigrees(sim$population)
+pedigrees_all_populate_haplotypes_ladder_bounded(
+  peds, c(1, 1), c(0L, 0L), c(10L, 10L), 
+  function(x) c(10, 10))
+get_haplotype(sim$end_generation_individuals[[1]])
+
 }
 \seealso{
 \code{\link[=pedigrees_all_populate_haplotypes]{pedigrees_all_populate_haplotypes()}} and

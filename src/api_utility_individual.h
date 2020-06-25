@@ -10,6 +10,7 @@
 #define MALAN_UTILITY_INDV_H
 
 #include <RcppArmadillo.h>
+//#include <Rcpp.h>
 
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>

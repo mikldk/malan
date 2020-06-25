@@ -8,21 +8,29 @@
 
 <title>Get haplotypes in pedigree — get_haplotypes_in_pedigree • malan</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,10 +38,10 @@
 
 
 
-<meta property="og:title" content="Get haplotypes in pedigree — get_haplotypes_in_pedigree" />
 
+<meta property="og:title" content="Get haplotypes in pedigree — get_haplotypes_in_pedigree" />
 <meta property="og:description" content="Get haplotypes in pedigree" />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -47,9 +55,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -63,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">malan</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -71,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,9 +103,13 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mikldk/malan/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -104,24 +117,23 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get haplotypes in pedigree</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/mikldk/malan/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a></small>
     <div class="hidden name"><code>get_haplotypes_in_pedigree.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Get haplotypes in pedigree</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>get_haplotypes_in_pedigree</span>(<span class='no'>ped</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -130,23 +142,306 @@
       <td><p>Pedigree</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>List with haplotypes</p>
-    
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>sim</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_geneology.html'>sample_geneology</a></span>(<span class='fl'>100</span>, <span class='fl'>10</span>)
+<span class='no'>peds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_pedigrees.html'>build_pedigrees</a></span>(<span class='no'>sim</span>$<span class='no'>population</span>)
+<span class='fu'><a href='pedigrees_all_populate_haplotypes.html'>pedigrees_all_populate_haplotypes</a></span>(<span class='no'>peds</span>, <span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>))
+<span class='fu'>get_haplotypes_in_pedigree</span>(<span class='no'>peds</span><span class='kw'>[[</span><span class='fl'>1</span>]])</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] 0 0
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] -1  1
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] 0 2
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] -1  3
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] -2  4
+#&gt; 
+#&gt; [[6]]
+#&gt; [1] -3  3
+#&gt; 
+#&gt; [[7]]
+#&gt; [1] -4  4
+#&gt; 
+#&gt; [[8]]
+#&gt; [1] -3  5
+#&gt; 
+#&gt; [[9]]
+#&gt; [1] -4  6
+#&gt; 
+#&gt; [[10]]
+#&gt; [1] -5  7
+#&gt; 
+#&gt; [[11]]
+#&gt; [1] -3  5
+#&gt; 
+#&gt; [[12]]
+#&gt; [1] -4  6
+#&gt; 
+#&gt; [[13]]
+#&gt; [1] -5  5
+#&gt; 
+#&gt; [[14]]
+#&gt; [1] -4  4
+#&gt; 
+#&gt; [[15]]
+#&gt; [1] -5  3
+#&gt; 
+#&gt; [[16]]
+#&gt; [1] -2  4
+#&gt; 
+#&gt; [[17]]
+#&gt; [1] -1  3
+#&gt; 
+#&gt; [[18]]
+#&gt; [1] -2  4
+#&gt; 
+#&gt; [[19]]
+#&gt; [1] -1  5
+#&gt; 
+#&gt; [[20]]
+#&gt; [1] -2  2
+#&gt; 
+#&gt; [[21]]
+#&gt; [1] -3  3
+#&gt; 
+#&gt; [[22]]
+#&gt; [1] -1  3
+#&gt; 
+#&gt; [[23]]
+#&gt; [1] 0 2
+#&gt; 
+#&gt; [[24]]
+#&gt; [1] 1 1
+#&gt; 
+#&gt; [[25]]
+#&gt; [1] -1  1
+#&gt; 
+#&gt; [[26]]
+#&gt; [1] -1  1
+#&gt; 
+#&gt; [[27]]
+#&gt; [1] -2  2
+#&gt; 
+#&gt; [[28]]
+#&gt; [1] -3  3
+#&gt; 
+#&gt; [[29]]
+#&gt; [1] -2  4
+#&gt; 
+#&gt; [[30]]
+#&gt; [1] -3  3
+#&gt; 
+#&gt; [[31]]
+#&gt; [1] -4  4
+#&gt; 
+#&gt; [[32]]
+#&gt; [1] -5  3
+#&gt; 
+#&gt; [[33]]
+#&gt; [1] -4  4
+#&gt; 
+#&gt; [[34]]
+#&gt; [1] -3  3
+#&gt; 
+#&gt; [[35]]
+#&gt; [1] -5  3
+#&gt; 
+#&gt; [[36]]
+#&gt; [1] 1 1
+#&gt; 
+#&gt; [[37]]
+#&gt; [1] 0 0
+#&gt; 
+#&gt; [[38]]
+#&gt; [1] -1 -1
+#&gt; 
+#&gt; [[39]]
+#&gt; [1] -2 -2
+#&gt; 
+#&gt; [[40]]
+#&gt; [1] -1 -3
+#&gt; 
+#&gt; [[41]]
+#&gt; [1]  0 -4
+#&gt; 
+#&gt; [[42]]
+#&gt; [1]  1 -5
+#&gt; 
+#&gt; [[43]]
+#&gt; [1] -2 -4
+#&gt; 
+#&gt; [[44]]
+#&gt; [1] -1 -3
+#&gt; 
+#&gt; [[45]]
+#&gt; [1] -1 -3
+#&gt; 
+#&gt; [[46]]
+#&gt; [1]  0 -4
+#&gt; 
+#&gt; [[47]]
+#&gt; [1]  1 -3
+#&gt; 
+#&gt; [[48]]
+#&gt; [1] -1 -1
+#&gt; 
+#&gt; [[49]]
+#&gt; [1] -2  0
+#&gt; 
+#&gt; [[50]]
+#&gt; [1] -3 -1
+#&gt; 
+#&gt; [[51]]
+#&gt; [1] -4 -2
+#&gt; 
+#&gt; [[52]]
+#&gt; [1] -5 -1
+#&gt; 
+#&gt; [[53]]
+#&gt; [1] -3 -1
+#&gt; 
+#&gt; [[54]]
+#&gt; [1] -1 -1
+#&gt; 
+#&gt; [[55]]
+#&gt; [1]  0 -2
+#&gt; 
+#&gt; [[56]]
+#&gt; [1] -1 -3
+#&gt; 
+#&gt; [[57]]
+#&gt; [1]  1 -1
+#&gt; 
+#&gt; [[58]]
+#&gt; [1] -2 -2
+#&gt; 
+#&gt; [[59]]
+#&gt; [1] -3 -3
+#&gt; 
+#&gt; [[60]]
+#&gt; [1] -2 -2
+#&gt; 
+#&gt; [[61]]
+#&gt; [1] -3 -1
+#&gt; 
+#&gt; [[62]]
+#&gt; [1]  1 -1
+#&gt; 
+#&gt; [[63]]
+#&gt; [1]  2 -2
+#&gt; 
+#&gt; [[64]]
+#&gt; [1]  3 -1
+#&gt; 
+#&gt; [[65]]
+#&gt; [1]  4 -2
+#&gt; 
+#&gt; [[66]]
+#&gt; [1]  5 -1
+#&gt; 
+#&gt; [[67]]
+#&gt; [1]  4 -2
+#&gt; 
+#&gt; [[68]]
+#&gt; [1]  5 -1
+#&gt; 
+#&gt; [[69]]
+#&gt; [1] 4 0
+#&gt; 
+#&gt; [[70]]
+#&gt; [1] 5 1
+#&gt; 
+#&gt; [[71]]
+#&gt; [1] 5 1
+#&gt; 
+#&gt; [[72]]
+#&gt; [1]  3 -1
+#&gt; 
+#&gt; [[73]]
+#&gt; [1] 2 0
+#&gt; 
+#&gt; [[74]]
+#&gt; [1]  1 -1
+#&gt; 
+#&gt; [[75]]
+#&gt; [1] 0 0
+#&gt; 
+#&gt; [[76]]
+#&gt; [1]  1 -1
+#&gt; 
+#&gt; [[77]]
+#&gt; [1]  0 -2
+#&gt; 
+#&gt; [[78]]
+#&gt; [1] -1 -3
+#&gt; 
+#&gt; [[79]]
+#&gt; [1]  0 -2
+#&gt; 
+#&gt; [[80]]
+#&gt; [1] -1 -3
+#&gt; 
+#&gt; [[81]]
+#&gt; [1]  0 -4
+#&gt; 
+#&gt; [[82]]
+#&gt; [1] -1 -3
+#&gt; 
+#&gt; [[83]]
+#&gt; [1]  1 -5
+#&gt; 
+#&gt; [[84]]
+#&gt; [1]  1 -3
+#&gt; 
+#&gt; [[85]]
+#&gt; [1]  4 -2
+#&gt; 
+#&gt; [[86]]
+#&gt; [1]  3 -1
+#&gt; 
+#&gt; [[87]]
+#&gt; [1] 4 0
+#&gt; 
+#&gt; [[88]]
+#&gt; [1]  3 -1
+#&gt; 
+#&gt; [[89]]
+#&gt; [1] 2 0
+#&gt; 
+#&gt; [[90]]
+#&gt; [1]  1 -1
+#&gt; 
+#&gt; [[91]]
+#&gt; [1]  1 -1
+#&gt; 
+#&gt; [[92]]
+#&gt; [1] 2 0
+#&gt; 
+#&gt; [[93]]
+#&gt; [1] 1 1
+#&gt; 
+#&gt; [[94]]
+#&gt; [1]  3 -1
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -154,13 +449,16 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

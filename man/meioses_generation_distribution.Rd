@@ -4,8 +4,10 @@
 \alias{meioses_generation_distribution}
 \title{Meiotic distribution}
 \usage{
-meioses_generation_distribution(individual,
-  generation_upper_bound_in_result = -1L)
+meioses_generation_distribution(
+  individual,
+  generation_upper_bound_in_result = -1L
+)
 }
 \arguments{
 \item{individual}{Individual to calculate all meiotic distances from}
