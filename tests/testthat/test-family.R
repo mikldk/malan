@@ -74,3 +74,6 @@ test_that("cousins works", {
   expect_s3_class(get_cousins(i6)[[1]], "malan_individual")
   expect_s3_class(get_cousins(i6)[[1]], "externalptr")
 })
+
+
+

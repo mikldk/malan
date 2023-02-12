@@ -837,6 +837,53 @@ int meiotic_dist(Rcpp::XPtr<Individual> ind1, Rcpp::XPtr<Individual> ind2) {
   return ind1->meiosis_dist_tree(ind2);
 }
 
+//' Meiotic distance between two individuals (with threshold)
+//' 
+//' Get the number of meioses between two individuals.
+//' Note, that pedigrees must first have been inferred by [build_pedigrees()].
+//' 
+//' @param ind1 Individual 1
+//' @param ind2 Individual 2
+//' @param threshold Max search radius, if exceeding, return -1
+//' 
+//' @return Number of meioses between `ind1` and `ind2` if they are in the same pedigree, else -1.
+//' 
+//' @export
+// [[Rcpp::export]]
+int meiotic_dist_threshold(Rcpp::XPtr<Individual> ind1, Rcpp::XPtr<Individual> ind2, int threshold) {
+ return ind1->meiosis_dist_tree_threshold(ind2, threshold);
+}
+
+//' Meiotic radius
+//' 
+//' Get all individual IDs within a meiotic radius
+//' Note, that pedigrees must first have been inferred by [build_pedigrees()].
+//' 
+//' @param ind Individual
+//' @param radius Max radius
+//' 
+//' @return Matrix with ID and meiotic radius
+//' 
+//' @export
+// [[Rcpp::export]]
+Rcpp::IntegerMatrix meiotic_radius(Rcpp::XPtr<Individual> ind, int radius) {
+  std::vector< std::tuple<int, int, int> > family = ind->meiotic_radius(radius);
+  
+  size_t n = family.size();
+  
+  Rcpp::IntegerMatrix ret(n, 3);
+  
+  for (size_t i = 0; i < n; ++i) {
+    std::tuple<int, int, int> p = family[i];
+    ret(i, 0) = std::get<0>(p);
+    ret(i, 1) = std::get<1>(p);
+    ret(i, 2) = std::get<2>(p);
+  }
+  
+  Rcpp::colnames(ret) = Rcpp::CharacterVector::create("pid", "dist", "generation");
+  
+  return ret;
+}
 
 //' Convert haplotypes to hashes (integers)
 //' 

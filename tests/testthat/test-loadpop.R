@@ -101,9 +101,129 @@ test_that("pedigree pids works", {
 
 
 test_that("meiotic_dist works", {
+  if (FALSE) {
+    plot(peds)
+  }
   expect_equal(4L, meiotic_dist(get_individual(test_pop, pid = 1L), 
                                 get_individual(test_pop, pid = 10L)))
+  
+  expect_equal(6L, meiotic_dist(get_individual(test_pop, pid = 1L), 
+                                get_individual(test_pop, pid = 5L)))
+  
+  expect_equal(-1L, meiotic_dist(get_individual(test_pop, pid = 37L), 
+                                 get_individual(test_pop, pid = 10L)))
 })
+
+test_that("meiotic_dist_threshold works", {
+  expect_equal(4L, meiotic_dist_threshold(get_individual(test_pop, pid = 1L), 
+                                          get_individual(test_pop, pid = 10L),
+                                          threshold = 5))
+  expect_equal(4L, meiotic_dist_threshold(get_individual(test_pop, pid = 1L), 
+                                          get_individual(test_pop, pid = 10L),
+                                          threshold = 4))
+  expect_equal(-1L, meiotic_dist_threshold(get_individual(test_pop, pid = 1L), 
+                                          get_individual(test_pop, pid = 10L),
+                                          threshold = 3))
+  expect_equal(-1L, meiotic_dist_threshold(get_individual(test_pop, pid = 1L), 
+                                           get_individual(test_pop, pid = 10L),
+                                           threshold = 2))
+  
+  
+  expect_equal(6L, meiotic_dist_threshold(get_individual(test_pop, pid = 1L), 
+                                          get_individual(test_pop, pid = 5L),
+                                          threshold = 7))
+  expect_equal(6L, meiotic_dist_threshold(get_individual(test_pop, pid = 1L), 
+                                          get_individual(test_pop, pid = 5L),
+                                          threshold = 6))
+  expect_equal(-1L, meiotic_dist_threshold(get_individual(test_pop, pid = 1L), 
+                                          get_individual(test_pop, pid = 5L),
+                                          threshold = 5))
+  
+  expect_equal(-1L, meiotic_dist_threshold(get_individual(test_pop, pid = 37L), 
+                                           get_individual(test_pop, pid = 10L),
+                                           threshold = 1))
+  expect_equal(-1L, meiotic_dist_threshold(get_individual(test_pop, pid = 37L), 
+                                           get_individual(test_pop, pid = 10L),
+                                           threshold = 0))
+})
+
+test_that("radius works 1", {
+  if (FALSE) {
+    plot(peds)
+    
+    ans <- meiotic_radius(get_individual(test_pop, pid = 1L), radius = 1)
+    ans
+
+    ans <- meiotic_radius(get_individual(test_pop, pid = 1L), radius = 2)
+    ans
+    
+    ans <- meiotic_radius(get_individual(test_pop, pid = 1L), radius = 3)
+    ans
+    
+    ans <- meiotic_radius(get_individual(test_pop, pid = 1L), radius = 4)
+    ans
+  }
+  
+  verify_distances <- function(pid_PoI, radius) {
+    ans <- meiotic_radius(get_individual(test_pop, pid = pid_PoI), radius = radius)
+    ans
+    expect_true(isTRUE(all(ans[, 2] <= radius)))
+    
+    for (i in seq_len(nrow(ans))) {
+      expect_equal(as.integer(ans[i, 2L]), 
+                   meiotic_dist(get_individual(test_pop, pid = pid_PoI), 
+                                get_individual(test_pop, pid = as.integer(ans[i, 1L]))), 
+                   label = paste0("pid_PoI = ", pid_PoI, " / radius = ", radius, " / pid ", as.integer(ans[i, 1L])))
+    }
+  }
+  
+  for (radius in seq_len(10)) {
+    verify_distances(pid_PoI = 1L, radius = radius)
+  }
+  
+  for (radius in seq_len(10)) {
+    verify_distances(pid_PoI = 34L, radius = radius)
+  }
+})
+
+test_that("radius works 2", {
+  set.seed(20230212)
+  radius_pop <- sample_geneology(population_size = 1e2, 
+                                 generations = 30,
+                                 generations_full = 3,
+                                 generations_return = 3,
+                                 progress = FALSE)
+  radius_peds <- build_pedigrees(radius_pop$population, progress = FALSE)
+  
+  if (FALSE) {
+    plot(radius_peds)
+  }
+  
+  radius_verify_distances <- function(pid_PoI, radius) {
+    #cat("pid_PoI = ", pid_PoI, " / radius = ", radius, "\n", sep = "")
+           
+    ans <- meiotic_radius(get_individual(radius_pop$population, pid = pid_PoI), radius = radius)
+    ans
+    expect_true(isTRUE(all(ans[, 2] <= radius)))
+    
+    for (i in seq_len(nrow(ans))) {
+      expect_equal(as.integer(ans[i, 2L]), 
+                   meiotic_dist(get_individual(radius_pop$population, pid = pid_PoI), 
+                                get_individual(radius_pop$population, pid = as.integer(ans[i, 1L]))), 
+                   label = paste0("pid_PoI = ", pid_PoI, " / radius = ", radius, " / pid ", as.integer(ans[i, 1L])))
+    }
+  }
+  
+  radius_pop_live_pids <- lapply(radius_pop$individuals_generations, get_pid)
+  pid_PoIs <- sample(x = radius_pop_live_pids, size = 5)
+  
+  for (pid_PoI in pid_PoIs) {
+    for (radius in seq_len(15)) {
+      radius_verify_distances(pid_PoI = pid_PoI, radius = radius)
+    }
+  }
+})
+
 
 LOCI <- 5L
 

@@ -769,6 +769,37 @@ meiotic_dist <- function(ind1, ind2) {
     .Call('_malan_meiotic_dist', PACKAGE = 'malan', ind1, ind2)
 }
 
+#' Meiotic distance between two individuals (with threshold)
+#' 
+#' Get the number of meioses between two individuals.
+#' Note, that pedigrees must first have been inferred by [build_pedigrees()].
+#' 
+#' @param ind1 Individual 1
+#' @param ind2 Individual 2
+#' @param threshold Max search radius, if exceeding, return -1
+#' 
+#' @return Number of meioses between `ind1` and `ind2` if they are in the same pedigree, else -1.
+#' 
+#' @export
+meiotic_dist_threshold <- function(ind1, ind2, threshold) {
+    .Call('_malan_meiotic_dist_threshold', PACKAGE = 'malan', ind1, ind2, threshold)
+}
+
+#' Meiotic radius
+#' 
+#' Get all individual IDs within a meiotic radius
+#' Note, that pedigrees must first have been inferred by [build_pedigrees()].
+#' 
+#' @param ind Individual
+#' @param radius Max radius
+#' 
+#' @return Matrix with ID and meiotic radius
+#' 
+#' @export
+meiotic_radius <- function(ind, radius) {
+    .Call('_malan_meiotic_radius', PACKAGE = 'malan', ind, radius)
+}
+
 #' Convert haplotypes to hashes (integers)
 #' 
 #' Individuals with the same haplotype will have the same hash (integer)

@@ -7,6 +7,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // build_pedigrees
 Rcpp::XPtr< std::vector<Pedigree*> > build_pedigrees(Rcpp::XPtr<Population> population, bool progress);
 RcppExport SEXP _malan_build_pedigrees(SEXP populationSEXP, SEXP progressSEXP) {
@@ -438,6 +443,31 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type ind1(ind1SEXP);
     Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type ind2(ind2SEXP);
     rcpp_result_gen = Rcpp::wrap(meiotic_dist(ind1, ind2));
+    return rcpp_result_gen;
+END_RCPP
+}
+// meiotic_dist_threshold
+int meiotic_dist_threshold(Rcpp::XPtr<Individual> ind1, Rcpp::XPtr<Individual> ind2, int threshold);
+RcppExport SEXP _malan_meiotic_dist_threshold(SEXP ind1SEXP, SEXP ind2SEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type ind1(ind1SEXP);
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type ind2(ind2SEXP);
+    Rcpp::traits::input_parameter< int >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(meiotic_dist_threshold(ind1, ind2, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
+// meiotic_radius
+Rcpp::IntegerMatrix meiotic_radius(Rcpp::XPtr<Individual> ind, int radius);
+RcppExport SEXP _malan_meiotic_radius(SEXP indSEXP, SEXP radiusSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type ind(indSEXP);
+    Rcpp::traits::input_parameter< int >::type radius(radiusSEXP);
+    rcpp_result_gen = Rcpp::wrap(meiotic_radius(ind, radius));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1009,6 +1039,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists", (DL_FUNC) &_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists, 2},
     {"_malan_pedigree_haplotype_near_matches_meiosis", (DL_FUNC) &_malan_pedigree_haplotype_near_matches_meiosis, 3},
     {"_malan_meiotic_dist", (DL_FUNC) &_malan_meiotic_dist, 2},
+    {"_malan_meiotic_dist_threshold", (DL_FUNC) &_malan_meiotic_dist_threshold, 3},
+    {"_malan_meiotic_radius", (DL_FUNC) &_malan_meiotic_radius, 2},
     {"_malan_haplotypes_to_hashes", (DL_FUNC) &_malan_haplotypes_to_hashes, 2},
     {"_malan_split_by_haplotypes", (DL_FUNC) &_malan_split_by_haplotypes, 2},
     {"_malan_haplotype_partially_matches_individuals", (DL_FUNC) &_malan_haplotype_partially_matches_individuals, 3},

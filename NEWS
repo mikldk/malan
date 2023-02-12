@@ -1,3 +1,10 @@
+Version 1.0.3:
+  
+  Changes since last version:
+  
+    * Added `meiotic_dist_threshold()`
+    * Added `meiotic_radius()`
+
 Version 1.0.2:
 
   Changes since last version:

@@ -25,6 +25,11 @@ private:
   int m_pedigree_id = 0;
   
   void meiosis_dist_tree_internal(Individual* dest, int* dist) const;
+  void meiosis_dist_tree_threshold_internal(Individual* dest, int threshold, int* dist) const;
+  
+  void meiosis_radius_descendant_internal(int dist,
+                                          const int radius,
+                                          std::vector< std::tuple<int, int, int> >* family);
   
   bool m_dijkstra_visited = false;
   int m_dijkstra_distance = 0;
@@ -64,6 +69,9 @@ public:
   void unset_pedigree();
 
   int meiosis_dist_tree(Individual* dest) const;
+  int meiosis_dist_tree_threshold(Individual* dest, int threshold) const;
+  
+  std::vector< std::tuple<int, int, int> > meiotic_radius(int radius);
   
   std::vector<Individual*> calculate_path_to(Individual* dest) const;
   

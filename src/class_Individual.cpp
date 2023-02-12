@@ -116,7 +116,7 @@ void Individual::dijkstra_reset() {
 void Individual::dijkstra_tick_distance(int step) {
   m_dijkstra_distance += step;
 }
-  
+
 void Individual::dijkstra_set_distance_if_less(int dist) {
   if (m_dijkstra_distance < dist) {
     m_dijkstra_distance = dist;
@@ -135,6 +135,7 @@ bool Individual::dijkstra_was_visited() const {
   return m_dijkstra_visited; 
 }
 
+/////////////////////////////
 
 // Heavily relies on it being a TREE, hence there is only one path connecting every pair of nodes
 void Individual::meiosis_dist_tree_internal(Individual* dest, int* dist) const {
@@ -195,6 +196,166 @@ int Individual::meiosis_dist_tree(Individual* dest) const {
   return dist;
 }
 
+/////////////////////////////
+
+
+// Heavily relies on it being a TREE, hence there is only one path connecting every pair of nodes
+void Individual::meiosis_dist_tree_threshold_internal(Individual* dest, int threshold, int* dist) const {
+  if (*dist > threshold) {
+    *dist = -1;
+    return;
+  }
+  
+  if (this->get_pid() == dest->get_pid()) {
+    *dist = dest->dijkstra_get_distance();    
+    return;
+  }
+  
+  if (dest->dijkstra_was_visited()) {
+    return;
+  }
+  
+  dest->dijkstra_mark_visited();
+  dest->dijkstra_tick_distance(1);
+  int m = dest->dijkstra_get_distance();
+  
+  Individual* father = dest->get_father();
+  if (father != nullptr) {  
+    father->dijkstra_tick_distance(m);    
+    this->meiosis_dist_tree_threshold_internal(father, threshold, dist); 
+  }
+  
+  std::vector<Individual*>* children = dest->get_children();
+  for (auto child : *children) {
+    child->dijkstra_tick_distance(m);
+    
+    this->meiosis_dist_tree_threshold_internal(child, threshold, dist);
+  }
+}
+
+
+// Heavily relies on it being a TREE, hence there is only one path connecting every pair of nodes
+int Individual::meiosis_dist_tree_threshold(Individual* dest, int threshold) const {
+  if (!(this->pedigree_is_set())) {
+    throw std::invalid_argument("!(this->pedigree_is_set())");
+  }
+  
+  if (dest == nullptr) {
+    throw std::invalid_argument("dest is NULL");
+  }
+  
+  if (!(dest->pedigree_is_set())) {
+    throw std::invalid_argument("!(dest->pedigree_is_set())");
+  }
+  
+  if (this->get_pedigree_id() != dest->get_pedigree_id()) {
+    return -1;
+  }
+  
+  // At this point, the individuals this and dest belong to same pedigree
+  
+  std::vector<Individual*>* inds = this->get_pedigree()->get_all_individuals();
+  for (auto child : *inds) {
+    child->dijkstra_reset();
+  }
+  
+  int dist = 0;
+  this->meiosis_dist_tree_threshold_internal(dest, threshold, &dist);
+  return dist;
+}
+
+
+/////////////////////////////
+
+// Heavily relies on it being a TREE, hence there is only one path connecting every pair of nodes
+void Individual::meiosis_radius_descendant_internal(int dist,
+                                                    const int radius,
+                                                    std::vector< std::tuple<int, int, int> >* family) {
+  
+  if (dist > radius) {
+    return;
+  }
+  
+  int this_dist = dist;
+  if (this->dijkstra_was_visited()) {
+    this_dist = this->dijkstra_get_distance();
+  }
+  
+  family->push_back(std::make_tuple(this->get_pid(), this_dist, this->get_generation()));
+  
+  std::vector<Individual*>* children = this->get_children();
+  for (auto child : *children) {
+    int child_dist = dist + 1;
+    if (child->dijkstra_was_visited()) {
+      child_dist = child->dijkstra_get_distance();
+    }
+    
+    child->meiosis_radius_descendant_internal(child_dist, radius, family);
+  }
+}
+
+// Heavily relies on it being a TREE, hence there is only one path connecting every pair of nodes
+std::vector< std::tuple<int, int, int> > Individual::meiotic_radius(int radius) {
+  if (!(this->pedigree_is_set())) {
+    throw std::invalid_argument("!(this->pedigree_is_set())");
+  }
+  
+  if (radius <= 0) {
+    throw std::invalid_argument("radius <= 0");
+  }
+
+  std::vector< std::tuple<int, int, int> > family;
+  
+  /*
+   * Tree:
+   * Navigate up radius generations to great-great grand father, and take all descendants
+   * 
+   * Distance:
+   * Lineage upwards: Count down
+   * All other:       Count up
+   */
+  
+  // FIXME: Optimize? Only up to radius?
+  std::vector<Individual*>* inds = this->get_pedigree()->get_all_individuals();
+  for (auto indv : *inds) {
+    indv->dijkstra_reset();
+  }
+  
+  this->dijkstra_mark_visited(); // m_dijkstra_distance = 0
+
+  Individual* ancestor = this;
+  int dist = 0;
+  
+  //family.push_back(std::make_pair(ancestor->get_pid(), dist));
+  
+  for (int i = 0; i < radius; ++i) { // performed radius times
+    Individual* father = ancestor->get_father();
+    
+    if (nullptr == father) {
+      break;
+    }
+    
+    father->dijkstra_mark_visited();
+    father->dijkstra_tick_distance(i + 1);
+    
+    ancestor = father;
+    dist += 1;
+  }
+  
+  // now |ancestor - this| <= radius  (less than if population too few generations)
+  
+  ancestor->meiosis_radius_descendant_internal(dist, radius, &family);
+  
+  // FIXME: Optimize? Only up to radius?
+  for (auto indv : *inds) {
+    indv->dijkstra_reset();
+  }
+  
+  return family;
+}
+
+
+/////////////////////////////////////////
 
 
 /*
