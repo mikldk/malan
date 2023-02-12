@@ -150,6 +150,83 @@ test_that("meiotic_dist_threshold works", {
 test_that("radius works 1", {
   if (FALSE) {
     plot(peds)
+  }
+  
+  ans <- as.data.frame(meiotic_radius(get_individual(test_pop, pid = 1L), radius = 1))
+  expect_equal(nrow(ans), 2)
+  expect_equal(subset(ans, pid == 1, dist, drop = TRUE), 0L)
+  expect_equal(subset(ans, pid == 6, dist, drop = TRUE), 1L)
+  
+  ans <- as.data.frame(meiotic_radius(get_individual(test_pop, pid = 1L), radius = 2))
+  expect_equal(nrow(ans), 3)
+  expect_equal(subset(ans, pid == 1, dist, drop = TRUE), 0L)
+  expect_equal(subset(ans, pid == 6, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 9, dist, drop = TRUE), 2L)
+  
+  ans <- as.data.frame(meiotic_radius(get_individual(test_pop, pid = 1L), radius = 3))
+  expect_equal(nrow(ans), 5)
+  expect_equal(subset(ans, pid == 1, dist, drop = TRUE), 0L)
+  expect_equal(subset(ans, pid == 6, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 9, dist, drop = TRUE), 2L)
+  expect_equal(subset(ans, pid == 11, dist, drop = TRUE), 3L)
+  expect_equal(subset(ans, pid == 7, dist, drop = TRUE), 3L)
+  
+  ans <- as.data.frame(meiotic_radius(get_individual(test_pop, pid = 1L), radius = 4))
+  expect_equal(nrow(ans), 8)
+  expect_equal(subset(ans, pid == 1, dist, drop = TRUE), 0L)
+  expect_equal(subset(ans, pid == 6, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 9, dist, drop = TRUE), 2L)
+  expect_equal(subset(ans, pid == 11, dist, drop = TRUE), 3L)
+  expect_equal(subset(ans, pid == 7, dist, drop = TRUE), 3L)
+  expect_equal(subset(ans, pid == 2, dist, drop = TRUE), 4L)
+  expect_equal(subset(ans, pid == 3, dist, drop = TRUE), 4L)
+  expect_equal(subset(ans, pid == 10, dist, drop = TRUE), 4L)
+  
+  ans <- as.data.frame(meiotic_radius(get_individual(test_pop, pid = 1L), radius = 5))
+  expect_equal(nrow(ans), 9)
+  expect_equal(subset(ans, pid == 1, dist, drop = TRUE), 0L)
+  expect_equal(subset(ans, pid == 6, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 9, dist, drop = TRUE), 2L)
+  expect_equal(subset(ans, pid == 11, dist, drop = TRUE), 3L)
+  expect_equal(subset(ans, pid == 7, dist, drop = TRUE), 3L)
+  expect_equal(subset(ans, pid == 2, dist, drop = TRUE), 4L)
+  expect_equal(subset(ans, pid == 3, dist, drop = TRUE), 4L)
+  expect_equal(subset(ans, pid == 10, dist, drop = TRUE), 4L)
+  expect_equal(subset(ans, pid == 8, dist, drop = TRUE), 5L)
+  
+  #####
+  
+  ans <- as.data.frame(meiotic_radius(get_individual(test_pop, pid = 37L), radius = 1))
+  expect_equal(nrow(ans), 5)
+  expect_equal(subset(ans, pid == 39, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 33, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 34, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 35, dist, drop = TRUE), 1L)
+  
+  ans <- as.data.frame(meiotic_radius(get_individual(test_pop, pid = 37L), radius = 2))
+  expect_equal(nrow(ans), 7)
+  expect_equal(subset(ans, pid == 39, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 33, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 34, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 35, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 36, dist, drop = TRUE), 2L)
+  expect_equal(subset(ans, pid == 38, dist, drop = TRUE), 2L)
+  
+  ans <- as.data.frame(meiotic_radius(get_individual(test_pop, pid = 37L), radius = 3))
+  expect_equal(nrow(ans), 9)
+  expect_equal(subset(ans, pid == 39, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 33, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 34, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 35, dist, drop = TRUE), 1L)
+  expect_equal(subset(ans, pid == 36, dist, drop = TRUE), 2L)
+  expect_equal(subset(ans, pid == 38, dist, drop = TRUE), 2L)
+  expect_equal(subset(ans, pid == 31, dist, drop = TRUE), 3L)
+  expect_equal(subset(ans, pid == 32, dist, drop = TRUE), 3L)
+})
+
+test_that("radius works 2", {
+  if (FALSE) {
+    plot(peds)
     
     ans <- meiotic_radius(get_individual(test_pop, pid = 1L), radius = 1)
     ans
@@ -186,7 +263,7 @@ test_that("radius works 1", {
   }
 })
 
-test_that("radius works 2", {
+test_that("radius works 3", {
   set.seed(20230212)
   radius_pop <- sample_geneology(population_size = 1e2, 
                                  generations = 30,
