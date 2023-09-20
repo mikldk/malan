@@ -37,6 +37,7 @@ Use unordered_set and equal sets like in api_utility_mixtures_analyse.cpp?
 //' @param individuals Individuals to consider as possible contributors and thereby get information from.
 //' @param donor1 Contributor1/donor 1
 //' @param donor2 Contributor2/donor 2
+//' @param include_genealogy_info Include information about meiotic distances and family info
 //' @return A list with mixture information about the mixture \code{donor1}+\code{donor2}+\code{donor3} from \code{individuals}
 //' 
 //' @seealso \code{\link{mixture_info_by_individuals_3pers}}, 
@@ -45,7 +46,10 @@ Use unordered_set and equal sets like in api_utility_mixtures_analyse.cpp?
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List mixture_info_by_individuals_2pers(const Rcpp::List individuals, Rcpp::XPtr<Individual>& donor1, Rcpp::XPtr<Individual>& donor2) { 
+Rcpp::List mixture_info_by_individuals_2pers(const Rcpp::List individuals, 
+                                             Rcpp::XPtr<Individual>& donor1, 
+                                             Rcpp::XPtr<Individual>& donor2, 
+                                             bool include_genealogy_info = true) { 
   size_t N = individuals.size();
   
   Rcpp::List res;
@@ -114,17 +118,16 @@ Rcpp::List mixture_info_by_individuals_2pers(const Rcpp::List individuals, Rcpp:
     if (in_mixture) {
       res_comp_with_mixture.push_back(pid); // R indexing
       
-      //int dist_donor1 = donor1->calculate_path_to(indv);
-      //int dist_donor2 = donor2->calculate_path_to(indv);      
-      int dist_donor1 = donor1->meiosis_dist_tree(indv);
-      int dist_donor2 = donor2->meiosis_dist_tree(indv);
-      
       Rcpp::List r = Rcpp::List::create(
-        Rcpp::Named("indv_pid") = pid,
+        Rcpp::Named("indv_pid") = pid
         //Rcpp::Named("pid_donor1") = donor1->get_pid(),
         //Rcpp::Named("pid_donor2") = donor2->get_pid(),
-        Rcpp::Named("dist_donor1") = dist_donor1,
-        Rcpp::Named("dist_donor2") = dist_donor2);   
+        );   
+      
+      if (include_genealogy_info) {
+        r["dist_donor1"] = donor1->meiosis_dist_tree(indv);
+        r["dist_donor2"] = donor2->meiosis_dist_tree(indv);
+      }
         
       res_comp_with_mixture_dists.push_back(r);
       
@@ -147,9 +150,15 @@ Rcpp::List mixture_info_by_individuals_2pers(const Rcpp::List individuals, Rcpp:
   res["pids_matching_donor1"] = res_match_donor1;
   res["pids_matching_donor2"] = res_match_donor2;
   res["pids_others_included"] = res_others_included;
-  res["pids_donor12_meiotic_dist"] = donor1->meiosis_dist_tree(donor2);
-  res["donor1_family_info"] = get_family_info(donor1);
-  res["donor2_family_info"] = get_family_info(donor2);
+  
+  
+  if (include_genealogy_info) {
+    res["pids_donor12_meiotic_dist"] = donor1->meiosis_dist_tree(donor2);
+    
+    res["donor1_family_info"] = get_family_info(donor1);
+    res["donor2_family_info"] = get_family_info(donor2);
+  } 
+  
   res["donor1_profile"] = H1;
   res["donor2_profile"] = H2;
   res["donor1_pid"] = donor1->get_pid();

@@ -4,7 +4,12 @@
 \alias{mixture_info_by_individuals_2pers}
 \title{Mixture information about 2 persons' mixture of donor1 and donor2.}
 \usage{
-mixture_info_by_individuals_2pers(individuals, donor1, donor2)
+mixture_info_by_individuals_2pers(
+  individuals,
+  donor1,
+  donor2,
+  include_genealogy_info = TRUE
+)
 }
 \arguments{
 \item{individuals}{Individuals to consider as possible contributors and thereby get information from.}
@@ -12,6 +17,8 @@ mixture_info_by_individuals_2pers(individuals, donor1, donor2)
 \item{donor1}{Contributor1/donor 1}
 
 \item{donor2}{Contributor2/donor 2}
+
+\item{include_genealogy_info}{Include information about meiotic distances and family info}
 }
 \value{
 A list with mixture information about the mixture \code{donor1}+\code{donor2}+\code{donor3} from \code{individuals}

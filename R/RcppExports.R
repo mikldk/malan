@@ -1202,6 +1202,7 @@ pedigree_size_generation <- function(pedigree, generation_upper_bound_in_result 
 #' @param individuals Individuals to consider as possible contributors and thereby get information from.
 #' @param donor1 Contributor1/donor 1
 #' @param donor2 Contributor2/donor 2
+#' @param include_genealogy_info Include information about meiotic distances and family info
 #' @return A list with mixture information about the mixture \code{donor1}+\code{donor2}+\code{donor3} from \code{individuals}
 #' 
 #' @seealso \code{\link{mixture_info_by_individuals_3pers}}, 
@@ -1209,8 +1210,8 @@ pedigree_size_generation <- function(pedigree, generation_upper_bound_in_result 
 #'          \code{\link{mixture_info_by_individuals_5pers}}
 #' 
 #' @export
-mixture_info_by_individuals_2pers <- function(individuals, donor1, donor2) {
-    .Call('_malan_mixture_info_by_individuals_2pers', PACKAGE = 'malan', individuals, donor1, donor2)
+mixture_info_by_individuals_2pers <- function(individuals, donor1, donor2, include_genealogy_info = TRUE) {
+    .Call('_malan_mixture_info_by_individuals_2pers', PACKAGE = 'malan', individuals, donor1, donor2, include_genealogy_info)
 }
 
 #' Mixture information about 3 persons' mixture of donor1, donor2 and donor3.

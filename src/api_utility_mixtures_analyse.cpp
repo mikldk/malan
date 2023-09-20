@@ -289,11 +289,6 @@ Rcpp::List analyse_mixture_result(Rcpp::List& mix_res,
   
   int m = unique_haps_in_mixture.size();
 
-  if (unique_haps_in_mixture_counts.size() != m) {
-    Rcpp::List terms_i = get_mixture_analyse_failure("unique_haps_in_mixture_counts.size() != m.");
-    return terms_i;
-  }
-
   if (m < K) {
     Rcpp::List terms_i = get_mixture_analyse_failure("m (number of unique included haplotypes) < K (number of contributors).");
     return terms_i;

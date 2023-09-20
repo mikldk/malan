@@ -789,15 +789,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // mixture_info_by_individuals_2pers
-Rcpp::List mixture_info_by_individuals_2pers(const Rcpp::List individuals, Rcpp::XPtr<Individual>& donor1, Rcpp::XPtr<Individual>& donor2);
-RcppExport SEXP _malan_mixture_info_by_individuals_2pers(SEXP individualsSEXP, SEXP donor1SEXP, SEXP donor2SEXP) {
+Rcpp::List mixture_info_by_individuals_2pers(const Rcpp::List individuals, Rcpp::XPtr<Individual>& donor1, Rcpp::XPtr<Individual>& donor2, bool include_genealogy_info);
+RcppExport SEXP _malan_mixture_info_by_individuals_2pers(SEXP individualsSEXP, SEXP donor1SEXP, SEXP donor2SEXP, SEXP include_genealogy_infoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::List >::type individuals(individualsSEXP);
     Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor1(donor1SEXP);
     Rcpp::traits::input_parameter< Rcpp::XPtr<Individual>& >::type donor2(donor2SEXP);
-    rcpp_result_gen = Rcpp::wrap(mixture_info_by_individuals_2pers(individuals, donor1, donor2));
+    Rcpp::traits::input_parameter< bool >::type include_genealogy_info(include_genealogy_infoSEXP);
+    rcpp_result_gen = Rcpp::wrap(mixture_info_by_individuals_2pers(individuals, donor1, donor2, include_genealogy_info));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1069,7 +1070,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_meioses_generation_distribution", (DL_FUNC) &_malan_meioses_generation_distribution, 2},
     {"_malan_population_size_generation", (DL_FUNC) &_malan_population_size_generation, 2},
     {"_malan_pedigree_size_generation", (DL_FUNC) &_malan_pedigree_size_generation, 2},
-    {"_malan_mixture_info_by_individuals_2pers", (DL_FUNC) &_malan_mixture_info_by_individuals_2pers, 3},
+    {"_malan_mixture_info_by_individuals_2pers", (DL_FUNC) &_malan_mixture_info_by_individuals_2pers, 4},
     {"_malan_mixture_info_by_individuals_3pers", (DL_FUNC) &_malan_mixture_info_by_individuals_3pers, 4},
     {"_malan_mixture_info_by_individuals_4pers", (DL_FUNC) &_malan_mixture_info_by_individuals_4pers, 5},
     {"_malan_mixture_info_by_individuals_5pers", (DL_FUNC) &_malan_mixture_info_by_individuals_5pers, 6},
