@@ -564,6 +564,22 @@ int Individual::get_haplotype_L1(Individual* dest) const {
   return d;
 }
 
+int Individual::get_haplotype_L1_no_error(Individual* dest) const {
+  std::vector<int> h_this = this->get_haplotype();
+  std::vector<int> h_dest = dest->get_haplotype();
+  
+  if (h_this.size() != h_dest.size()) {
+    return -1;
+  }
+  
+  int d = 0;
+  for (size_t i = 0; i < h_this.size(); ++i) {
+    d += abs(h_this[i] - h_dest[i]);
+  }
+  
+  return d;
+}
+
 
 
 std::vector<Individual*> Individual::calculate_path_to(Individual* dest) const {

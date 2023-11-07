@@ -103,6 +103,7 @@ public:
       const double prob_genealogical_error = 0.0);
   
   int get_haplotype_L1(Individual* dest) const;
+  int get_haplotype_L1_no_error(Individual* dest) const;
   
   void pass_autosomal_to_children(bool recursive, 
     const std::vector< std::vector<double> >& allele_conditional_cumdists_theta,

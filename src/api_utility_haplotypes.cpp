@@ -627,7 +627,8 @@ int count_haplotype_occurrences_pedigree(Rcpp::XPtr<Pedigree> pedigree,
 //' @export
 // [[Rcpp::export]]
 Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(const Rcpp::XPtr<Individual> suspect, 
-                                                                            int generation_upper_bound_in_result = -1) {
+                                                                            int generation_upper_bound_in_result = -1, 
+                                                                            bool error_on_no_haplotype = true) {
 
   if (!(suspect->is_haplotype_set())) {
     Rcpp::stop("Haplotype not yet set for suspect.");
@@ -657,13 +658,21 @@ Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(cons
     }
 
     if (!(dest->is_haplotype_set())) {
-      Rcpp::stop("Haplotype not yet set for dest.");
+      if (error_on_no_haplotype) {
+        Rcpp::stop("Haplotype not yet set for dest.");
+      } else {
+        continue;
+      }
     }
         
     std::vector<int> dest_h = dest->get_haplotype();
     
     if (dest_h.size() != h.size()) {
-      Rcpp::stop("haplotype and dest_h did not have same number of loci");
+      if (error_on_no_haplotype) {
+        Rcpp::stop("haplotype and dest_h did not have same number of loci");
+      } else {
+        continue;
+      }
     }
     
     if (dest_h == h) {
@@ -676,18 +685,23 @@ Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(cons
       int max_L1 = 0;
       
       //Rcpp::Rcout << "  ";
-      
-      for (auto intermediate_node : path) { 
-        //Rcpp::Rcout << intermediate_node->get_pid();
-        
-        int d = suspect->get_haplotype_L1(intermediate_node);
-        
-        if (d > max_L1) {
-          max_L1 = d;
-          //Rcpp::Rcout << "!";
+
+      if (error_on_no_haplotype) {
+        for (auto intermediate_node : path) { 
+          int d = suspect->get_haplotype_L1(intermediate_node);
+          
+          if (d > max_L1) {
+            max_L1 = d;
+          }
         }
-        
-        //Rcpp::Rcout << " ";
+      } else {
+        for (auto intermediate_node : path) { 
+          int d = suspect->get_haplotype_L1_no_error(intermediate_node);
+          
+          if (d > max_L1) {
+            max_L1 = d;
+          }
+        }
       }
       
       //Rcpp::Rcout << std::endl;      

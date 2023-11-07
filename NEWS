@@ -4,6 +4,10 @@ Version 1.0.3:
   
     * Added `meiotic_dist_threshold()`
     * Added `meiotic_radius()`
+    * Added `load_haplotypes()`
+    * Added `recursively_set_generation()`
+    * Added `get_haplotype_L1_no_error()` to `Individual`
+    * Added argument `error_on_no_haplotype` to `pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()`
 
 Version 1.0.2:
 

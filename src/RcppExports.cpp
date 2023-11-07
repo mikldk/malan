@@ -60,6 +60,40 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// load_haplotypes
+void load_haplotypes(Rcpp::XPtr<Population> population, IntegerVector pid, IntegerMatrix haplotypes, bool progress);
+RcppExport SEXP _malan_load_haplotypes(SEXP populationSEXP, SEXP pidSEXP, SEXP haplotypesSEXP, SEXP progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Population> >::type population(populationSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type pid(pidSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type haplotypes(haplotypesSEXP);
+    Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
+    load_haplotypes(population, pid, haplotypes, progress);
+    return R_NilValue;
+END_RCPP
+}
+// infer_generation
+void infer_generation(Rcpp::List final_generation);
+RcppExport SEXP _malan_infer_generation(SEXP final_generationSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type final_generation(final_generationSEXP);
+    infer_generation(final_generation);
+    return R_NilValue;
+END_RCPP
+}
+// set_generation
+void set_generation(Rcpp::XPtr<Individual> individual, int generation);
+RcppExport SEXP _malan_set_generation(SEXP individualSEXP, SEXP generationSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::XPtr<Individual> >::type individual(individualSEXP);
+    Rcpp::traits::input_parameter< int >::type generation(generationSEXP);
+    set_generation(individual, generation);
+    return R_NilValue;
+END_RCPP
+}
 // sample_geneology
 List sample_geneology(size_t population_size, int generations, int generations_full, int generations_return, bool enable_gamma_variance_extension, double gamma_parameter_shape, double gamma_parameter_scale, bool progress, bool verbose_result);
 RcppExport SEXP _malan_sample_geneology(SEXP population_sizeSEXP, SEXP generationsSEXP, SEXP generations_fullSEXP, SEXP generations_returnSEXP, SEXP enable_gamma_variance_extensionSEXP, SEXP gamma_parameter_shapeSEXP, SEXP gamma_parameter_scaleSEXP, SEXP progressSEXP, SEXP verbose_resultSEXP) {
@@ -410,14 +444,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists
-Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(const Rcpp::XPtr<Individual> suspect, int generation_upper_bound_in_result);
-RcppExport SEXP _malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(SEXP suspectSEXP, SEXP generation_upper_bound_in_resultSEXP) {
+Rcpp::IntegerMatrix pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(const Rcpp::XPtr<Individual> suspect, int generation_upper_bound_in_result, bool error_on_no_haplotype);
+RcppExport SEXP _malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(SEXP suspectSEXP, SEXP generation_upper_bound_in_resultSEXP, SEXP error_on_no_haplotypeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::XPtr<Individual> >::type suspect(suspectSEXP);
     Rcpp::traits::input_parameter< int >::type generation_upper_bound_in_result(generation_upper_bound_in_resultSEXP);
-    rcpp_result_gen = Rcpp::wrap(pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(suspect, generation_upper_bound_in_result));
+    Rcpp::traits::input_parameter< bool >::type error_on_no_haplotype(error_on_no_haplotypeSEXP);
+    rcpp_result_gen = Rcpp::wrap(pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists(suspect, generation_upper_bound_in_result, error_on_no_haplotype));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1010,6 +1045,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_from_igraph_rcpp", (DL_FUNC) &_malan_from_igraph_rcpp, 2},
     {"_malan_infer_generations", (DL_FUNC) &_malan_infer_generations, 1},
     {"_malan_load_individuals", (DL_FUNC) &_malan_load_individuals, 4},
+    {"_malan_load_haplotypes", (DL_FUNC) &_malan_load_haplotypes, 4},
+    {"_malan_infer_generation", (DL_FUNC) &_malan_infer_generation, 1},
+    {"_malan_set_generation", (DL_FUNC) &_malan_set_generation, 2},
     {"_malan_sample_geneology", (DL_FUNC) &_malan_sample_geneology, 9},
     {"_malan_sample_geneology_varying_size", (DL_FUNC) &_malan_sample_geneology_varying_size, 7},
     {"_malan_calc_autosomal_genotype_probs", (DL_FUNC) &_malan_calc_autosomal_genotype_probs, 2},
@@ -1037,7 +1075,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_malan_count_haplotype_near_matches_individuals", (DL_FUNC) &_malan_count_haplotype_near_matches_individuals, 3},
     {"_malan_haplotype_matches_individuals", (DL_FUNC) &_malan_haplotype_matches_individuals, 2},
     {"_malan_count_haplotype_occurrences_pedigree", (DL_FUNC) &_malan_count_haplotype_occurrences_pedigree, 3},
-    {"_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists", (DL_FUNC) &_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists, 2},
+    {"_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists", (DL_FUNC) &_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists, 3},
     {"_malan_pedigree_haplotype_near_matches_meiosis", (DL_FUNC) &_malan_pedigree_haplotype_near_matches_meiosis, 3},
     {"_malan_meiotic_dist", (DL_FUNC) &_malan_meiotic_dist, 2},
     {"_malan_meiotic_dist_threshold", (DL_FUNC) &_malan_meiotic_dist_threshold, 3},

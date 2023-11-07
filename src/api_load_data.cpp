@@ -135,3 +135,99 @@ Rcpp::XPtr<Population> load_individuals(IntegerVector pid,
   
   return population_xptr;
 }
+
+
+//' Load haplotypes to individuals
+//' 
+//' Note that individuals loaded this way does not have information about generation.
+//' 
+//' @param pid ID of male
+//' @param pid_dad ID of male's father, 0 if not known
+//' @param progress Show progress.
+//' @param error_on_pid_not_found Error if pid not found
+//' 
+//' @export
+// [[Rcpp::export]]
+void load_haplotypes(Rcpp::XPtr<Population> population,
+                     IntegerVector pid, 
+                     IntegerMatrix haplotypes, 
+                     bool progress = true) {
+  
+  if (pid.length() != haplotypes.nrow()) {
+    stop("pid.length() != haplotypes.nrow()");
+  }
+  
+  size_t N = pid.length();
+  Progress p(N, progress);
+  
+  for (int i = 0; i < N; ++i) {
+    IntegerVector h = haplotypes.row(i);
+    std::vector<int> h_vec = Rcpp::as< std::vector<int> >(h);
+    Individual* ind = population->get_individual(pid[i]);
+    ind->set_haplotype(h_vec);
+    
+    if (progress) {
+      p.increment();
+    }
+  }
+}
+
+
+
+void recursively_set_generation(Individual* indv, int generation) {
+  indv->set_generation(generation);
+  
+  Individual* father = indv->get_father();
+  
+  if (father != nullptr) {
+    const int father_gen = father->get_generation();
+    if (father_gen > -1 && father_gen != generation + 1) {
+      Rcpp::Rcout << "father " << father->get_pid() << " already had generation " << father_gen << " was trying to assign him " << (generation + 1) << std::endl;
+      stop("error");
+    }
+    
+    recursively_set_generation(father, generation + 1);
+  }
+}
+
+//' Infer individual's generation number
+//' 
+//' Takes as input final generation, then moves up in pedigree and increments 
+//' generation number.
+//' 
+//' Note: Only works when all final generation individuals are provided.
+//' 
+//' @param final_generation Individuals in final generation
+//' 
+//' @export
+// [[Rcpp::export]]
+void infer_generation(Rcpp::List final_generation) {  
+  int n = final_generation.size();
+
+  for (int i = 0; i < n; ++i) {
+    Rcpp::XPtr<Individual> indv = final_generation[i];
+    recursively_set_generation(indv, 0);
+  }
+}
+
+//' Set individual's generation number
+//' 
+//' Note that generation 0 is final, end generation. 
+//' 1 is second last generation etc.
+//' 
+//' @param individual Individual
+//' 
+//' @examples
+//' sim <- sample_geneology(100, 10)
+//' indv <- get_individual(sim$population, 1)
+//' get_generation(indv)
+//' set_generation(indv, 100)
+//' get_generation(indv)
+//' 
+//' @export
+// [[Rcpp::export]]
+void set_generation(Rcpp::XPtr<Individual> individual, int generation) {  
+ return individual->set_generation(generation);
+}
+
+

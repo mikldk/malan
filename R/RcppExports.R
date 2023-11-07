@@ -62,6 +62,53 @@ load_individuals <- function(pid, pid_dad, progress = TRUE, error_on_pid_not_fou
     .Call('_malan_load_individuals', PACKAGE = 'malan', pid, pid_dad, progress, error_on_pid_not_found)
 }
 
+#' Load haplotypes to individuals
+#' 
+#' Note that individuals loaded this way does not have information about generation.
+#' 
+#' @param pid ID of male
+#' @param pid_dad ID of male's father, 0 if not known
+#' @param progress Show progress.
+#' @param error_on_pid_not_found Error if pid not found
+#' 
+#' @export
+load_haplotypes <- function(population, pid, haplotypes, progress = TRUE) {
+    invisible(.Call('_malan_load_haplotypes', PACKAGE = 'malan', population, pid, haplotypes, progress))
+}
+
+#' Infer individual's generation number
+#' 
+#' Takes as input final generation, then moves up in pedigree and increments 
+#' generation number.
+#' 
+#' Note: Only works when all final generation individuals are provided.
+#' 
+#' @param final_generation Individuals in final generation
+#' 
+#' @export
+infer_generation <- function(final_generation) {
+    invisible(.Call('_malan_infer_generation', PACKAGE = 'malan', final_generation))
+}
+
+#' Set individual's generation number
+#' 
+#' Note that generation 0 is final, end generation. 
+#' 1 is second last generation etc.
+#' 
+#' @param individual Individual
+#' 
+#' @examples
+#' sim <- sample_geneology(100, 10)
+#' indv <- get_individual(sim$population, 1)
+#' get_generation(indv)
+#' set_generation(indv, 100)
+#' get_generation(indv)
+#' 
+#' @export
+set_generation <- function(individual, generation) {
+    invisible(.Call('_malan_set_generation', PACKAGE = 'malan', individual, generation))
+}
+
 #' Simulate a geneology with constant population size.
 #' 
 #' This function simulates a geneology where the last generation has `population_size` individuals. 
@@ -721,8 +768,8 @@ count_haplotype_occurrences_pedigree <- function(pedigree, haplotype, generation
 #' @seealso [count_haplotype_occurrences_individuals()].
 #'
 #' @export
-pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists <- function(suspect, generation_upper_bound_in_result = -1L) {
-    .Call('_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists', PACKAGE = 'malan', suspect, generation_upper_bound_in_result)
+pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists <- function(suspect, generation_upper_bound_in_result = -1L, error_on_no_haplotype = TRUE) {
+    .Call('_malan_pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists', PACKAGE = 'malan', suspect, generation_upper_bound_in_result, error_on_no_haplotype)
 }
 
 #' Information about almost matching individuals
