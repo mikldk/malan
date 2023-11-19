@@ -8,6 +8,8 @@ Version 1.0.3:
     * Added `recursively_set_generation()`
     * Added `get_haplotype_L1_no_error()` to `Individual`
     * Added argument `error_on_no_haplotype` to `pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()`
+    * Adapt to change in `igraph::girth()` that now returns `Inf` instead of `0` 
+      for trees (issue #18)
 
 Version 1.0.2:
 
