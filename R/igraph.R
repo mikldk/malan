@@ -27,7 +27,10 @@ from_igraph <- function(x, ...) {
   # Checks whether x is acyclic
   # Previously girth returned 0 for trees,
   # now it returns Inf: https://github.com/igraph/rigraph/pull/931
-  if (is.finite(igraph::girth(x, circle = FALSE)$girth)) stop("x must be a tree (or a forest)")
+  grth <- igraph::girth(x, circle = FALSE)$girth
+  if (is.finite(grth) && grth != 0L) {
+    stop("x must be a tree (or a forest)")
+  }
   
   nms_chr <- names(igraph::V(x))
   nms <- seq_len(length(igraph::V(x)))
