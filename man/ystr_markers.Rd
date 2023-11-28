@@ -15,7 +15,7 @@ A data frame with 29 rows and 5 variables:
 }
 }
 \source{
-\url{http://www.yhrd.org}
+\url{https://www.yhrd.org}
 }
 \usage{
 ystr_markers

@@ -12,7 +12,7 @@ A data frame with 88 rows and 2 variables:
 }
 }
 \source{
-\url{http://www.yhrd.org}
+\url{https://www.yhrd.org}
 }
 \usage{
 ystr_kits

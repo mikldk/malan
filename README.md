@@ -94,6 +94,6 @@ Zenodo:
 
 Travis CI:
 
-[![Travis-CI Build Status](https://travis-ci.org/mikldk/malan.svg?branch=master)](https://travis-ci.org/mikldk/malan)
+[![Travis-CI Build Status](https://api.travis-ci.com/mikldk/malan.svg?branch=master)](https://app.travis-ci.com/mikldk/malan)
 
 

@@ -14,7 +14,7 @@
 #'   \item{MutProb}{point estimate of mutation probability, MutProb = Mutations/Meioses}
 #'   \item{Alleles}{observed alleles}
 #' }
-#' @source \url{http://www.yhrd.org}
+#' @source \url{https://www.yhrd.org}
 "ystr_markers"
 
 #' Kit information about Y-STR markers
@@ -27,5 +27,5 @@
 #'   \item{Marker}{name of Y-STR marker}
 #'   \item{Kit}{name of Y-STR kit}
 #' }
-#' @source \url{http://www.yhrd.org}
+#' @source \url{https://www.yhrd.org}
 "ystr_kits"
