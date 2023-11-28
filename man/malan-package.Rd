@@ -22,7 +22,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 }
 \references{
 Andersen MM, Balding DJ (2017) How convincing is a matching Y-chromosome profile?
-PLoS Genet 13(11): e1007028. \url{https://doi.org/10.1371/journal.pgen.1007028}.
+PLoS Genet 13(11): e1007028. \doi{10.1371/journal.pgen.1007028}.
 }
 \seealso{
 Useful links:

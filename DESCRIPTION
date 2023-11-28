@@ -26,7 +26,7 @@ Imports:
     magrittr (>= 1.5),
     methods
 Depends:
-  R (>= 2.10),
+  R (>= 3.6),
   dplyr (>= 0.7.3),
   tidygraph (>= 1.0.0.9999)
 LinkingTo: Rcpp, RcppArmadillo, RcppProgress
@@ -34,7 +34,6 @@ Suggests: knitr, rmarkdown, testthat, ggraph, dirmult, Rmpfr
 BugReports: https://github.com/mikldk/malan/issues
 VignetteBuilder: knitr
 Encoding: UTF-8
-SystemRequirements: C++11
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("rd", "collate", "namespace"))
 RoxygenNote: 7.2.3
