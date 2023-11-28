@@ -1,34 +1,29 @@
-Version 1.0.3:
-  
-  Changes since last version:
-  
-    * Added `meiotic_dist_threshold()`
-    * Added `meiotic_radius()`
-    * Added `load_haplotypes()`
-    * Added `recursively_set_generation()`
-    * Added `get_haplotype_L1_no_error()` to `Individual`
-    * Added argument `error_on_no_haplotype` to `pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()`
-    * Adapt to change in `igraph::girth()` that now returns `Inf` instead of `0` 
-      for trees (issue #18)
+Changes in version 1.0.3:
 
-Version 1.0.2:
+* Added `meiotic_dist_threshold()`
+* Added `meiotic_radius()`
+* Added `load_haplotypes()`
+* Added `recursively_set_generation()`
+* Added `get_haplotype_L1_no_error()` to `Individual`
+* Added argument `error_on_no_haplotype` to `pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists()`
+* Adapt to change in `igraph::girth()` that now returns `Inf` instead of `0` 
+  for trees (issue #18)
 
-  Changes since last version:
+Changes in version 1.0.2:
+
+* Minor changes
+* Uploaded to CRAN
   
-    * Minor changes
-    * Uploaded to CRAN
-    
-Version 1.0.1:
+Changes in version 1.0.1:
 
-  Changes since last version:
-
-    * NEWS file  
-    * Renaming estimate_theta_* to estimate_autotheta_* to make it more clear that they assume autosomal types were populated first
-    * New estimate_autotheta_subpops_unweighted_{pids, genotypes} functions
-    * Infinite alleles model
-    * Near matches (by a distance)
-    * Partial matches (by ignoring certain loci)
-    * More kits included: Minimal, Yfiler, PowerPlex Y
+* NEWS file  
+* Renaming estimate_theta_* to estimate_autotheta_* to make it more clear that they assume autosomal types were populated first
+* New estimate_autotheta_subpops_unweighted_{pids, genotypes} functions
+* Infinite alleles model
+* Near matches (by a distance)
+* Partial matches (by ignoring certain loci)
+* More kits included: Minimal, Yfiler, PowerPlex Y
   
-Version 1.0.0:
-  Initial version published in JOSS: https://doi.org/10.21105/joss.00684
+Changes in version 1.0.0:
+
+* Initial version published in JOSS: https://doi.org/10.21105/joss.00684

@@ -66,10 +66,10 @@ load_individuals <- function(pid, pid_dad, progress = TRUE, error_on_pid_not_fou
 #' 
 #' Note that individuals loaded this way does not have information about generation.
 #' 
+#' @param population of individuals
 #' @param pid ID of male
-#' @param pid_dad ID of male's father, 0 if not known
+#' @param haplotypes - row `i` has `pid[i]` ID
 #' @param progress Show progress.
-#' @param error_on_pid_not_found Error if pid not found
 #' 
 #' @export
 load_haplotypes <- function(population, pid, haplotypes, progress = TRUE) {
@@ -96,6 +96,7 @@ infer_generation <- function(final_generation) {
 #' 1 is second last generation etc.
 #' 
 #' @param individual Individual
+#' @param generation Generation to assign
 #' 
 #' @examples
 #' sim <- sample_geneology(100, 10)
@@ -757,6 +758,8 @@ count_haplotype_occurrences_pedigree <- function(pedigree, haplotype, generation
 #' End generation is generation 0.
 #' Second last generation is 1. 
 #' And so on.
+#' @param error_on_no_haplotype raise error or silently ignore individuals 
+#' with no haplotype
 #' 
 #' @return Matrix with information about matching individuals. 
 #' Columns in order: meioses (meiotic distance to `suspect`), 

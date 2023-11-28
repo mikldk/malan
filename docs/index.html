@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,23 +40,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">malan</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -71,8 +67,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/mikldk/malan/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/mikldk/malan/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -88,123 +84,134 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="malan-male-lineage-analysis" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#malan-male-lineage-analysis" class="anchor"></a>malan: MAle Lineage ANalysis</h1></div>
-<p>An R package (<a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a>) to perform <strong>MA</strong>le <strong>L</strong>ineage <strong>AN</strong>alysis by simulating genealogies backwards and imposing short tandem repeats (STR) mutations forwards. Intended for forensic Y chromosomal STR (Y-STR) haplotype analyses. Numerous analyses are possible, e.g. number of matches and meiotic distance to matches.</p>
-<p>Refer to papers mentioned in <code><a href="https://rdrr.io/r/utils/citation.html">citation("malan")</a></code> (DOI’s: <a href="https://doi.org/10.1371/journal.pgen.1007028" class="uri">https://doi.org/10.1371/journal.pgen.1007028</a>, <a href="https://doi.org/10.21105/joss.00684" class="uri">https://doi.org/10.21105/joss.00684</a> and <a href="https://doi.org/10.1016/j.fsigen.2018.10.004" class="uri">https://doi.org/10.1016/j.fsigen.2018.10.004</a>).</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You first need <code>R</code> (<a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a>). Then you can install <code>malan</code> from GitHub by using the <code>remotes</code> package (<a href="https://CRAN.R-project.org/package=remotes" class="uri">https://CRAN.R-project.org/package=remotes</a>):</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># install.packages("remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"mikldk/malan"</span>)</pre></div>
-<div id="for-mac-os-users" class="section level3">
-<h3 class="hasAnchor">
-<a href="#for-mac-os-users" class="anchor"></a>For Mac OS users</h3>
-<p>Some Mac OSX configurations may have installation problems (for example missing <code>gfortran</code> libraries). In such cases, it may help to use Conda package management system. See also the discussion in <a href="https://github.com/mikldk/malan/issues/14">issue #14</a>.</p>
+<div class="section level1">
+<div class="page-header"><h1 id="malan-male-lineage-analysis">malan: MAle Lineage ANalysis<a class="anchor" aria-label="anchor" href="#malan-male-lineage-analysis"></a>
+</h1></div>
+<p>An R package (<a href="https://www.r-project.org/" class="external-link uri">https://www.r-project.org/</a>) to perform <strong>MA</strong>le <strong>L</strong>ineage <strong>AN</strong>alysis by simulating genealogies backwards and imposing short tandem repeats (STR) mutations forwards. Intended for forensic Y chromosomal STR (Y-STR) haplotype analyses. Numerous analyses are possible, e.g. number of matches and meiotic distance to matches.</p>
+<p>Refer to papers mentioned in <code>citation("malan")</code> (DOI’s: <a href="https://doi.org/10.1371/journal.pgen.1007028" class="external-link uri">https://doi.org/10.1371/journal.pgen.1007028</a>, <a href="https://doi.org/10.21105/joss.00684" class="external-link uri">https://doi.org/10.21105/joss.00684</a> and <a href="https://doi.org/10.1016/j.fsigen.2018.10.004" class="external-link uri">https://doi.org/10.1016/j.fsigen.2018.10.004</a>).</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You first need <code>R</code> (<a href="https://www.r-project.org/" class="external-link uri">https://www.r-project.org/</a>). Then you can install <code>malan</code> from GitHub by using the <code>remotes</code> package (<a href="https://CRAN.R-project.org/package=remotes" class="external-link uri">https://CRAN.R-project.org/package=remotes</a>):</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mikldk/malan"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="for-mac-os-users">For Mac OS users<a class="anchor" aria-label="anchor" href="#for-mac-os-users"></a>
+</h3>
+<p>Some Mac OSX configurations may have installation problems (for example missing <code>gfortran</code> libraries). In such cases, it may help to use Conda package management system. See also the discussion in <a href="https://github.com/mikldk/malan/issues/14" class="external-link">issue #14</a>.</p>
 </div>
 </div>
-<div id="getting-started" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-started" class="anchor"></a>Getting started</h2>
-<p>See documentation included in package (vignettes and manual) at <a href="https://mikldk.github.io/malan/" class="uri">https://mikldk.github.io/malan/</a>. The introduction vignette is available at <a href="https://mikldk.github.io/malan/articles/introduction.html" class="uri">https://mikldk.github.io/malan/articles/introduction.html</a>.</p>
+<div class="section level2">
+<h2 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h2>
+<p>See documentation included in package (vignettes and manual) at <a href="https://mikldk.github.io/malan/" class="external-link uri">https://mikldk.github.io/malan/</a>. The introduction vignette is available at <a href="https://mikldk.github.io/malan/articles/introduction.html" class="external-link uri">https://mikldk.github.io/malan/articles/introduction.html</a>.</p>
 <p>You can also get an overview of the included vignettes by the following <code>R</code> command:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="kw">package</span> <span class="kw">=</span> <span class="st">"malan"</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"malan"</span><span class="op">)</span></span></code></pre></div>
 <p>To read a vignette, type:</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"introduction"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"malan"</span>)</pre></div>
-<div id="running-tests" class="section level3">
-<h3 class="hasAnchor">
-<a href="#running-tests" class="anchor"></a>Running tests</h3>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"introduction"</span>, package <span class="op">=</span> <span class="st">"malan"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="running-tests">Running tests<a class="anchor" aria-label="anchor" href="#running-tests"></a>
+</h3>
 <p>Note that to also install the tests, you need to install the package as follows:</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="co"># install.packages("remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"mikldk/malan"</span>, <span class="kw">INSTALL_opts</span><span class="kw">=</span><span class="st">"--install-tests"</span>)</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mikldk/malan"</span>, INSTALL_opts<span class="op">=</span><span class="st">"--install-tests"</span><span class="op">)</span></span></code></pre></div>
 <p>You can now run the tests:</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">malan</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">testthat</span>)
-<span class="fu"><a href="https://testthat.r-lib.org/reference/test_dir.html">test_package</a></span>(<span class="st">'malan'</span>)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">malan</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://testthat.r-lib.org" class="external-link">testthat</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_package</a></span><span class="op">(</span><span class="st">'malan'</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="contribute-issues-and-support" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contribute-issues-and-support" class="anchor"></a>Contribute, issues, and support</h2>
-<p>Please use the issue tracker at <a href="https://github.com/mikldk/malan/issues" class="uri">https://github.com/mikldk/malan/issues</a> if you want to notify us of an issue or need support. If you want to contribute, please either create an issue or make a pull request.</p>
+<div class="section level2">
+<h2 id="contribute-issues-and-support">Contribute, issues, and support<a class="anchor" aria-label="anchor" href="#contribute-issues-and-support"></a>
+</h2>
+<p>Please use the issue tracker at <a href="https://github.com/mikldk/malan/issues" class="external-link uri">https://github.com/mikldk/malan/issues</a> if you want to notify us of an issue or need support. If you want to contribute, please either create an issue or make a pull request.</p>
 </div>
-<div id="dependencies" class="section level2">
-<h2 class="hasAnchor">
-<a href="#dependencies" class="anchor"></a>Dependencies</h2>
-<p>This package depends on R (<a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a>) and the following R packages: <code>Rcpp</code>, <code>RcppProgress</code>, <code>RcppArmadillo</code>, <code>igraph</code>, <code>tibble</code>, <code>magrittr</code>, <code>dplyr</code>, and <code>tidygraph</code>.</p>
+<div class="section level2">
+<h2 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
+</h2>
+<p>This package depends on R (<a href="https://www.r-project.org/" class="external-link uri">https://www.r-project.org/</a>) and the following R packages: <code>Rcpp</code>, <code>RcppProgress</code>, <code>RcppArmadillo</code>, <code>igraph</code>, <code>tibble</code>, <code>magrittr</code>, <code>dplyr</code>, and <code>tidygraph</code>.</p>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
-<p>Andersen MM, Balding DJ (2017). <em>How convincing is a matching Y-chromosome profile?</em>. PLoS Genet 13(11): e1007028. <a href="https://doi.org/10.1371/journal.pgen.1007028" class="uri">https://doi.org/10.1371/journal.pgen.1007028</a>.</p>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<p>Andersen MM, Balding DJ (2017). <em>How convincing is a matching Y-chromosome profile?</em>. PLoS Genet 13(11): e1007028. <a href="https://doi.org/10.1371/journal.pgen.1007028" class="external-link uri">https://doi.org/10.1371/journal.pgen.1007028</a>.</p>
 </div>
-<div id="disclaimer" class="section level2">
-<h2 class="hasAnchor">
-<a href="#disclaimer" class="anchor"></a>Disclaimer</h2>
+<div class="section level2">
+<h2 id="disclaimer">Disclaimer<a class="anchor" aria-label="anchor" href="#disclaimer"></a>
+</h2>
 <p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 </div>
-<div id="license" class="section level2">
-<h2 class="hasAnchor">
-<a href="#license" class="anchor"></a>License</h2>
+<div class="section level2">
+<h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
+</h2>
 <p>License: GPL-2.</p>
 </div>
-
+<div class="section level2">
+<h2 id="badges">Badges<a class="anchor" aria-label="anchor" href="#badges"></a>
+</h2>
+<p>The Journal of Open Source Software:</p>
+<p><a href="https://doi.org/10.21105/joss.00684" class="external-link"><img src="http://joss.theoj.org/papers/10.21105/joss.00684/status.svg" alt="DOI"></a></p>
+<p>Zenodo:</p>
+<p><a href="https://doi.org/10.5281/zenodo.1241769" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1241769.svg" alt="DOI"></a></p>
+<p>Travis CI:</p>
+<p><a href="https://travis-ci.org/mikldk/malan" class="external-link"><img src="https://travis-ci.org/mikldk/malan.svg?branch=master" alt="Travis-CI Build Status"></a></p>
+</div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=malan">https://​cloud.r-project.org/​package=malan</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/mikldk/malan/">https://​github.com/​mikldk/​malan/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/mikldk/malan/issues">https://​github.com/​mikldk/​malan/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=malan" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/mikldk/malan/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/mikldk/malan/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a> | file <a href="LICENSE-text.html">LICENSE</a>
+<a href="https://www.r-project.org/Licenses/GPL-2" class="external-link">GPL-2</a> | file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing malan</a></li>
+<li><a href="authors.html#citation">Citing malan</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Mikkel Meyer Andersen <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://doi.org/10.21105/joss.00684"><img src="http://joss.theoj.org/papers/10.21105/joss.00684/status.svg" alt="DOI"></a></li>
-<li><a href="https://doi.org/10.5281/zenodo.1241769"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1241769.svg" alt="DOI"></a></li>
-<li><a href="https://travis-ci.org/mikldk/malan"><img src="https://travis-ci.org/mikldk/malan.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-</ul>
-</div>
-</div>
+
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Mikkel Meyer Andersen.</p>
+  <p></p>
+<p>Developed by Mikkel Meyer Andersen.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -212,6 +219,8 @@
 
   
 
+
+  
 
   </body>
 </html>

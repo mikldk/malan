@@ -141,10 +141,10 @@ Rcpp::XPtr<Population> load_individuals(IntegerVector pid,
 //' 
 //' Note that individuals loaded this way does not have information about generation.
 //' 
+//' @param population of individuals
 //' @param pid ID of male
-//' @param pid_dad ID of male's father, 0 if not known
+//' @param haplotypes - row `i` has `pid[i]` ID
 //' @param progress Show progress.
-//' @param error_on_pid_not_found Error if pid not found
 //' 
 //' @export
 // [[Rcpp::export]]
@@ -216,6 +216,7 @@ void infer_generation(Rcpp::List final_generation) {
 //' 1 is second last generation etc.
 //' 
 //' @param individual Individual
+//' @param generation Generation to assign
 //' 
 //' @examples
 //' sim <- sample_geneology(100, 10)

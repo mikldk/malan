@@ -614,6 +614,8 @@ int count_haplotype_occurrences_pedigree(Rcpp::XPtr<Pedigree> pedigree,
 //' End generation is generation 0.
 //' Second last generation is 1. 
 //' And so on.
+//' @param error_on_no_haplotype raise error or silently ignore individuals 
+//' with no haplotype
 //' 
 //' @return Matrix with information about matching individuals. 
 //' Columns in order: meioses (meiotic distance to `suspect`), 

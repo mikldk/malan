@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">malan</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -64,8 +60,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/mikldk/malan/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/mikldk/malan/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -83,11 +79,12 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction</h1>
-                        <h4 class="author">Mikkel Meyer Andersen</h4>
+                        <h4 data-toc-skip class="author">Mikkel Meyer
+Andersen</h4>
             
-            <h4 class="date">25 June, 2020</h4>
+            <h4 data-toc-skip class="date">28 november, 2023</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/mikldk/malan/blob/master/vignettes/introduction.Rmd"><code>vignettes/introduction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mikldk/malan/blob/HEAD/vignettes/introduction.Rmd" class="external-link"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
 
     </div>
@@ -95,409 +92,517 @@
     
     
 <p>First, the library is loaded:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">malan</span>)</pre></body></html></div>
-<p>For reproducibility, the seed for the (pseudo) random number generator is set:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)</pre></body></html></div>
-<div id="population-simulation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#population-simulation" class="anchor"></a>Population simulation</h1>
-<p>A standard Wright-Fisher population can be simulated (hiding progress information) as follows:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">sim_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="kw">population_size</span> <span class="kw">=</span> <span class="fl">10</span>, <span class="kw">generations</span> <span class="kw">=</span> <span class="fl">10</span>, <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
-<div id="building-the-pedigrees" class="section level2">
-<h2 class="hasAnchor">
-<a href="#building-the-pedigrees" class="anchor"></a>Building the pedigrees</h2>
-<p>Until pedigrees are built/inferred, there is not much information available (e.g. about children). So let us infer the pedigrees:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">pedigrees</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(<span class="no">sim_res</span>$<span class="no">population</span>, <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="no">pedigrees</span></pre></body></html></div>
-<pre><code>## List of 2 pedigrees (of size 38, 10)</code></pre>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/pedigrees_count.html">pedigrees_count</a></span>(<span class="no">pedigrees</span>)</pre></body></html></div>
-<pre><code>## [1] 2</code></pre>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/pedigrees_table.html">pedigrees_table</a></span>(<span class="no">pedigrees</span>)</pre></body></html></div>
-<pre><code>## 10 38 
-##  1  1</code></pre>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/pedigree_size.html">pedigree_size</a></span>(<span class="no">pedigrees</span><span class="kw">[[</span><span class="fl">1</span>]])</pre></body></html></div>
-<pre><code>## [1] 38</code></pre>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/pedigree_size.html">pedigree_size</a></span>(<span class="no">pedigrees</span><span class="kw">[[</span><span class="fl">2</span>]])</pre></body></html></div>
-<pre><code>## [1] 10</code></pre>
-<div class="sourceCode" id="cb14"><html><body><pre class="r">#pedigree_size(pedigrees[[3]]) # error as there are only 2 pedigrees</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">malan</span><span class="op">)</span></span></code></pre></div>
+<p>For reproducibility, the seed for the (pseudo) random number
+generator is set:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="population-simulation">Population simulation<a class="anchor" aria-label="anchor" href="#population-simulation"></a>
+</h2>
+<p>A standard Wright-Fisher population can be simulated (hiding progress
+information) as follows:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sim_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span><span class="op">(</span>population_size <span class="op">=</span> <span class="fl">10</span>, generations <span class="op">=</span> <span class="fl">10</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="building-the-pedigrees">Building the pedigrees<a class="anchor" aria-label="anchor" href="#building-the-pedigrees"></a>
+</h3>
+<p>Until pedigrees are built/inferred, there is not much information
+available (e.g. about children). So let us infer the pedigrees:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pedigrees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">$</span><span class="va">population</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">pedigrees</span></span></code></pre></div>
+<pre><code><span><span class="co">## List of 2 pedigrees (of size 38, 10)</span></span></code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pedigrees_count.html">pedigrees_count</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2</span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pedigrees_table.html">pedigrees_table</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 10 38 </span></span>
+<span><span class="co">##  1  1</span></span></code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pedigree_size.html">pedigree_size</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 38</span></span></code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pedigree_size.html">pedigree_size</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 10</span></span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#pedigree_size(pedigrees[[3]]) # error as there are only 2 pedigrees</span></span></code></pre></div>
 <p>The pedigrees can be plotted all at once:</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>Or just one at a time:</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span><span class="kw">[[</span><span class="fl">1</span>]])</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span><span class="kw">[[</span><span class="fl">2</span>]])</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
-<p>Some information about the population can be obtained. For example, the individuals in the final generation can be saved:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">sim_res</span>, <span class="fl">1</span>)</pre></body></html></div>
-<pre><code>## List of 7
-##  $ population                :Classes 'malan_population', 'externalptr' &lt;externalptr&gt; 
-##  $ generations               : num 10
-##  $ founders                  : int 2
-##  $ growth_type               : chr "ConstantPopulationSize"
-##  $ sdo_type                  : chr "StandardWF"
-##  $ end_generation_individuals:List of 10
-##  $ individuals_generations   :List of 23
-##  - attr(*, "class")= chr [1:2] "malan_simulation" "list"</code></pre>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">live_individuals</span> <span class="kw">&lt;-</span> <span class="no">sim_res</span>$<span class="no">end_generation_individuals</span></pre></body></html></div>
+<p>Some information about the population can be obtained. For example,
+the individuals in the final generation can be saved:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sim_res</span>, <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## List of 7</span></span>
+<span><span class="co">##  $ population                :Classes 'malan_population', 'externalptr' &lt;externalptr&gt; </span></span>
+<span><span class="co">##  $ generations               : num 10</span></span>
+<span><span class="co">##  $ founders                  : int 2</span></span>
+<span><span class="co">##  $ growth_type               : chr "ConstantPopulationSize"</span></span>
+<span><span class="co">##  $ sdo_type                  : chr "StandardWF"</span></span>
+<span><span class="co">##  $ end_generation_individuals:List of 10</span></span>
+<span><span class="co">##  $ individuals_generations   :List of 23</span></span>
+<span><span class="co">##  - attr(*, "class")= chr [1:2] "malan_simulation" "list"</span></span></code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">live_individuals</span> <span class="op">&lt;-</span> <span class="va">sim_res</span><span class="op">$</span><span class="va">end_generation_individuals</span></span></code></pre></div>
 <p>And a live individual is printed:</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="../reference/print_individual.html">print_individual</a></span>(<span class="no">live_individuals</span><span class="kw">[[</span><span class="fl">1</span>]])</pre></body></html></div>
-<pre><code>##   pid = 1 with father pid = 11 and no children</code></pre>
-<p>We can also print another individual (from the entire population):</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">indv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_individual.html">get_individual</a></span>(<span class="no">sim_res</span>$<span class="no">population</span>, <span class="fl">22</span>)
-<span class="fu"><a href="../reference/print_individual.html">print_individual</a></span>(<span class="no">indv</span>)</pre></body></html></div>
-<pre><code>##   pid = 22 with father pid = 28 and children (n = 2): 
-##     pid = 16 with father pid = 28 and 2 children
-##     pid = 14 with father pid = 28 and 2 children</code></pre>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/print_individual.html">print_individual</a></span><span class="op">(</span><span class="va">live_individuals</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   pid = 1 with father pid = 11 and no children</span></span></code></pre>
+<p>We can also print another individual (from the entire
+population):</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">indv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_individual.html">get_individual</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">$</span><span class="va">population</span>, <span class="fl">22</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/print_individual.html">print_individual</a></span><span class="op">(</span><span class="va">indv</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   pid = 22 with father pid = 28 and children (n = 2): </span></span>
+<span><span class="co">##     pid = 16 with father pid = 28 and 2 children</span></span>
+<span><span class="co">##     pid = 14 with father pid = 28 and 2 children</span></span></code></pre>
 </div>
-<div id="run-a-mutation-process" class="section level2">
-<h2 class="hasAnchor">
-<a href="#run-a-mutation-process" class="anchor"></a>Run a mutation process</h2>
-<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-
-<span class="no">mutrts</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>)
-<span class="fu"><a href="../reference/pedigrees_all_populate_haplotypes.html">pedigrees_all_populate_haplotypes</a></span>(<span class="kw">pedigrees</span> <span class="kw">=</span> <span class="no">pedigrees</span>,
-                                  <span class="kw">loci</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">mutrts</span>),
-                                  <span class="kw">mutation_rates</span> <span class="kw">=</span> <span class="no">mutrts</span>, <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
-<p>Individual pedigrees can now be plotted with haplotype information:</p>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span><span class="kw">[[</span><span class="fl">1</span>]], <span class="kw">haplotypes</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="section level3">
+<h3 id="run-a-mutation-process">Run a mutation process<a class="anchor" aria-label="anchor" href="#run-a-mutation-process"></a>
+</h3>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mutrts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pedigrees_all_populate_haplotypes.html">pedigrees_all_populate_haplotypes</a></span><span class="op">(</span>pedigrees <span class="op">=</span> <span class="va">pedigrees</span>, </span>
+<span>                                  loci <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mutrts</span><span class="op">)</span>, </span>
+<span>                                  mutation_rates <span class="op">=</span> <span class="va">mutrts</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>Individual pedigrees can now be plotted with haplotype
+information:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, haplotypes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
-<p>And the individual id can be removed to only display the haplotype:</p>
-<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span><span class="kw">[[</span><span class="fl">1</span>]], <span class="kw">ids</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">haplotypes</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<p>And the individual id can be removed to only display the
+haplotype:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, ids <span class="op">=</span> <span class="cn">FALSE</span>, haplotypes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <p>And one or more individuals can be marked/highlighted:</p>
-<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span><span class="kw">[[</span><span class="fl">1</span>]], <span class="kw">ids</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">haplotypes</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">mark_pids</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">14</span>, <span class="fl">16</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, ids <span class="op">=</span> <span class="cn">TRUE</span>, haplotypes <span class="op">=</span> <span class="cn">TRUE</span>, mark_pids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">14</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 </div>
-<div id="more-than-1-full-generation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#more-than-1-full-generation" class="anchor"></a>More than 1 full generation</h2>
-<p>By standard, only the last generation contains <span class="math inline">\(N\)</span> individuals. If the 3 last generations should be full, this can be done by specifying <code>generations_full = 3</code> as follows:</p>
-<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-<span class="no">sim_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="kw">population_size</span> <span class="kw">=</span> <span class="fl">10</span>,
-                            <span class="kw">generations</span> <span class="kw">=</span> <span class="fl">5</span>,
-                            <span class="kw">generations_full</span> <span class="kw">=</span> <span class="fl">3</span>,
-                            <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="no">pedigrees</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(<span class="no">sim_res</span>$<span class="no">population</span>, <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span>)</pre></body></html></div>
+<div class="section level3">
+<h3 id="more-than-1-full-generation">More than 1 full generation<a class="anchor" aria-label="anchor" href="#more-than-1-full-generation"></a>
+</h3>
+<p>By standard, only the last generation contains <span class="math inline">\(N\)</span> individuals. If the 3 last generations
+should be full, this can be done by specifying
+<code>generations_full = 3</code> as follows:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sim_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span><span class="op">(</span>population_size <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                            generations <span class="op">=</span> <span class="fl">5</span>, </span>
+<span>                            generations_full <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                            progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">pedigrees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">$</span><span class="va">population</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
-<p>And to obtain the complete history, <code>generations_full</code> is set to <code>generations</code>:</p>
-<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-<span class="no">sim_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="kw">population_size</span> <span class="kw">=</span> <span class="fl">10</span>,
-                            <span class="kw">generations</span> <span class="kw">=</span> <span class="fl">5</span>,
-                            <span class="kw">generations_full</span> <span class="kw">=</span> <span class="fl">5</span>,
-                            <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="no">pedigrees</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(<span class="no">sim_res</span>$<span class="no">population</span>, <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span>)</pre></body></html></div>
+<p>And to obtain the complete history, <code>generations_full</code> is
+set to <code>generations</code>:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sim_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span><span class="op">(</span>population_size <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                            generations <span class="op">=</span> <span class="fl">5</span>, </span>
+<span>                            generations_full <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>                            progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">pedigrees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">$</span><span class="va">population</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
 <p>Now, there are 10 individuals in all generations.</p>
 </div>
-<div id="simulate-to-one-founder" class="section level2">
-<h2 class="hasAnchor">
-<a href="#simulate-to-one-founder" class="anchor"></a>Simulate to one founder</h2>
-<p>By standard, the number of generations are specified. Instead, it can be specified to continue simulating until one common founder is reached by specifying <code>generations = -1</code>:</p>
-<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-<span class="no">sim_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="kw">population_size</span> <span class="kw">=</span> <span class="fl">10</span>,
-                            <span class="kw">generations</span> <span class="kw">=</span> -<span class="fl">1</span>,
-                            <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="no">pedigrees</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(<span class="no">sim_res</span>$<span class="no">population</span>, <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span>)</pre></body></html></div>
+<div class="section level3">
+<h3 id="simulate-to-one-founder">Simulate to one founder<a class="anchor" aria-label="anchor" href="#simulate-to-one-founder"></a>
+</h3>
+<p>By standard, the number of generations are specified. Instead, it can
+be specified to continue simulating until one common founder is reached
+by specifying <code>generations = -1</code>:</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sim_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span><span class="op">(</span>population_size <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                            generations <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, </span>
+<span>                            progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">pedigrees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">$</span><span class="va">population</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
 <p>The number of generations needed can be obtained as follows:</p>
-<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="no">sim_res</span>$<span class="no">generations</span></pre></body></html></div>
-<pre><code>## [1] 15</code></pre>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sim_res</span><span class="op">$</span><span class="va">generations</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 15</span></span></code></pre>
 </div>
 </div>
-<div id="counting-matches" class="section level1">
-<h1 class="hasAnchor">
-<a href="#counting-matches" class="anchor"></a>Counting matches</h1>
-<div id="simulating-the-population" class="section level2">
-<h2 class="hasAnchor">
-<a href="#simulating-the-population" class="anchor"></a>Simulating the population</h2>
-<p>Let’s try to simulate a larger population with 3 full generations (the additional <code>generations_return</code> is to get all individuals in the last 3 generations returned in the <code>individuals_generations</code> slot, cf. below):</p>
-<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-<span class="no">sim_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="kw">population_size</span> <span class="kw">=</span> <span class="fl">1e3</span>,
-                            <span class="kw">generations</span> <span class="kw">=</span> <span class="fl">200</span>,
-                            <span class="kw">generations_full</span> <span class="kw">=</span> <span class="fl">3</span>,
-                            <span class="kw">generations_return</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="co"># default value</span>
-                            <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="section level2">
+<h2 id="counting-matches">Counting matches<a class="anchor" aria-label="anchor" href="#counting-matches"></a>
+</h2>
+<div class="section level3">
+<h3 id="simulating-the-population">Simulating the population<a class="anchor" aria-label="anchor" href="#simulating-the-population"></a>
+</h3>
+<p>Let’s try to simulate a larger population with 3 full generations
+(the additional <code>generations_return</code> is to get all
+individuals in the last 3 generations returned in the
+<code>individuals_generations</code> slot, cf. below):</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sim_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span><span class="op">(</span>population_size <span class="op">=</span> <span class="fl">1e3</span>, </span>
+<span>                            generations <span class="op">=</span> <span class="fl">200</span>, </span>
+<span>                            generations_full <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                            generations_return <span class="op">=</span> <span class="fl">3</span>, <span class="co"># default value</span></span>
+<span>                            progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>And build the pedigrees:</p>
-<div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="no">pedigrees</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(<span class="no">sim_res</span>$<span class="no">population</span>, <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="fu"><a href="../reference/pedigrees_table.html">pedigrees_table</a></span>(<span class="no">pedigrees</span>)</pre></body></html></div>
-<pre><code>##  311  736 2464  407  758 1421 2565 2740 
-##    1    1    1    1    1    1    1    1</code></pre>
-<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="fu"><a href="../reference/pedigrees_count.html">pedigrees_count</a></span>(<span class="no">pedigrees</span>)</pre></body></html></div>
-<pre><code>## [1] 8</code></pre>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pedigrees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">$</span><span class="va">population</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pedigrees_table.html">pedigrees_table</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  311  736 2464  407  758 1421 2565 2740 </span></span>
+<span><span class="co">##    1    1    1    1    1    1    1    1</span></span></code></pre>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pedigrees_count.html">pedigrees_count</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 8</span></span></code></pre>
 <p>So there are 8 pedigrees. Let’s try to plot the largest one:</p>
-<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="no">ped_sizes</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="fl">1L</span>:<span class="fu"><a href="../reference/pedigrees_count.html">pedigrees_count</a></span>(<span class="no">pedigrees</span>), <span class="kw">function</span>(<span class="no">i</span>) <span class="fu"><a href="../reference/pedigree_size.html">pedigree_size</a></span>(<span class="no">pedigrees</span><span class="kw">[[</span><span class="no">i</span>]]))
-<span class="no">ped_sizes</span></pre></body></html></div>
-<pre><code>## [1] 2740 2565 2464 1421  758  736  407  311</code></pre>
-<div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="no">largest_i</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span>(<span class="no">ped_sizes</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span><span class="kw">[[</span><span class="no">largest_i</span>]])</pre></body></html></div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ped_sizes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">:</span><span class="fu"><a href="../reference/pedigrees_count.html">pedigrees_count</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="../reference/pedigree_size.html">pedigree_size</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ped_sizes</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2740 2565 2464 1421  758  736  407  311</span></span></code></pre>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">largest_i</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">ped_sizes</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">[[</span><span class="va">largest_i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
-<p>And the impose mutations from a 20 locus haplotype with mutation rate 0.001 per locus:</p>
-<div class="sourceCode" id="cb42"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">10</span>)
-<span class="no">mutrts</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0.001</span>, <span class="fl">20</span>)
-<span class="fu"><a href="../reference/pedigrees_all_populate_haplotypes.html">pedigrees_all_populate_haplotypes</a></span>(<span class="kw">pedigrees</span> <span class="kw">=</span> <span class="no">pedigrees</span>,
-                                  <span class="kw">loci</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">mutrts</span>),
-                                  <span class="kw">mutation_rates</span> <span class="kw">=</span> <span class="no">mutrts</span>, <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
-<p>The haplotypes at the live individuals (3 generations) can be inspected:</p>
-<div class="sourceCode" id="cb43"><html><body><pre class="r"><span class="no">live_individuals</span> <span class="kw">&lt;-</span> <span class="no">sim_res</span>$<span class="no">individuals_generations</span>
-<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">live_individuals</span>)</pre></body></html></div>
-<pre><code>## [1] 3000</code></pre>
-<div class="sourceCode" id="cb45"><html><body><pre class="r"><span class="no">haps</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_haplotypes_individuals.html">get_haplotypes_individuals</a></span>(<span class="kw">individuals</span> <span class="kw">=</span> <span class="no">live_individuals</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb46"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">haps</span>)</pre></body></html></div>
-<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
-## [1,]    0    0    0    0   -1   -1    0    0    0     1     1     0     0     0
-## [2,]    0    0    0    0   -1    0    0    0   -1     0    -1     0     0     0
-## [3,]    0    0    0    0    0    0    0    0    0     0     0     0     0     0
-## [4,]    0    0    0    0    0    0    0    0    0     0     0     1     0     0
-## [5,]    0    0    0    0    0    0    0    0    0     0     0     0     0     2
-## [6,]    0   -1    0   -1    0    0    0    0   -1     0     0     1     0     0
-##      [,15] [,16] [,17] [,18] [,19] [,20]
-## [1,]     0     0     0     0     0     0
-## [2,]     0     0     0     0     0     0
-## [3,]     0     0     0     0     0     0
-## [4,]     0     0     0     0     0     0
-## [5,]     0     0     0     0     0    -1
-## [6,]     1     0     0     0     0     0</code></pre>
+<p>And the impose mutations from a 20 locus haplotype with mutation rate
+0.001 per locus:</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">mutrts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.001</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/pedigrees_all_populate_haplotypes.html">pedigrees_all_populate_haplotypes</a></span><span class="op">(</span>pedigrees <span class="op">=</span> <span class="va">pedigrees</span>, </span>
+<span>                                  loci <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mutrts</span><span class="op">)</span>, </span>
+<span>                                  mutation_rates <span class="op">=</span> <span class="va">mutrts</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>The haplotypes at the live individuals (3 generations) can be
+inspected:</p>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">live_individuals</span> <span class="op">&lt;-</span> <span class="va">sim_res</span><span class="op">$</span><span class="va">individuals_generations</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">live_individuals</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 3000</span></span></code></pre>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">haps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_haplotypes_individuals.html">get_haplotypes_individuals</a></span><span class="op">(</span>individuals <span class="op">=</span> <span class="va">live_individuals</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">haps</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]</span></span>
+<span><span class="co">## [1,]    0    0    0    0   -1   -1    0    0    0     1     1     0     0     0</span></span>
+<span><span class="co">## [2,]    0    0    0    0   -1    0    0    0   -1     0    -1     0     0     0</span></span>
+<span><span class="co">## [3,]    0    0    0    0    0    0    0    0    0     0     0     0     0     0</span></span>
+<span><span class="co">## [4,]    0    0    0    0    0    0    0    0    0     0     0     1     0     0</span></span>
+<span><span class="co">## [5,]    0    0    0    0    0    0    0    0    0     0     0     0     0     2</span></span>
+<span><span class="co">## [6,]    0   -1    0   -1    0    0    0    0   -1     0     0     1     0     0</span></span>
+<span><span class="co">##      [,15] [,16] [,17] [,18] [,19] [,20]</span></span>
+<span><span class="co">## [1,]     0     0     0     0     0     0</span></span>
+<span><span class="co">## [2,]     0     0     0     0     0     0</span></span>
+<span><span class="co">## [3,]     0     0     0     0     0     0</span></span>
+<span><span class="co">## [4,]     0     0     0     0     0     0</span></span>
+<span><span class="co">## [5,]     0     0     0     0     0    -1</span></span>
+<span><span class="co">## [6,]     1     0     0     0     0     0</span></span></code></pre>
 <p>Lets look at the spectrum:</p>
-<div class="sourceCode" id="cb48"><html><body><pre class="r"><span class="no">haps_str</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="no">haps</span>, <span class="fl">1</span>, <span class="no">paste0</span>, <span class="kw">collapse</span> <span class="kw">=</span> <span class="st">";"</span>)
-<span class="no">haps_tab</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">haps_str</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span>(<span class="no">haps_tab</span>, <span class="kw">decreasing</span> <span class="kw">=</span> <span class="fl">TRUE</span>)[<span class="fl">1</span>:<span class="fl">10</span>]</pre></body></html></div>
-<pre><code>## haps_str
-##   0;0;-1;0;0;0;0;0;0;0;0;0;0;0;-1;0;0;0;0;0 
-##                                         215 
-##    0;0;0;0;-1;0;0;0;0;1;1;0;0;0;0;0;0;0;0;0 
-##                                         164 
-## 0;0;-1;0;0;0;0;0;0;-1;-1;0;0;0;0;-1;0;0;0;0 
-##                                         152 
-##    1;1;0;0;0;0;0;0;0;1;0;0;0;-1;0;0;0;0;0;0 
-##                                         126 
-##     0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0 
-##                                         112 
-##     0;0;0;0;0;0;0;0;0;0;0;1;0;0;0;0;0;0;0;0 
-##                                         111 
-##    0;0;0;0;0;0;0;0;0;0;0;0;0;2;0;0;0;0;0;-1 
-##                                          92 
-##   0;0;0;0;0;0;0;-1;0;-2;0;0;0;0;0;0;0;0;0;0 
-##                                          90 
-##  0;0;0;0;-1;0;0;0;-1;0;-1;0;0;0;0;0;0;0;0;0 
-##                                          82 
-##   0;0;0;0;0;0;0;0;-1;0;0;0;0;0;-1;0;0;0;0;0 
-##                                          80</code></pre>
-<div class="sourceCode" id="cb50"><html><body><pre class="r"><span class="no">spectrum</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">haps_tab</span>)
-<span class="no">spectrum</span></pre></body></html></div>
-<pre><code>## haps_tab
-##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
-##  37  19   9  13  11   3   2   5   3   3   2   3   2   6   1   2   2   4   1   1 
-##  21  22  23  24  29  30  32  33  35  40  41  42  43  46  52  54  58  59  60  74 
-##   2   4   1   1   3   1   1   2   1   2   1   2   1   1   1   1   1   1   1   1 
-##  80  82  90  92 111 112 126 152 164 215 
-##   1   1   1   1   1   1   1   1   1   1</code></pre>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">haps_str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">haps</span>, <span class="fl">1</span>, <span class="va">paste0</span>, collapse <span class="op">=</span> <span class="st">";"</span><span class="op">)</span></span>
+<span><span class="va">haps_tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">haps_str</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">haps_tab</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## haps_str</span></span>
+<span><span class="co">##   0;0;-1;0;0;0;0;0;0;0;0;0;0;0;-1;0;0;0;0;0 </span></span>
+<span><span class="co">##                                         215 </span></span>
+<span><span class="co">##    0;0;0;0;-1;0;0;0;0;1;1;0;0;0;0;0;0;0;0;0 </span></span>
+<span><span class="co">##                                         164 </span></span>
+<span><span class="co">## 0;0;-1;0;0;0;0;0;0;-1;-1;0;0;0;0;-1;0;0;0;0 </span></span>
+<span><span class="co">##                                         152 </span></span>
+<span><span class="co">##    1;1;0;0;0;0;0;0;0;1;0;0;0;-1;0;0;0;0;0;0 </span></span>
+<span><span class="co">##                                         126 </span></span>
+<span><span class="co">##     0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0 </span></span>
+<span><span class="co">##                                         112 </span></span>
+<span><span class="co">##     0;0;0;0;0;0;0;0;0;0;0;1;0;0;0;0;0;0;0;0 </span></span>
+<span><span class="co">##                                         111 </span></span>
+<span><span class="co">##    0;0;0;0;0;0;0;0;0;0;0;0;0;2;0;0;0;0;0;-1 </span></span>
+<span><span class="co">##                                          92 </span></span>
+<span><span class="co">##   0;0;0;0;0;0;0;-1;0;-2;0;0;0;0;0;0;0;0;0;0 </span></span>
+<span><span class="co">##                                          90 </span></span>
+<span><span class="co">##  0;0;0;0;-1;0;0;0;-1;0;-1;0;0;0;0;0;0;0;0;0 </span></span>
+<span><span class="co">##                                          82 </span></span>
+<span><span class="co">##   0;0;0;0;0;0;0;0;-1;0;0;0;0;0;-1;0;0;0;0;0 </span></span>
+<span><span class="co">##                                          80</span></span></code></pre>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">spectrum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">haps_tab</span><span class="op">)</span></span>
+<span><span class="va">spectrum</span></span></code></pre></div>
+<pre><code><span><span class="co">## haps_tab</span></span>
+<span><span class="co">##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 </span></span>
+<span><span class="co">##  37  19   9  13  11   3   2   5   3   3   2   3   2   6   1   2   2   4   1   1 </span></span>
+<span><span class="co">##  21  22  23  24  29  30  32  33  35  40  41  42  43  46  52  54  58  59  60  74 </span></span>
+<span><span class="co">##   2   4   1   1   3   1   1   2   1   2   1   2   1   1   1   1   1   1   1   1 </span></span>
+<span><span class="co">##  80  82  90  92 111 112 126 152 164 215 </span></span>
+<span><span class="co">##   1   1   1   1   1   1   1   1   1   1</span></span></code></pre>
 </div>
-<div id="drawing-an-individual-and-counting-matches" class="section level2">
-<h2 class="hasAnchor">
-<a href="#drawing-an-individual-and-counting-matches" class="anchor"></a>Drawing an individual and counting matches</h2>
-<div class="sourceCode" id="cb52"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
-<span class="no">Q_index</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample.int</a></span>(<span class="kw">n</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">live_individuals</span>), <span class="kw">size</span> <span class="kw">=</span> <span class="fl">1</span>)
-<span class="no">Q</span> <span class="kw">&lt;-</span> <span class="no">live_individuals</span><span class="kw">[[</span><span class="no">Q_index</span>]]
-<span class="no">Q_hap</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_haplotype.html">get_haplotype</a></span>(<span class="no">Q</span>)
-<span class="no">Q_hap</span></pre></body></html></div>
-<pre><code>##  [1]  0  0  0  0 -1  0  0  0 -1  0 -1  0  0  0  0  0  0  0  0  0</code></pre>
-<p>First, identify <span class="math inline">\(Q\)</span>’s pedigree:</p>
-<div class="sourceCode" id="cb54"><html><body><pre class="r"><span class="no">Q_ped</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_pedigree_from_individual.html">get_pedigree_from_individual</a></span>(<span class="no">Q</span>)</pre></body></html></div>
+<div class="section level3">
+<h3 id="drawing-an-individual-and-counting-matches">Drawing an individual and counting matches<a class="anchor" aria-label="anchor" href="#drawing-an-individual-and-counting-matches"></a>
+</h3>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">Q_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample.int</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">live_individuals</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">Q</span> <span class="op">&lt;-</span> <span class="va">live_individuals</span><span class="op">[[</span><span class="va">Q_index</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">Q_hap</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_haplotype.html">get_haplotype</a></span><span class="op">(</span><span class="va">Q</span><span class="op">)</span></span>
+<span><span class="va">Q_hap</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1]  0  0  0  0 -1  0  0  0 -1  0 -1  0  0  0  0  0  0  0  0  0</span></span></code></pre>
+<p>First, identify <span class="math inline">\(Q\)</span>’s
+pedigree:</p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Q_ped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pedigree_from_individual.html">get_pedigree_from_individual</a></span><span class="op">(</span><span class="va">Q</span><span class="op">)</span></span></code></pre></div>
 <p>Now, count matches in pedigree and in live population:</p>
-<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="fu"><a href="../reference/count_haplotype_occurrences_pedigree.html">count_haplotype_occurrences_pedigree</a></span>(<span class="kw">pedigree</span> <span class="kw">=</span> <span class="no">Q_ped</span>, <span class="kw">haplotype</span> <span class="kw">=</span> <span class="no">Q_hap</span>, <span class="kw">generation_upper_bound_in_result</span> <span class="kw">=</span> <span class="fl">2</span>)</pre></body></html></div>
-<pre><code>## [1] 82</code></pre>
-<div class="sourceCode" id="cb57"><html><body><pre class="r"><span class="fu"><a href="../reference/count_haplotype_occurrences_individuals.html">count_haplotype_occurrences_individuals</a></span>(<span class="kw">individuals</span> <span class="kw">=</span> <span class="no">live_individuals</span>, <span class="kw">haplotype</span> <span class="kw">=</span> <span class="no">Q_hap</span>)</pre></body></html></div>
-<pre><code>## [1] 82</code></pre>
-<p>We can also inspect pedigree matches information about number of meioses and <span class="math inline">\(L_1\)</span> distances:</p>
-<div class="sourceCode" id="cb59"><html><body><pre class="r"><span class="no">path_details</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists.html">pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists</a></span>(<span class="kw">suspect</span> <span class="kw">=</span> <span class="no">Q</span>,
-                                                                        <span class="kw">generation_upper_bound_in_result</span> <span class="kw">=</span> <span class="fl">2</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb60"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">path_details</span>)</pre></body></html></div>
-<pre><code>## [1] 82</code></pre>
-<div class="sourceCode" id="cb62"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">path_details</span>)</pre></body></html></div>
-<pre><code>##      meioses max_L1  pid
-## [1,]       8      0 2697
-## [2,]       8      0 2299
-## [3,]       9      0 1780
-## [4,]       8      0 2119
-## [5,]       9      0 1687
-## [6,]       9      0 1544</code></pre>
-<p>Look at the distribution of number of meioses between <span class="math inline">\(Q\)</span> and the matches (there are 0 meioses between Q and himself):</p>
-<div class="sourceCode" id="cb64"><html><body><pre class="r"><span class="no">meioses</span> <span class="kw">&lt;-</span> <span class="no">path_details</span>[, <span class="fl">1</span>]
-<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(<span class="no">meioses</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/count_haplotype_occurrences_pedigree.html">count_haplotype_occurrences_pedigree</a></span><span class="op">(</span>pedigree <span class="op">=</span> <span class="va">Q_ped</span>, haplotype <span class="op">=</span> <span class="va">Q_hap</span>, generation_upper_bound_in_result <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 82</span></span></code></pre>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/count_haplotype_occurrences_individuals.html">count_haplotype_occurrences_individuals</a></span><span class="op">(</span>individuals <span class="op">=</span> <span class="va">live_individuals</span>, haplotype <span class="op">=</span> <span class="va">Q_hap</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 82</span></span></code></pre>
+<p>We can also inspect pedigree matches information about number of
+meioses and <span class="math inline">\(L_1\)</span> distances:</p>
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">path_details</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists.html">pedigree_haplotype_matches_in_pedigree_meiosis_L1_dists</a></span><span class="op">(</span>suspect <span class="op">=</span> <span class="va">Q</span>, </span>
+<span>                                                                        generation_upper_bound_in_result <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">path_details</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 82</span></span></code></pre>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">path_details</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##      meioses max_L1  pid</span></span>
+<span><span class="co">## [1,]       8      0 2697</span></span>
+<span><span class="co">## [2,]       8      0 2299</span></span>
+<span><span class="co">## [3,]       9      0 1780</span></span>
+<span><span class="co">## [4,]       8      0 2119</span></span>
+<span><span class="co">## [5,]       9      0 1687</span></span>
+<span><span class="co">## [6,]       9      0 1544</span></span></code></pre>
+<p>Look at the distribution of number of meioses between <span class="math inline">\(Q\)</span> and the matches (there are 0 meioses
+between Q and himself):</p>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">meioses</span> <span class="op">&lt;-</span> <span class="va">path_details</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">meioses</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-33-1.png" width="672"></p>
-<p>On the path between <span class="math inline">\(Q\)</span> and the match, the maximum <span class="math inline">\(L_1\)</span> difference between <span class="math inline">\(Q\)</span>’s haplotype and the haplotypes of the individuals on the path is recorded (0 means that that no mutations have occured on the path between <span class="math inline">\(Q\)</span> and the match):</p>
-<div class="sourceCode" id="cb65"><html><body><pre class="r"><span class="no">L1_max</span> <span class="kw">&lt;-</span> <span class="no">path_details</span>[, <span class="fl">2</span>]
-<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">L1_max</span>)</pre></body></html></div>
-<pre><code>## L1_max
-##  0 
-## 82</code></pre>
-<div class="sourceCode" id="cb67"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">L1_max</span> <span class="kw">==</span> <span class="fl">0</span>)</pre></body></html></div>
-<pre><code>## [1] 1</code></pre>
+<p>On the path between <span class="math inline">\(Q\)</span> and the
+match, the maximum <span class="math inline">\(L_1\)</span> difference
+between <span class="math inline">\(Q\)</span>’s haplotype and the
+haplotypes of the individuals on the path is recorded (0 means that that
+no mutations have occured on the path between <span class="math inline">\(Q\)</span> and the match):</p>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">L1_max</span> <span class="op">&lt;-</span> <span class="va">path_details</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">L1_max</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## L1_max</span></span>
+<span><span class="co">##  0 </span></span>
+<span><span class="co">## 82</span></span></code></pre>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">L1_max</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 1</span></span></code></pre>
 </div>
-<div id="mixtures" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mixtures" class="anchor"></a>Mixtures</h2>
+<div class="section level3">
+<h3 id="mixtures">Mixtures<a class="anchor" aria-label="anchor" href="#mixtures"></a>
+</h3>
 <p>Draw true contributors:</p>
-<div class="sourceCode" id="cb69"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
-<span class="no">U_indices</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample.int</a></span>(<span class="kw">n</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">live_individuals</span>), <span class="kw">size</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">replace</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="no">U1</span> <span class="kw">&lt;-</span> <span class="no">live_individuals</span><span class="kw">[[</span><span class="no">U_indices</span>[<span class="fl">1</span>]]]
-<span class="no">U2</span> <span class="kw">&lt;-</span> <span class="no">live_individuals</span><span class="kw">[[</span><span class="no">U_indices</span>[<span class="fl">2</span>]]]
-<span class="no">H1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_haplotype.html">get_haplotype</a></span>(<span class="no">U1</span>)
-<span class="no">H2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_haplotype.html">get_haplotype</a></span>(<span class="no">U2</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">U_indices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample.int</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">live_individuals</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">U1</span> <span class="op">&lt;-</span> <span class="va">live_individuals</span><span class="op">[[</span><span class="va">U_indices</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">U2</span> <span class="op">&lt;-</span> <span class="va">live_individuals</span><span class="op">[[</span><span class="va">U_indices</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">H1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_haplotype.html">get_haplotype</a></span><span class="op">(</span><span class="va">U1</span><span class="op">)</span></span>
+<span><span class="va">H2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_haplotype.html">get_haplotype</a></span><span class="op">(</span><span class="va">U2</span><span class="op">)</span></span></code></pre></div>
 <p>View haplotypes:</p>
-<div class="sourceCode" id="cb70"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="no">H1</span>, <span class="no">H2</span>)</pre></body></html></div>
-<pre><code>##    [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
-## H1    0    0    0    0   -1    0    0    0   -1     0    -1     0     0     0
-## H2    0   -1    0   -1    0    0    0    0   -1     0     0     1     0     0
-##    [,15] [,16] [,17] [,18] [,19] [,20]
-## H1     0     0     0     0     0     0
-## H2     1     0     0     0     0     0</code></pre>
-<p>Now, find those haplotype in live individuals (those haplotypes are in <code>haps</code> from before) that are included in (or compatible with) the mixture:</p>
-<div class="sourceCode" id="cb72"><html><body><pre class="r"><span class="co">#mixres &lt;- indices_in_mixture_by_haplotype_matrix(haplotypes = haps, H1 = H1, H2 = H2)</span>
-<span class="no">mixres</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/mixture_info_by_individuals_2pers.html">mixture_info_by_individuals_2pers</a></span>(<span class="no">live_individuals</span>, <span class="no">U1</span>, <span class="no">U2</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">mixres</span>, <span class="fl">1</span>)</pre></body></html></div>
-<pre><code>## List of 13
-##  $ pids_included_in_mixture     : int [1:293] 2 6 20 38 41 52 59 72 77 79 ...
-##  $ pids_included_in_mixture_info:List of 293
-##  $ pids_matching_donor1         : int [1:82] 2 77 95 142 150 168 236 237 251 259 ...
-##  $ pids_matching_donor2         : int [1:40] 6 20 38 79 147 321 729 761 802 1006 ...
-##  $ pids_others_included         : int [1:171] 41 52 59 72 124 282 294 308 311 313 ...
-##  $ pids_donor12_meiotic_dist    : int -1
-##  $ donor1_family_info           :List of 5
-##  $ donor2_family_info           :List of 5
-##  $ donor1_profile               : int [1:20] 0 0 0 0 -1 0 0 0 -1 0 ...
-##  $ donor2_profile               : int [1:20] 0 -1 0 -1 0 0 0 0 -1 0 ...
-##  $ donor1_pid                   : int 503
-##  $ donor2_pid                   : int 2035
-##  $ loci_not_matching            : num 6</code></pre>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">H1</span>, <span class="va">H2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]</span></span>
+<span><span class="co">## H1    0    0    0    0   -1    0    0    0   -1     0    -1     0     0     0</span></span>
+<span><span class="co">## H2    0   -1    0   -1    0    0    0    0   -1     0     0     1     0     0</span></span>
+<span><span class="co">##    [,15] [,16] [,17] [,18] [,19] [,20]</span></span>
+<span><span class="co">## H1     0     0     0     0     0     0</span></span>
+<span><span class="co">## H2     1     0     0     0     0     0</span></span></code></pre>
+<p>Now, find those haplotype in live individuals (those haplotypes are
+in <code>haps</code> from before) that are included in (or compatible
+with) the mixture:</p>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#mixres &lt;- indices_in_mixture_by_haplotype_matrix(haplotypes = haps, H1 = H1, H2 = H2)</span></span>
+<span><span class="va">mixres</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mixture_info_by_individuals_2pers.html">mixture_info_by_individuals_2pers</a></span><span class="op">(</span><span class="va">live_individuals</span>, <span class="va">U1</span>, <span class="va">U2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">mixres</span>, <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## List of 13</span></span>
+<span><span class="co">##  $ pids_included_in_mixture     : int [1:293] 2 6 20 38 41 52 59 72 77 79 ...</span></span>
+<span><span class="co">##  $ pids_included_in_mixture_info:List of 293</span></span>
+<span><span class="co">##  $ pids_matching_donor1         : int [1:82] 2 77 95 142 150 168 236 237 251 259 ...</span></span>
+<span><span class="co">##  $ pids_matching_donor2         : int [1:40] 6 20 38 79 147 321 729 761 802 1006 ...</span></span>
+<span><span class="co">##  $ pids_others_included         : int [1:171] 41 52 59 72 124 282 294 308 311 313 ...</span></span>
+<span><span class="co">##  $ pids_donor12_meiotic_dist    : int -1</span></span>
+<span><span class="co">##  $ donor1_family_info           :List of 5</span></span>
+<span><span class="co">##  $ donor2_family_info           :List of 5</span></span>
+<span><span class="co">##  $ donor1_profile               : int [1:20] 0 0 0 0 -1 0 0 0 -1 0 ...</span></span>
+<span><span class="co">##  $ donor2_profile               : int [1:20] 0 -1 0 -1 0 0 0 0 -1 0 ...</span></span>
+<span><span class="co">##  $ donor1_pid                   : int 503</span></span>
+<span><span class="co">##  $ donor2_pid                   : int 2035</span></span>
+<span><span class="co">##  $ loci_not_matching            : num 6</span></span></code></pre>
 <p>Compare with matches:</p>
-<div class="sourceCode" id="cb74"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">mixres</span>$<span class="no">pids_matching_donor1</span>)</pre></body></html></div>
-<pre><code>## [1] 82</code></pre>
-<div class="sourceCode" id="cb76"><html><body><pre class="r"><span class="fu"><a href="../reference/count_haplotype_occurrences_individuals.html">count_haplotype_occurrences_individuals</a></span>(<span class="kw">individuals</span> <span class="kw">=</span> <span class="no">live_individuals</span>, <span class="kw">haplotype</span> <span class="kw">=</span> <span class="no">H1</span>)</pre></body></html></div>
-<pre><code>## [1] 82</code></pre>
-<div class="sourceCode" id="cb78"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">mixres</span>$<span class="no">pids_matching_donor2</span>)</pre></body></html></div>
-<pre><code>## [1] 40</code></pre>
-<div class="sourceCode" id="cb80"><html><body><pre class="r"><span class="fu"><a href="../reference/count_haplotype_occurrences_individuals.html">count_haplotype_occurrences_individuals</a></span>(<span class="kw">individuals</span> <span class="kw">=</span> <span class="no">live_individuals</span>, <span class="kw">haplotype</span> <span class="kw">=</span> <span class="no">H2</span>)</pre></body></html></div>
-<pre><code>## [1] 40</code></pre>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mixres</span><span class="op">$</span><span class="va">pids_matching_donor1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 82</span></span></code></pre>
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/count_haplotype_occurrences_individuals.html">count_haplotype_occurrences_individuals</a></span><span class="op">(</span>individuals <span class="op">=</span> <span class="va">live_individuals</span>, haplotype <span class="op">=</span> <span class="va">H1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 82</span></span></code></pre>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mixres</span><span class="op">$</span><span class="va">pids_matching_donor2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 40</span></span></code></pre>
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/count_haplotype_occurrences_individuals.html">count_haplotype_occurrences_individuals</a></span><span class="op">(</span>individuals <span class="op">=</span> <span class="va">live_individuals</span>, haplotype <span class="op">=</span> <span class="va">H2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 40</span></span></code></pre>
 <p>In mixture that are not H1 and not H2:</p>
-<div class="sourceCode" id="cb82"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">mixres</span>$<span class="no">pids_others_included</span>)</pre></body></html></div>
-<pre><code>## [1] 171</code></pre>
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mixres</span><span class="op">$</span><span class="va">pids_others_included</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 171</span></span></code></pre>
 <p>Inspect these (only unique ones):</p>
-<div class="sourceCode" id="cb84"><html><body><pre class="r"><span class="no">others_haps</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/get_haplotypes_pids.html">get_haplotypes_pids</a></span>(<span class="no">sim_res</span>$<span class="no">population</span>, <span class="no">mixres</span>$<span class="no">pids_others_included</span>)
-<span class="no">others_haps</span> <span class="kw">&lt;-</span> <span class="no">others_haps</span>[!<span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span>(<span class="no">others_haps</span>), ]
-<span class="no">others_haps</span></pre></body></html></div>
-<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
-## [1,]    0    0    0   -1    0    0    0    0   -1     0     0     0     0     0
-## [2,]    0    0    0    0    0    0    0    0   -1     0     0     0     0     0
-## [3,]    0    0    0   -1    0    0    0    0   -1     0     0     1     0     0
-## [4,]    0    0    0   -1   -1    0    0    0   -1     0     0     0     0     0
-##      [,15] [,16] [,17] [,18] [,19] [,20]
-## [1,]     0     0     0     0     0     0
-## [2,]     0     0     0     0     0     0
-## [3,]     1     0     0     0     0     0
-## [4,]     0     0     0     0     0     0</code></pre>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">others_haps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_haplotypes_pids.html">get_haplotypes_pids</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">$</span><span class="va">population</span>, <span class="va">mixres</span><span class="op">$</span><span class="va">pids_others_included</span><span class="op">)</span></span>
+<span><span class="va">others_haps</span> <span class="op">&lt;-</span> <span class="va">others_haps</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">others_haps</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">others_haps</span></span></code></pre></div>
+<pre><code><span><span class="co">##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]</span></span>
+<span><span class="co">## [1,]    0    0    0   -1    0    0    0    0   -1     0     0     0     0     0</span></span>
+<span><span class="co">## [2,]    0    0    0    0    0    0    0    0   -1     0     0     0     0     0</span></span>
+<span><span class="co">## [3,]    0    0    0   -1    0    0    0    0   -1     0     0     1     0     0</span></span>
+<span><span class="co">## [4,]    0    0    0   -1   -1    0    0    0   -1     0     0     0     0     0</span></span>
+<span><span class="co">##      [,15] [,16] [,17] [,18] [,19] [,20]</span></span>
+<span><span class="co">## [1,]     0     0     0     0     0     0</span></span>
+<span><span class="co">## [2,]     0     0     0     0     0     0</span></span>
+<span><span class="co">## [3,]     1     0     0     0     0     0</span></span>
+<span><span class="co">## [4,]     0     0     0     0     0     0</span></span></code></pre>
 <p>And get their population counts:</p>
-<div class="sourceCode" id="cb86"><html><body><pre class="r"><span class="no">others_haps_counts</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">others_haps</span>)), <span class="kw">function</span>(<span class="no">hap_i</span>) {
-            <span class="fu"><a href="../reference/count_haplotype_occurrences_individuals.html">count_haplotype_occurrences_individuals</a></span>(<span class="kw">individuals</span> <span class="kw">=</span> <span class="no">live_individuals</span>,
-                                                    <span class="kw">haplotype</span> <span class="kw">=</span> <span class="no">others_haps</span>[<span class="no">hap_i</span>, ])
-          }))
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">others_haps_counts</span>)</pre></body></html></div>
-<pre><code>## [1] 171</code></pre>
-<div class="sourceCode" id="cb88"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">mixres</span>$<span class="no">pids_others_included</span>)</pre></body></html></div>
-<pre><code>## [1] 171</code></pre>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">others_haps_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">others_haps</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">hap_i</span><span class="op">)</span> <span class="op">{</span></span>
+<span>            <span class="fu"><a href="../reference/count_haplotype_occurrences_individuals.html">count_haplotype_occurrences_individuals</a></span><span class="op">(</span>individuals <span class="op">=</span> <span class="va">live_individuals</span>, </span>
+<span>                                                    haplotype <span class="op">=</span> <span class="va">others_haps</span><span class="op">[</span><span class="va">hap_i</span>, <span class="op">]</span><span class="op">)</span></span>
+<span>          <span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">others_haps_counts</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 171</span></span></code></pre>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mixres</span><span class="op">$</span><span class="va">pids_others_included</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 171</span></span></code></pre>
 <p>Compare with profiles of true contributors:</p>
-<div class="sourceCode" id="cb90"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="no">H1</span>, <span class="no">H2</span>)</pre></body></html></div>
-<pre><code>##    [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]
-## H1    0    0    0    0   -1    0    0    0   -1     0    -1     0     0     0
-## H2    0   -1    0   -1    0    0    0    0   -1     0     0     1     0     0
-##    [,15] [,16] [,17] [,18] [,19] [,20]
-## H1     0     0     0     0     0     0
-## H2     1     0     0     0     0     0</code></pre>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">H1</span>, <span class="va">H2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14]</span></span>
+<span><span class="co">## H1    0    0    0    0   -1    0    0    0   -1     0    -1     0     0     0</span></span>
+<span><span class="co">## H2    0   -1    0   -1    0    0    0    0   -1     0     0     1     0     0</span></span>
+<span><span class="co">##    [,15] [,16] [,17] [,18] [,19] [,20]</span></span>
+<span><span class="co">## H1     0     0     0     0     0     0</span></span>
+<span><span class="co">## H2     1     0     0     0     0     0</span></span></code></pre>
 </div>
 </div>
-<div id="other-functions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#other-functions" class="anchor"></a>Other functions</h1>
-<div id="variance-in-number-of-children" class="section level2">
-<h2 class="hasAnchor">
-<a href="#variance-in-number-of-children" class="anchor"></a>Variance in number of children</h2>
-<p>Let <span class="math inline">\(\alpha\)</span> be the parameter of a symmetric Dirichlet distribution specifying each man’s probability to be the father of an arbitrary male in the next generation. When <span class="math inline">\(\alpha=5\)</span>, a man’s relative probability to be the father has 95% probability to lie between 0.32 and 2.05, compared with a constant 1 under the standard Wright-Fisher model and the standard deviation in the number of male offspring per man is 1.10 (standard Wright-Fisher = 1).</p>
-<p>This symmetric Dirichlet distribution is implemented by drawing father (unscaled) probabilities from a Gamma distribution with parameters shape and scale that are then normalised to sum to 1. To obtain a symmetric Dirichlet distribution with parameter <span class="math inline">\(\alpha\)</span>, the shape must be <span class="math inline">\(\alpha\)</span> and scale <span class="math inline">\(1/\alpha\)</span>. This is simulated as follows (note the <code>enable_gamma_variance_extension</code> parameter):</p>
-<div class="sourceCode" id="cb92"><html><body><pre class="r"><span class="no">dirichlet_alpha</span> <span class="kw">&lt;-</span> <span class="fl">5</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-<span class="no">sim_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="kw">population_size</span> <span class="kw">=</span> <span class="fl">10</span>,
-                            <span class="kw">generations</span> <span class="kw">=</span> <span class="fl">10</span>,
-                            <span class="kw">enable_gamma_variance_extension</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                            <span class="kw">gamma_parameter_shape</span> <span class="kw">=</span> <span class="no">dirichlet_alpha</span>,
-                            <span class="kw">gamma_parameter_scale</span> <span class="kw">=</span> <span class="fl">1</span> / <span class="no">dirichlet_alpha</span>,
-                            <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="no">pedigrees</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(<span class="no">sim_res</span>$<span class="no">population</span>, <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb93"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees</span>)</pre></body></html></div>
+<div class="section level2">
+<h2 id="other-functions">Other functions<a class="anchor" aria-label="anchor" href="#other-functions"></a>
+</h2>
+<div class="section level3">
+<h3 id="variance-in-number-of-children">Variance in number of children<a class="anchor" aria-label="anchor" href="#variance-in-number-of-children"></a>
+</h3>
+<p>Let <span class="math inline">\(\alpha\)</span> be the parameter of a
+symmetric Dirichlet distribution specifying each man’s probability to be
+the father of an arbitrary male in the next generation. When <span class="math inline">\(\alpha=5\)</span>, a man’s relative probability to
+be the father has 95% probability to lie between 0.32 and 2.05, compared
+with a constant 1 under the standard Wright-Fisher model and the
+standard deviation in the number of male offspring per man is 1.10
+(standard Wright-Fisher = 1).</p>
+<p>This symmetric Dirichlet distribution is implemented by drawing
+father (unscaled) probabilities from a Gamma distribution with
+parameters shape and scale that are then normalised to sum to 1. To
+obtain a symmetric Dirichlet distribution with parameter <span class="math inline">\(\alpha\)</span>, the shape must be <span class="math inline">\(\alpha\)</span> and scale <span class="math inline">\(1/\alpha\)</span>. This is simulated as follows
+(note the <code>enable_gamma_variance_extension</code> parameter):</p>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dirichlet_alpha</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sim_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span><span class="op">(</span>population_size <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                            generations <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                            enable_gamma_variance_extension <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                            gamma_parameter_shape <span class="op">=</span> <span class="va">dirichlet_alpha</span>,</span>
+<span>                            gamma_parameter_scale <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">dirichlet_alpha</span>,</span>
+<span>                            progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">pedigrees</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">$</span><span class="va">population</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-44-1.png" width="672"></p>
-<p>Let us verify the claim that the standard deviation in the number of male offspring per man is 1.10. The easiest way is to get information about father id’s, which is done by asking for a <code>verbose_result</code>:</p>
-<div class="sourceCode" id="cb94"><html><body><pre class="r"><span class="no">N</span> <span class="kw">&lt;-</span> <span class="fl">1000</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-<span class="no">sim_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="kw">population_size</span> <span class="kw">=</span> <span class="no">N</span>,
-                            <span class="kw">generations</span> <span class="kw">=</span> <span class="fl">2</span>,
-                            <span class="kw">enable_gamma_variance_extension</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                            <span class="kw">gamma_parameter_shape</span> <span class="kw">=</span> <span class="no">dirichlet_alpha</span>,
-                            <span class="kw">gamma_parameter_scale</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="no">dirichlet_alpha</span>,
-                            <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">verbose_result</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-
-<span class="no">tbl_fathers_with_children</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">sim_res</span>$<span class="no">father_pids</span>[, <span class="fl">1</span>])
-<span class="no">tbl_fathers_no_children</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0</span>, <span class="no">N</span> - <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">tbl_fathers_with_children</span>))
-
-<span class="no">number_of_children</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">tbl_fathers_with_children</span>, <span class="no">tbl_fathers_no_children</span>)
-<span class="no">number_of_children</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="no">number_of_children</span>)
-
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">number_of_children</span>)</pre></body></html></div>
-<pre><code>## [1] 1</code></pre>
-<div class="sourceCode" id="cb96"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span>(<span class="no">number_of_children</span>)</pre></body></html></div>
-<pre><code>## [1] 1.11411</code></pre>
+<p>Let us verify the claim that the standard deviation in the number of
+male offspring per man is 1.10. The easiest way is to get information
+about father id’s, which is done by asking for a
+<code>verbose_result</code>:</p>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sim_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span><span class="op">(</span>population_size <span class="op">=</span> <span class="va">N</span>, </span>
+<span>                            generations <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>                            enable_gamma_variance_extension <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                            gamma_parameter_shape <span class="op">=</span> <span class="va">dirichlet_alpha</span>,</span>
+<span>                            gamma_parameter_scale <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">dirichlet_alpha</span>,</span>
+<span>                            progress <span class="op">=</span> <span class="cn">FALSE</span>, verbose_result <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tbl_fathers_with_children</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">$</span><span class="va">father_pids</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">tbl_fathers_no_children</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">N</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">tbl_fathers_with_children</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">number_of_children</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tbl_fathers_with_children</span>, <span class="va">tbl_fathers_no_children</span><span class="op">)</span></span>
+<span><span class="va">number_of_children</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">number_of_children</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">number_of_children</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 1</span></span></code></pre>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">number_of_children</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 1.11411</span></span></code></pre>
 <p>Let os get estimates in parallel:</p>
-<div class="sourceCode" id="cb98"><html><body><pre class="r"><span class="no">get_number_children</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">N</span>) {
-  <span class="no">sim_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span>(<span class="kw">population_size</span> <span class="kw">=</span> <span class="no">N</span>,
-                              <span class="kw">generations</span> <span class="kw">=</span> <span class="fl">2</span>,
-                              <span class="kw">enable_gamma_variance_extension</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                              <span class="kw">gamma_parameter_shape</span> <span class="kw">=</span> <span class="no">dirichlet_alpha</span>,
-                              <span class="kw">gamma_parameter_scale</span> <span class="kw">=</span> <span class="fl">1</span> / <span class="no">dirichlet_alpha</span>,
-                              <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">verbose_result</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-
-  <span class="no">tbl_fathers_with_children</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">sim_res</span>$<span class="no">father_pids</span>[, <span class="fl">1</span>])
-  <span class="no">tbl_fathers_no_children</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0</span>, <span class="no">N</span> - <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">tbl_fathers_with_children</span>))
-
-  <span class="no">number_of_children</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">tbl_fathers_with_children</span>, <span class="no">tbl_fathers_no_children</span>)
-  <span class="no">number_of_children</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="no">number_of_children</span>)
-
-  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="no">number_of_children</span>)
-}
-
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">parallel</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="kw">mc.cores</span> <span class="kw">=</span> <span class="fl">2</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">RNGkind</a></span>(<span class="st">"L'Ecuyer-CMRG"</span>) <span class="co"># for mclapply</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-<span class="no">x</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/mclapply.html">mclapply</a></span>(<span class="fl">1</span>:<span class="fl">100</span>, <span class="kw">function</span>(<span class="no">i</span>) <span class="fu">get_number_children</span>(<span class="fl">100</span>))
-<span class="no">sds</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="no">x</span>, <span class="no">sd</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">sds</span>)</pre></body></html></div>
-<pre><code>## [1] 1.100545</code></pre>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">get_number_children</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">N</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">sim_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology.html">sample_geneology</a></span><span class="op">(</span>population_size <span class="op">=</span> <span class="va">N</span>, </span>
+<span>                              generations <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>                              enable_gamma_variance_extension <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                              gamma_parameter_shape <span class="op">=</span> <span class="va">dirichlet_alpha</span>,</span>
+<span>                              gamma_parameter_scale <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">dirichlet_alpha</span>,</span>
+<span>                              progress <span class="op">=</span> <span class="cn">FALSE</span>, verbose_result <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">tbl_fathers_with_children</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">$</span><span class="va">father_pids</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">tbl_fathers_no_children</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">N</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">tbl_fathers_with_children</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">number_of_children</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tbl_fathers_with_children</span>, <span class="va">tbl_fathers_no_children</span><span class="op">)</span></span>
+<span>  <span class="va">number_of_children</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">number_of_children</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">number_of_children</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>mc.cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">RNGkind</a></span><span class="op">(</span><span class="st">"L'Ecuyer-CMRG"</span><span class="op">)</span> <span class="co"># for mclapply</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/mclapply.html" class="external-link">mclapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu">get_number_children</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">sds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">sd</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">sds</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 1.100545</span></span></code></pre>
 </div>
-<div id="population-growth" class="section level2">
-<h2 class="hasAnchor">
-<a href="#population-growth" class="anchor"></a>Population growth</h2>
-<p>Population growth can be simulated by specifying the population size at each generation by the <code>population_sizes</code> vector, where the length thus specifies the number of generations:</p>
-<div class="sourceCode" id="cb100"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1</span>)
-<span class="no">sim_res_growth</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology_varying_size.html">sample_geneology_varying_size</a></span>(<span class="kw">population_sizes</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">10</span>),
-                                                <span class="kw">generations_full</span> <span class="kw">=</span> <span class="fl">3</span>,
-                                                <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
-<p>Note how <code>generations_full</code> was used to obtain all individuals in the generations (and not just those with descendants in the last two):</p>
-<div class="sourceCode" id="cb101"><html><body><pre class="r"><span class="no">pedigrees_growth</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span>(<span class="no">sim_res_growth</span>$<span class="no">population</span>, <span class="kw">progress</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb102"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pedigrees_growth</span>)</pre></body></html></div>
+<div class="section level3">
+<h3 id="population-growth">Population growth<a class="anchor" aria-label="anchor" href="#population-growth"></a>
+</h3>
+<p>Population growth can be simulated by specifying the population size
+at each generation by the <code>population_sizes</code> vector, where
+the length thus specifies the number of generations:</p>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sim_res_growth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_geneology_varying_size.html">sample_geneology_varying_size</a></span><span class="op">(</span>population_sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">10</span><span class="op">)</span>, </span>
+<span>                                                generations_full <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>                                                progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>Note how <code>generations_full</code> was used to obtain all
+individuals in the generations (and not just those with descendants in
+the last two):</p>
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pedigrees_growth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_pedigrees.html">build_pedigrees</a></span><span class="op">(</span><span class="va">sim_res_growth</span><span class="op">$</span><span class="va">population</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pedigrees_growth</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-49-1.png" width="672"></p>
 </div>
 </div>
@@ -514,11 +619,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Mikkel Meyer Andersen.</p>
+  <p></p>
+<p>Developed by Mikkel Meyer Andersen.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -526,6 +633,8 @@
 
   
 
+
+  
 
   </body>
 </html>

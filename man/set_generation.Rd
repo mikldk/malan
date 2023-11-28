@@ -8,6 +8,8 @@ set_generation(individual, generation)
 }
 \arguments{
 \item{individual}{Individual}
+
+\item{generation}{Generation to assign}
 }
 \description{
 Note that generation 0 is final, end generation.

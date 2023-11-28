@@ -7,13 +7,15 @@
 load_haplotypes(population, pid, haplotypes, progress = TRUE)
 }
 \arguments{
+\item{population}{of individuals}
+
 \item{pid}{ID of male}
 
+\item{haplotypes}{\itemize{
+\item row \code{i} has \code{pid[i]} ID
+}}
+
 \item{progress}{Show progress.}
-
-\item{pid_dad}{ID of male's father, 0 if not known}
-
-\item{error_on_pid_not_found}{Error if pid not found}
 }
 \description{
 Note that individuals loaded this way does not have information about generation.

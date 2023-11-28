@@ -6,8 +6,8 @@
 ^docs
 ^codemeta\.json$
 #paper:
-paper.html
-paper.bib
-paper.md
-paper-fig-simulation.png
-tic.R
+^paper\.html$
+^paper\.bib$
+^paper\.md$
+^paper-fig-simulation\.png$
+^tic\.R$
