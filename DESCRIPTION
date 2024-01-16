@@ -32,6 +32,7 @@ Depends:
 LinkingTo: Rcpp, RcppArmadillo, RcppProgress
 Suggests: knitr, rmarkdown, testthat, ggraph, dirmult, Rmpfr
 BugReports: https://github.com/mikldk/malan/issues
+URL: https://mikldk.github.io/malan/
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
