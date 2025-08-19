@@ -16,5 +16,5 @@ List with entries \code{nodes} and \code{edges}
 }
 \description{
 Get nodes and edges in \code{malan_pedigreelist}.
-For example to plot via \code{\link[=as_tbl_graph]{as_tbl_graph()}}.
+For example to plot via \code{\link[tidygraph:tbl_graph]{tidygraph::as_tbl_graph()}}.
 }

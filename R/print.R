@@ -295,7 +295,7 @@ globalVariables(c("from", "to", "name"))
 #' Get nodes and edges 
 #' 
 #' Get nodes and edges in `malan_pedigreelist`.
-#' For example to plot via [as_tbl_graph()].
+#' For example to plot via [tidygraph::as_tbl_graph()].
 #' 
 #' @param x `malan_pedigreelist`
 #' @param \dots Ignored
@@ -332,13 +332,13 @@ get_nodes_edges <- function(x, ...) {
 
 #' Get tidy graph object
 #' 
-#' Get tidy graph object [tbl_graph()], e.g. 
+#' Get tidy graph object [tidygraph::tbl_graph()], e.g. 
 #' to plot with `ggraph()`.
 #' 
 #' @param x `malan_pedigreelist`
 #' @param \dots Ignored
 #' 
-#' @return [tbl_graph()] object
+#' @return [tidygraph::tbl_graph()] object
 #' 
 #' @importFrom tidygraph as_tbl_graph tbl_graph
 #' @export

@@ -12,9 +12,9 @@
 \item{\dots}{Ignored}
 }
 \value{
-\code{\link[=tbl_graph]{tbl_graph()}} object
+\code{\link[tidygraph:tbl_graph]{tidygraph::tbl_graph()}} object
 }
 \description{
-Get tidy graph object \code{\link[=tbl_graph]{tbl_graph()}}, e.g.
+Get tidy graph object \code{\link[tidygraph:tbl_graph]{tidygraph::tbl_graph()}}, e.g.
 to plot with \code{ggraph()}.
 }

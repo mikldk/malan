@@ -27,6 +27,7 @@ PLoS Genet 13(11): e1007028. \doi{10.1371/journal.pgen.1007028}.
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://mikldk.github.io/malan/}
   \item Report bugs at \url{https://github.com/mikldk/malan/issues}
 }
 
